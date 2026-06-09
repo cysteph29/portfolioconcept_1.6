@@ -1,0 +1,179 @@
+---
+cover: ""
+title: "Salesforce Trailhead"
+cardTitle: "An AI-Powered Re-Engagement Strategy Trailhead's Power Users Preferred Over ChatGPT"
+description: "Salesforce Trailhead's expert users quietly stopped returning once they got certified, taking real work problems to ChatGPT and Slack instead. Over a 10-month capstone, our team researched why power users disengage and designed two connected AI features to bring them back. In testing, 6 of 8 preferred our solution over ChatGPT for Salesforce questions."
+problem: "Once power users got certified, Trailhead had no reason to bring them back, so they took real work problems to ChatGPT, YouTube, and Slack."
+problemEmblem: ""
+solution: "Two connected layers: an AI workspace that answers real Salesforce problems, and a dashboard that turns each visit into a reason to return."
+solutionEmblem: ""
+outcome: "In testing, 6 of 8 power users preferred our solution over ChatGPT for Salesforce-specific questions."
+outcomeEmblem: ""
+heroMosaic: "/assets/salesforce-mosaic.svg"
+summaryPattern: "/assets/summary-pattern.svg"
+timeline: "10 months"
+role: "ResearchOps, Strategy, AI Prototyping"
+slug: "salesforce-trailhead"
+sections:
+  - id: "overview"
+    label: "OVERVIEW"
+  - id: "problem"
+    label: "PROBLEM"
+  - id: "research"
+    label: "RESEARCH"
+  - id: "converge"
+    label: "CONVERGE"
+  - id: "ideation"
+    label: "IDEATION"
+  - id: "solution"
+    label: "SOLUTION"
+  - id: "context"
+    label: "CONTEXT"
+  - id: "testing"
+    label: "TESTING"
+  - id: "reflection"
+    label: "REFLECTION"
+---
+
+<Section id="overview" sections={frontmatter.sections}>
+
+## Salesforce Trailhead is a free learning platform that takes millions of professionals from beginner to certified expert through guided modules, hands-on challenges, and community forums.
+
+Over 10 months, our team partnered with the Salesforce Trailhead product team to research, design, and prototype new features for the platform's most experienced users: the power users who built their careers on Trailhead and then quietly stopped coming back.
+
+<ImagePlaceholder label="Tablet mockup / Trailhead context" />
+
+</Section>
+
+<Section id="problem" sections={frontmatter.sections}>
+
+## Once power users got certified, Trailhead had no trigger to bring them back, so they left for ChatGPT, YouTube, and Slack the moment a real problem came up
+
+Trailhead was built for the climb: learning, upskilling, and getting certified. But once users became competent and moved into real work environments, their needs shifted from learning paths to solving real problems on the job. The content stayed basic, there was no career-relevant direction for advanced learners, and there was no way to get a fast answer to a real work problem.
+
+Re-engagement, not retention, was the real problem. These users weren't churning, they were quietly going elsewhere for answers Trailhead could have given them.
+
+<ImagePlaceholder label="Engagement vs. learner journey graph" />
+
+</Section>
+
+<Section id="research" sections={frontmatter.sections}>
+
+## We interviewed 11 power users across 5 regions to learn why expert users disengage
+
+Across two rounds of semi-structured interviews spanning the US, India, Canada, Europe, and the Middle East, we explored their habits, frustrations, and what would actually bring them back.
+
+<ImagePlaceholder label="Stat cards: 11 power users · 2 rounds · 5 regions" />
+
+### 01. 64% disengaged after hitting major milestones like certifications
+The drop-off clustered right at the platform's natural endpoint.
+
+### 02. 45% were supplementing Trailhead with other tools
+ChatGPT, YouTube, and Slack were filling the gaps Trailhead left.
+
+### 03. 45% found the content too shallow for advanced users
+Modules built for the climb offered little to someone already at the top.
+
+### 04. 36% were unhappy with existing personalization
+The recommendations weren't adapting to where they actually were.
+
+</Section>
+
+<Section id="converge" sections={frontmatter.sections}>
+
+Research made the real question clear, and it became our guiding frame:
+
+> "How might we drive advanced users to keep returning to Trailhead with deeper, relevant, and career-aligned experiences?"
+
+</Section>
+
+<Section id="ideation" sections={frontmatter.sections}>
+
+## We treated five engagement areas as constraints, not prompts, to find the smallest intervention that would create a real reason to return
+
+The five areas were post-milestone engagement, career visibility, habit-forming systems, community integration, and real-world problem solving. Used as constraints, they pushed us toward two connected directions.
+
+<ImagePlaceholder label="Whiteboard synthesis, affinity mapping, concept sketches" />
+
+### Direction 01: Trailhead Solve
+An AI-powered workspace that answers real Salesforce problems in plain language, addressing the "I just use ChatGPT" behavior by keeping expert knowledge inside Trailhead.
+
+### Direction 02: Personalised Dashboard
+An adaptive career layer that shows what changed, where you stand, and what to do next, building a weekly visit habit instead of waiting for the next certification cycle.
+
+</Section>
+
+<Section id="solution" sections={frontmatter.sections}>
+
+## We reimagined Trailhead as an experience built around real-world readiness, not just the climb
+
+### Solution 01: Trailhead Solve
+A RAG-powered workspace where expert users describe a real Salesforce problem in plain language and get a structured, sourced answer linked back to Trailhead modules and docs, calibrated to their certification level and Salesforce release.
+
+<ImagePlaceholder label="Solve answering" />
+
+**How it works:**
+* Type your problem in plain language and get a specific, actionable answer from Salesforce's full knowledge base, calibrated to your expertise level.
+* Adjust the answer depth between Novice, Intermediate, and Professional, so you're never over-explained or underserved.
+* Still stuck? Solve drafts a Trailblazer Community post, pre-filled and ready to publish, so you get an expert answer either way.
+
+<ImagePlaceholder label="Three Solve screens" />
+
+### Solution 02: Personalised Dashboard
+The dashboard picks up where Solve leaves off, surfacing one personalised action per visit tied to certifications, recent Solve sessions, and Salesforce release changes. Each visit becomes more valuable than the last.
+
+* It recommends trails based on a user's Solve conversations, closing the gaps their own questions reveal.
+* It surfaces community questions they're uniquely qualified to answer, giving them a reason to engage as contributors, not just learners.
+* Agentforce identifies trending skills for their role, shows where they stand in the market, and generates custom Trailmixes to close those gaps.
+
+<ImagePlaceholder label="Dashboard full view, trending skills, recommendations" />
+
+</Section>
+
+<Section id="context" sections={frontmatter.sections}>
+
+## How the two features close the loop Trailhead was missing
+
+### The engaged state
+Users join to learn, completing trails, earning badges, and working toward certifications. The loop is clear and engagement is high.
+
+### The drop-off
+Once certified, users hit a wall. The content feels too basic, and when real problems come up they turn to ChatGPT, Google, or Slack instead of Trailhead.
+
+### Closing the loop
+Solve brings experts back with accurate, Salesforce-backed answers, and the Dashboard nudges them toward relevant trails, turning a one-off visit into re-engagement.
+
+<ImagePlaceholder label="Where this solution fits in" />
+
+</Section>
+
+<Section id="testing" sections={frontmatter.sections}>
+
+## We tested for a new motivation to return, not task speed
+
+We weren't measuring how fast someone finished a task. We were measuring whether the product gave power users a real reason to come back.
+
+### AI-simulated stress testing
+We built 12 AI agents from our research data to simulate power-user behavior and stress-test the prototype flows before any real participant saw them.
+
+### Moderated think-aloud sessions
+Eight Salesforce power users, about 30 minutes each. Where they would normally reach for ChatGPT, we asked them to try Solve first, giving us a live substitution signal.
+
+<ImagePlaceholder label="Stat cards: 6/8 would use Solve over ChatGPT for Salesforce-specific questions · 4.5/5 average confidence in Solve's answers · 5/8 said the Dashboard surfaced insights they wouldn't have explored on their own · 6/8 expressed unprompted intent to return after the session" />
+
+</Section>
+
+<Section id="reflection" sections={frontmatter.sections}>
+
+## What we learned building this
+
+### What worked
+Designing for power users who had already arrived gave every decision a clear test: if a feature could apply to a beginner, it was wrong. That constraint produced sharper work than any open-ended prompt would have.
+
+### What was hard
+Recruiting authentic power users on a semester timeline is genuinely difficult. These are full-time professionals across five time zones with no particular reason to give a student team 30 minutes.
+
+### What we'd do next
+Scale testing globally with certified professionals, refine Solve's answer quality through structured feedback loops, and pitch an integration roadmap to the Trailhead product team.
+
+</Section>

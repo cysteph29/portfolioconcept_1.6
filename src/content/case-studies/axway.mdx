@@ -1,0 +1,198 @@
+---
+cover: ""
+title: "Axway"
+cardTitle: "Reducing Invoice Resolution Time by 67% for Axway E-Invoicing"
+description: "Axway's legacy e-Invoicing platform suffered from usability gaps due to engineering-led development. As the first designer, I advocated for user research, studied how power users actually worked, and redesigned a core error-finding workflow. The redesign reduced invoice resolution time by 67% in testing."
+problem: "Diagnosing why a single invoice failed meant navigating seven separate screens."
+problemEmblem: ""
+solution: "A streamlined diagnosis flow that surfaced invoice status earlier and linked Documents straight to the invoice details."
+solutionEmblem: ""
+outcome: "User testing showed a 67% drop in invoice resolution time."
+outcomeEmblem: ""
+heroMosaic: "/assets/axway-mosaic.svg"
+summaryPattern: "/assets/summary-pattern.svg"
+timeline: "4 weeks"
+role: "User Research, Design, User Testing"
+slug: "axway"
+sections:
+  - id: "the-product"
+    label: "THE PRODUCT"
+  - id: "the-users"
+    label: "THE USERS"
+  - id: "how-i-got-started"
+    label: "HOW I GOT STARTED"
+  - id: "conflict"
+    label: "CONFLICT"
+  - id: "stakeholder-alignment"
+    label: "STAKEHOLDER ALIGNMENT"
+  - id: "research"
+    label: "RESEARCH"
+  - id: "converge"
+    label: "CONVERGE"
+  - id: "problem"
+    label: "PROBLEM"
+  - id: "ideation"
+    label: "IDEATION"
+  - id: "concern"
+    label: "CONCERN"
+  - id: "constraints"
+    label: "CONSTRAINTS"
+  - id: "solution"
+    label: "SOLUTION"
+  - id: "impact"
+    label: "IMPACT"
+  - id: "feedback"
+    label: "FEEDBACK"
+---
+
+<Section id="the-product" sections={frontmatter.sections}>
+
+## B2B invoices need to be regulatory compliant, and Axway's E-Invoicing Solution makes this possible by 1) automating the flow of invoices between enterprises and trading partners, and 2) transforming the invoices during this flow to make them compliant with local regulatory laws.
+
+This is made possible by integrating Axway's e-Invoicing Solution with existing Accounts Payable/Receivable (accounting) products used by enterprises. Once integrated, the process starts by receiving an invoice from a sender (supplier), which is then transformed and processed to be regulatory compliant before being sent to the receiver (buyer).
+
+<ImagePlaceholder label="Invoice flow diagram" />
+
+</Section>
+
+<Section id="the-users" sections={frontmatter.sections}>
+
+## We had two user groups: the Operations team (power users) and AP/AR accounting professionals (secondary users)
+
+<ImagePlaceholder label="User groups" />
+
+</Section>
+
+<Section id="how-i-got-started" sections={frontmatter.sections}>
+
+## Leadership was concerned about growing UX complaints from enterprise users (our secondary user group), especially the younger demographic who were quickly replacing the older enterprise workforce. As the first designer on an engineering-led team, I had to establish a design process from scratch and earn buy-in from stakeholders unfamiliar with design's value.
+
+To get up to speed quickly, I applied a heuristic lens to the newly developed platform.
+
+<ImagePlaceholder label="Heuristic evaluation" />
+
+Turns out, there were a lot of problems.
+
+</Section>
+
+<Section id="conflict" sections={frontmatter.sections}>
+
+The initial ask was to follow an existing design system from another product team for UI modernization.
+
+I pushed back and advocated for user research first, since users had never been a part of this product's development.
+
+</Section>
+
+<Section id="stakeholder-alignment" sections={frontmatter.sections}>
+
+## I got the green light to conduct user research, but accessing enterprise users was off the table since the team had previously struggled to recruit them. We focused on our Operations Team (power users) instead.
+
+The goal of this discovery research was simple: learn what tasks users perform on the platform, how they go about them, and what problems they face.
+
+</Section>
+
+<Section id="research" sections={frontmatter.sections}>
+
+## Through user interviews and observational studies with our power users, I uncovered a few interesting findings
+
+### 01. Every failed invoice goes through two stages: Diagnosis and Treatment
+
+Diagnosis is finding which invoice failed and why. Treatment is fixing it.
+
+### 02. Operations team is always feeling overwhelmed
+
+~150 invoices fail daily. Resolution delays cause SLA breaches and increase stress.
+
+### 03. Diagnosis is repetitive across all failed invoices
+
+The first stage looks identical every time, regardless of why the invoice failed.
+
+### 04. Treatment isn't one-size-fits-all, since each failure has a unique cause
+
+Invoices can fail for dozens of different reasons, so each case requires an individual approach.
+
+### 05. Operations doubles as support for enterprise users
+
+AP/AR professionals routinely contact Operations to understand failures, despite having portal access.
+
+</Section>
+
+<Section id="converge" sections={frontmatter.sections}>
+
+Of all the problems research surfaced, we chose to focus on "Diagnosis."
+
+It delivered the highest impact for the least lift, accelerating Operations while reducing inbound support from enterprise users.
+
+</Section>
+
+<Section id="problem" sections={frontmatter.sections}>
+
+## The existing Diagnosis flow was tedious, requiring users to navigate through seven screens to find why an invoice failed
+
+<ImagePlaceholder label="Existing seven-screen Diagnosis flow" />
+
+</Section>
+
+<Section id="ideation" sections={frontmatter.sections}>
+
+## The solution was to cut irrelevant screens and surface key information earlier in the flow
+
+The Documents screen was missing invoice status information, so that needed to be added. The Invoice Detail screen didn't need reworking, we just needed a way to connect both screens.
+
+<ImagePlaceholder label="Ideation: connecting Documents and Invoice Detail" />
+
+</Section>
+
+<Section id="concern" sections={frontmatter.sections}>
+
+These screens weren't being removed from the product, just from the Diagnosis flow.
+
+They were duplicates, originally laid out in this flow for developers who understood the technical infrastructure, long before Operations even existed.
+
+They remained accessible elsewhere via the navigation menu.
+
+</Section>
+
+<Section id="constraints" sections={frontmatter.sections}>
+
+## The solution had to work within some tight constraints
+
+### 01. We were on a 2-week sprint cycle with no room for delay
+
+Design, testing, and implementation all had to happen within this window.
+
+### 02. I had to adopt the design system from another product
+
+UI elements and patterns were predetermined, leaving limited room for design decisions.
+
+### 03. I had to design a low-tech, low-lift solution to minimize effort
+
+No significant development work, just minimal additions to existing screens and components.
+
+</Section>
+
+<Section id="solution" sections={frontmatter.sections}>
+
+## The final solution introduced a Status column and Details link
+
+<ImagePlaceholder label="Status column added to the Documents screen" />
+
+<ImagePlaceholder label="Details link connecting to Invoice Detail" />
+
+</Section>
+
+<Section id="impact" sections={frontmatter.sections}>
+
+## Resolution time dropped by 67% in user testing, and our Operations team wanted it shipped
+
+<ImagePlaceholder label="Before and after: resolution time" />
+
+</Section>
+
+<Section id="feedback" sections={frontmatter.sections}>
+
+## Feedback from my manager, who has overseen this product for over a decade
+
+<ImagePlaceholder label="Manager feedback" />
+
+</Section>
