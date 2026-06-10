@@ -23,6 +23,8 @@
 # misc
 .DS_Store
 *.pem
+raw-assets/
+public/work/raw assets/
 
 # debug
 npm-debug.log*

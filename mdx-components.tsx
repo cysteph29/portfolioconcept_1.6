@@ -1,6 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import type { ReactNode } from "react";
 
+import { CaseFigure } from "@/components/work/case-figure";
 import type { CaseStudySection } from "@/config/case-studies";
 
 type SectionProps = {
@@ -52,6 +53,7 @@ function ImagePlaceholder({ label, ratio = "16/9" }: ImagePlaceholderProps) {
 const components: MDXComponents = {
   Section,
   ImagePlaceholder,
+  CaseFigure,
   h1: (props) => <h1 className="font-pixel text-headline text-text-primary" {...props} />,
   h2: (props) => <h2 className="font-pixel text-subhead text-text-primary" {...props} />,
   h3: (props) => <h3 className="font-pixel text-button text-text-primary" {...props} />,

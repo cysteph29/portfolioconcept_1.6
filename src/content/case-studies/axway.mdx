@@ -52,7 +52,13 @@ sections:
 
 This is made possible by integrating Axway's e-Invoicing Solution with existing Accounts Payable/Receivable (accounting) products used by enterprises. Once integrated, the process starts by receiving an invoice from a sender (supplier), which is then transformed and processed to be regulatory compliant before being sent to the receiver (buyer).
 
-<ImagePlaceholder label="Invoice flow diagram" />
+<CaseFigure
+  src="/work/axway/case-study-axway-1.webp"
+  alt="Diagram showing supplier invoices transformed through Axway e-Invoicing before reaching buyers"
+  caption="Invoice flow diagram"
+  width={1920}
+  height={1080}
+/>
 
 </Section>
 
@@ -60,7 +66,13 @@ This is made possible by integrating Axway's e-Invoicing Solution with existing 
 
 ## We had two user groups: the Operations team (power users) and AP/AR accounting professionals (secondary users)
 
-<ImagePlaceholder label="User groups" />
+<CaseFigure
+  src="/work/axway/case-study-axway-2.webp"
+  alt="Diagram comparing Operations power users with AP and AR accounting professionals"
+  caption="User groups"
+  width={1920}
+  height={1080}
+/>
 
 </Section>
 
@@ -70,7 +82,13 @@ This is made possible by integrating Axway's e-Invoicing Solution with existing 
 
 To get up to speed quickly, I applied a heuristic lens to the newly developed platform.
 
-<ImagePlaceholder label="Heuristic evaluation" />
+<CaseFigure
+  src="/work/axway/case-study-axway-3.webp"
+  alt="Heuristic evaluation notes highlighting usability issues in the Axway e-Invoicing platform"
+  caption="Heuristic evaluation"
+  width={1920}
+  height={1080}
+/>
 
 Turns out, there were a lot of problems.
 
@@ -96,25 +114,13 @@ The goal of this discovery research was simple: learn what tasks users perform o
 
 ## Through user interviews and observational studies with our power users, I uncovered a few interesting findings
 
-### 01. Every failed invoice goes through two stages: Diagnosis and Treatment
-
-Diagnosis is finding which invoice failed and why. Treatment is fixing it.
-
-### 02. Operations team is always feeling overwhelmed
-
-~150 invoices fail daily. Resolution delays cause SLA breaches and increase stress.
-
-### 03. Diagnosis is repetitive across all failed invoices
-
-The first stage looks identical every time, regardless of why the invoice failed.
-
-### 04. Treatment isn't one-size-fits-all, since each failure has a unique cause
-
-Invoices can fail for dozens of different reasons, so each case requires an individual approach.
-
-### 05. Operations doubles as support for enterprise users
-
-AP/AR professionals routinely contact Operations to understand failures, despite having portal access.
+<CaseFigure
+  src="/work/axway/case-study-axway-10.webp"
+  alt="Research findings from Axway power user interviews covering diagnosis and treatment stages, Operations workload, repetitive diagnosis, varied treatment, and enterprise support needs"
+  caption="Research findings"
+  width={1920}
+  height={1080}
+/>
 
 </Section>
 
@@ -130,7 +136,13 @@ It delivered the highest impact for the least lift, accelerating Operations whil
 
 ## The existing Diagnosis flow was tedious, requiring users to navigate through seven screens to find why an invoice failed
 
-<ImagePlaceholder label="Existing seven-screen Diagnosis flow" />
+<CaseFigure
+  src="/work/axway/case-study-axway-4.webp"
+  alt="Seven-screen diagnosis flow showing the steps Operations used to find why an invoice failed"
+  caption="Existing seven-screen Diagnosis flow"
+  width={1920}
+  height={1080}
+/>
 
 </Section>
 
@@ -140,7 +152,13 @@ It delivered the highest impact for the least lift, accelerating Operations whil
 
 The Documents screen was missing invoice status information, so that needed to be added. The Invoice Detail screen didn't need reworking, we just needed a way to connect both screens.
 
-<ImagePlaceholder label="Ideation: connecting Documents and Invoice Detail" />
+<CaseFigure
+  src="/work/axway/case-study-axway-5.webp"
+  alt="Ideation diagram connecting the Documents screen to Invoice Detail to shorten diagnosis"
+  caption="Ideation: connecting Documents and Invoice Detail"
+  width={1920}
+  height={1080}
+/>
 
 </Section>
 
@@ -158,17 +176,13 @@ They remained accessible elsewhere via the navigation menu.
 
 ## The solution had to work within some tight constraints
 
-### 01. We were on a 2-week sprint cycle with no room for delay
-
-Design, testing, and implementation all had to happen within this window.
-
-### 02. I had to adopt the design system from another product
-
-UI elements and patterns were predetermined, leaving limited room for design decisions.
-
-### 03. I had to design a low-tech, low-lift solution to minimize effort
-
-No significant development work, just minimal additions to existing screens and components.
+<CaseFigure
+  src="/work/axway/case-study-axway-11.webp"
+  alt="Design constraints for the Axway diagnosis flow redesign including a two-week sprint, an adopted design system, and a low-lift implementation approach"
+  caption="Constraints"
+  width={1920}
+  height={1080}
+/>
 
 </Section>
 
@@ -176,9 +190,21 @@ No significant development work, just minimal additions to existing screens and 
 
 ## The final solution introduced a Status column and Details link
 
-<ImagePlaceholder label="Status column added to the Documents screen" />
+<CaseFigure
+  src="/work/axway/case-study-axway-6.webp"
+  alt="Documents screen design with a new status column added for failed invoices"
+  caption="Status column added to the Documents screen"
+  width={1920}
+  height={1364}
+/>
 
-<ImagePlaceholder label="Details link connecting to Invoice Detail" />
+<CaseFigure
+  src="/work/axway/case-study-axway-7.webp"
+  alt="Documents screen design showing a Details link that opens Invoice Detail"
+  caption="Details link connecting to Invoice Detail"
+  width={1920}
+  height={1364}
+/>
 
 </Section>
 
@@ -186,7 +212,13 @@ No significant development work, just minimal additions to existing screens and 
 
 ## Resolution time dropped by 67% in user testing, and our Operations team wanted it shipped
 
-<ImagePlaceholder label="Before and after: resolution time" />
+<CaseFigure
+  src="/work/axway/case-study-axway-8.webp"
+  alt="Before-and-after chart comparing invoice resolution time before and after the redesigned diagnosis flow"
+  caption="Before and after: resolution time"
+  width={1920}
+  height={1080}
+/>
 
 </Section>
 
@@ -194,6 +226,12 @@ No significant development work, just minimal additions to existing screens and 
 
 ## Feedback from my manager, who has overseen this product for over a decade
 
-<ImagePlaceholder label="Manager feedback" />
+<CaseFigure
+  src="/work/axway/case-study-axway-9.webp"
+  alt="Manager feedback quote about the Axway e-Invoicing redesign"
+  caption="Manager feedback"
+  width={1920}
+  height={1080}
+/>
 
 </Section>

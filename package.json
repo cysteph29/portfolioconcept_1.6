@@ -7,7 +7,8 @@
     "dev:restart": "for port in 3000 3001; do lsof -ti tcp:$port | xargs kill -9 2>/dev/null || true; done; rm -f .next/dev/lock; next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "optimize-images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.1",
@@ -29,6 +30,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.7",
+    "sharp": "^0.35.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
