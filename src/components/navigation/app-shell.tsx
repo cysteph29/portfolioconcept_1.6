@@ -1,35 +1,49 @@
 "use client";
 
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+
+import { ContactFooter } from "@/components/home/contact-footer";
 import { TopNav } from "@/components/navigation/top-nav";
-import { TransitionOverlay } from "@/components/navigation/transition-overlay";
-import { TransitionProvider, useTransitionContext } from "@/components/navigation/transition-context";
-import { TransitionTuningProvider } from "@/components/navigation/transition-tuning-context";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  return (
-    <TransitionTuningProvider>
-      <TransitionProvider>
-        <ShellFrame>{children}</ShellFrame>
-      </TransitionProvider>
-    </TransitionTuningProvider>
-  );
-}
+  const pathname = usePathname();
 
-function ShellFrame({ children }: { children: React.ReactNode }) {
-  const { isTransitioning } = useTransitionContext();
+  useEffect(() => {
+    const lastPathname = window.sessionStorage.getItem("portfolio-last-pathname");
+    const visitCount = Number.parseInt(
+      window.sessionStorage.getItem("portfolio-in-app-visit-count") ?? "0",
+      10,
+    );
+
+    if (!lastPathname) {
+      window.sessionStorage.setItem("portfolio-in-app-visit-count", "1");
+    } else if (lastPathname !== pathname) {
+      window.sessionStorage.setItem(
+        "portfolio-in-app-visit-count",
+        String(Number.isFinite(visitCount) ? visitCount + 1 : 1),
+      );
+    }
+
+    window.sessionStorage.setItem("portfolio-last-pathname", pathname);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!window.location.hash) {
+      return;
+    }
+
+    const targetId = decodeURIComponent(window.location.hash.slice(1));
+    window.requestAnimationFrame(() => {
+      document.getElementById(targetId)?.scrollIntoView();
+    });
+  }, [pathname]);
 
   return (
     <>
       <TopNav />
-      <main
-        aria-hidden={isTransitioning ? "true" : undefined}
-        className={`bg-canvas ${
-          isTransitioning ? "pointer-events-none opacity-0" : ""
-        }`}
-      >
-        {children}
-      </main>
-      <TransitionOverlay />
+      <main className="bg-canvas">{children}</main>
+      <ContactFooter />
     </>
   );
 }

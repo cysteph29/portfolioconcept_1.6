@@ -6,33 +6,33 @@ export type ExperienceEntry = {
 
 export const EXPERIENCE_ENTRIES: ExperienceEntry[] = [
   {
-    logo: "A1",
-    title: "Product Design Lead",
+    logo: "/assets/logo-salesforce.svg",
+    title: "Salesforce Trailhead",
     description:
-      "Dummy experience entry for a product design role spanning research, systems thinking, and shipping user-facing workflows.",
+      "Co-leading strategy and product design for Trailhead, identifying engagement opportunities to improve retention among power users post-milestone completion.",
   },
   {
-    logo: "B2",
-    title: "Senior UX Designer",
+    logo: "/assets/logo-axway.svg",
+    title: "Axway",
     description:
-      "Placeholder summary for a role focused on turning complex service flows into simple, durable interaction patterns.",
+      "Led end-to-end design from early discovery through hand-off as the sole designer for the 'e-Invoicing' compliance service, a regulated enterprise B2B FinTech product.",
   },
   {
-    logo: "C3",
-    title: "Design Systems Partner",
+    logo: "/assets/logo-ken.svg",
+    title: "The Ken (Via Chariot)",
     description:
-      "Dummy description for work connecting product teams, component libraries, and visual standards across a growing platform.",
+      "Collaborated with C-suite, product, and engineering on growth, conversion, and retention projects for The Ken, a business news publication with 5M+ global readers and 25,000+ paid subscribers.",
   },
   {
-    logo: "D4",
-    title: "Interaction Designer",
+    logo: "/assets/logo-ids.svg",
+    title: "Intentionally Designed Solutions",
     description:
-      "Placeholder text for a hands-on role prototyping, testing, and refining product experiences with cross-functional teams.",
+      "Delivered 0-to-1 product design, alongside brand and marketing design, for 3 interconnected products (a smart home device catalog, mobile app and CMS).",
   },
   {
-    logo: "E5",
-    title: "UX Research Collaborator",
+    logo: "/assets/logo-iu.svg",
+    title: "IU School of Medicine",
     description:
-      "Dummy role description for synthesis, discovery interviews, and translating qualitative signals into product direction.",
+      "Brand and marketing design for digital and print touchpoints, campaign visuals, and stakeholder-facing materials.",
   },
 ];

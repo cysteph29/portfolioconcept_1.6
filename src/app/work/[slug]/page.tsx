@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import type { ComponentType } from "react";
 
-import { CaseStudyFold } from "@/components/folds/route-folds";
+import { CaseStudyPageLayout } from "@/components/work/case-study-page-layout";
 import Axway from "@/content/case-studies/axway.mdx";
 import TheKen from "@/content/case-studies/the-ken.mdx";
 import SalesforceTrailhead from "@/content/case-studies/salesforce-trailhead.mdx";
@@ -56,8 +56,8 @@ export default async function CaseStudyPage({
   }
 
   return (
-    <CaseStudyFold slug={slug}>
+    <CaseStudyPageLayout slug={slug}>
       <CaseStudyContent />
-    </CaseStudyFold>
+    </CaseStudyPageLayout>
   );
 }

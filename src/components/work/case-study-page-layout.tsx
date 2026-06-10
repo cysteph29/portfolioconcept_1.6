@@ -1,30 +1,28 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import {
+  type CSSProperties,
+  type ReactNode,
+  type RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
-import { FoldWrapper } from "@/components/folds/fold-wrapper";
-import { TwoColumnFoldShell } from "@/components/folds/two-column-fold-shell";
-import { TransitionLink } from "@/components/navigation/transition-link";
-import { useTransitionContext } from "@/components/navigation/transition-context";
-import { SectionPlaceholder } from "@/components/sections/section-placeholder";
-import { ExperienceCards } from "@/components/experience/experience-cards";
-import { CaseStudyCards } from "@/components/work/case-study-cards";
 import { CaseStudyToc } from "@/components/work/case-study-toc";
 import { getCaseStudyBySlug } from "@/config/case-studies";
-import { getSectionFromPathname } from "@/config/sections";
-
-type RouteFoldOptions = {
-  isTransitionOverlay?: boolean;
-};
 
 type CaseStudyHeroSummaryItemProps = {
   emblem?: string;
   label: string;
   summary: string;
 };
+
+const DEFAULT_PROBLEM_EMBLEM = "/assets/problem-mosaic.png";
+const DEFAULT_SOLUTION_EMBLEM = "/assets/solution-mosaic.png";
+const DEFAULT_OUTCOME_EMBLEM = "/assets/outcome-mosaic.png";
 
 const HIDE_HERO_CONTENT_FOR_AMBIENT_DEBUG = false;
 const CASE_STUDY_HERO_AMBIENT_BAND_WIDTH = 240;
@@ -36,7 +34,7 @@ function CaseStudyHeroAmbient({
   heroRef,
   mosaic,
 }: {
-  heroRef: React.RefObject<HTMLElement | null>;
+  heroRef: RefObject<HTMLElement | null>;
   mosaic?: string;
 }) {
   const [heroSize, setHeroSize] = useState({ width: 0, height: 0 });
@@ -118,7 +116,7 @@ function CaseStudyHeroAmbient({
             : startsAboveCenter
               ? aboveColumnYs[convergenceIndex]
               : belowColumnYs[convergenceIndex],
-        } as React.CSSProperties;
+        } as CSSProperties;
 
         const fadeProps = shouldReduceMotion
           ? {}
@@ -177,115 +175,13 @@ function CaseStudyHeroSummaryItem({ emblem, label, summary }: CaseStudyHeroSumma
   );
 }
 
-export function HomeFold() {
-  return (
-    <FoldWrapper className="home-fold">
-      <div className="home-fold__center">
-        <img
-          alt="Portrait"
-          className="home-fold__portrait"
-          src="/assets/profilepic.png"
-        />
-        <h1 className="home-fold__headline font-pixel text-headline text-text-primary">
-          I&apos;m A Product Designer Fascinated By People, And Leverage That To Build Products Worth
-          Using.
-        </h1>
-        <p className="home-fold__subhead font-sans text-subhead text-text-muted">
-          Previously owned design for an enterprise FinTech platform used by 100+ companies globally.
-          I&apos;m currently open to Product/UX Design opportunities.
-        </p>
-      </div>
-
-      <p className="home-fold__credibility font-sans text-credibility text-text-muted">
-        I work fast, care about tiny details, and have an appetite for things I haven&apos;t tried
-        before.
-      </p>
-
-      <div className="home-fold__actions">
-        <TransitionLink
-          axis="x"
-          className="home-action home-action--secondary"
-          direction={1}
-          href="/about"
-        >
-          Who am I
-        </TransitionLink>
-        <TransitionLink
-          axis="x"
-          className="home-action home-action--primary"
-          direction={1}
-          href="/work"
-        >
-          <span>See work</span>
-          <span aria-hidden="true">→</span>
-        </TransitionLink>
-      </div>
-    </FoldWrapper>
-  );
-}
-
-export function WorkFold() {
-  return (
-    <TwoColumnFoldShell
-      className="work-fold"
-      left={
-        <div className="work-fold__identity">
-          <div aria-hidden="true" className="work-fold__icon-placeholder" />
-          <p className="work-fold__label font-pixel text-headline text-text-primary">Work</p>
-        </div>
-      }
-    >
-      <CaseStudyCards />
-    </TwoColumnFoldShell>
-  );
-}
-
-export function ExperienceFold({ isTransitionOverlay = false }: RouteFoldOptions = {}) {
-  const pathname = usePathname();
-  const { isTransitioning } = useTransitionContext();
-  const isSettledExperience = pathname === "/experience" && !isTransitioning;
-  const showSequencedEntrance = !isTransitionOverlay && isSettledExperience;
-  const foldClassName = [
-    "experience-fold",
-    showSequencedEntrance || isTransitionOverlay ? "experience-fold--identity-visible" : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
-
-  return (
-    <FoldWrapper className={foldClassName}>
-      <div className="experience-fold__identity" aria-hidden="true">
-        <div className="experience-fold__icon-placeholder" />
-        <p className="experience-fold__label font-pixel text-headline text-text-primary">
-          Experience
-        </p>
-      </div>
-      <main className="experience-fold__scroll">
-        <ExperienceCards isTransitionOverlay={isTransitionOverlay} />
-      </main>
-    </FoldWrapper>
-  );
-}
-
-export function AboutFold() {
-  return <SectionPlaceholder label="ABOUT" />;
-}
-
-export function ContactFold() {
-  return (
-    <SectionPlaceholder label="CONTACT">
-      <p className="fold-placeholder__copy">
-        Placeholder contact section route. Keeping this as a real URL makes every top-level
-        destination directly shareable.
-      </p>
-      <div className="fold-placeholder__card">
-        Dummy contact content goes here in the next phase.
-      </div>
-    </SectionPlaceholder>
-  );
-}
-
-export function CaseStudyFold({ children, slug }: { children?: React.ReactNode; slug: string }) {
+export function CaseStudyPageLayout({
+  children,
+  slug,
+}: {
+  children?: ReactNode;
+  slug: string;
+}) {
   const caseStudy = getCaseStudyBySlug(slug);
   const heroRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -300,7 +196,7 @@ export function CaseStudyFold({ children, slug }: { children?: React.ReactNode; 
     if (sections.length === 0) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      sections.forEach((s) => s.classList.add("case-study-section--revealed"));
+      sections.forEach((section) => section.classList.add("case-study-section--revealed"));
       return;
     }
 
@@ -316,7 +212,7 @@ export function CaseStudyFold({ children, slug }: { children?: React.ReactNode; 
       { rootMargin: "0px 0px -8% 0px", threshold: 0.04 },
     );
 
-    sections.forEach((s) => observer.observe(s));
+    sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
   }, []);
 
@@ -325,11 +221,11 @@ export function CaseStudyFold({ children, slug }: { children?: React.ReactNode; 
   }
 
   const summaryPatternStyle = caseStudy.summaryPattern
-    ? ({ backgroundImage: `url("${caseStudy.summaryPattern}")` } satisfies React.CSSProperties)
+    ? ({ backgroundImage: `url("${caseStudy.summaryPattern}")` } satisfies CSSProperties)
     : undefined;
 
   return (
-    <FoldWrapper className="case-study-fold">
+    <section className="fold-panel case-study-fold">
       <header
         className={[
           "case-study-hero",
@@ -352,17 +248,17 @@ export function CaseStudyFold({ children, slug }: { children?: React.ReactNode; 
                 />
               ) : null}
               <CaseStudyHeroSummaryItem
-                emblem={caseStudy.problemEmblem}
+                emblem={caseStudy.problemEmblem || DEFAULT_PROBLEM_EMBLEM}
                 label="Problem"
                 summary={caseStudy.problem}
               />
               <CaseStudyHeroSummaryItem
-                emblem={caseStudy.solutionEmblem}
+                emblem={caseStudy.solutionEmblem || DEFAULT_SOLUTION_EMBLEM}
                 label="Solution"
                 summary={caseStudy.solution}
               />
               <CaseStudyHeroSummaryItem
-                emblem={caseStudy.outcomeEmblem}
+                emblem={caseStudy.outcomeEmblem || DEFAULT_OUTCOME_EMBLEM}
                 label="Outcome"
                 summary={caseStudy.outcome}
               />
@@ -394,7 +290,9 @@ export function CaseStudyFold({ children, slug }: { children?: React.ReactNode; 
               <CaseStudyToc sections={caseStudy.sections} />
             </div>
           </aside>
-          <article className="case-study-layout__content" ref={contentRef}>{children}</article>
+          <article className="case-study-layout__content" ref={contentRef}>
+            {children}
+          </article>
         </div>
       </div>
       {caseStudy.liveUrl ? (
@@ -407,49 +305,6 @@ export function CaseStudyFold({ children, slug }: { children?: React.ReactNode; 
           Visit Website ↗
         </a>
       ) : null}
-    </FoldWrapper>
+    </section>
   );
-}
-
-export function getRouteFold(pathname: string, options: RouteFoldOptions = {}) {
-  if (pathname === "/") {
-    return <HomeFold />;
-  }
-
-  if (pathname === "/work") {
-    return <WorkFold />;
-  }
-
-  if (pathname === "/experience") {
-    return <ExperienceFold isTransitionOverlay={options.isTransitionOverlay} />;
-  }
-
-  if (pathname === "/about") {
-    return <AboutFold />;
-  }
-
-  if (pathname === "/contact") {
-    return <ContactFold />;
-  }
-
-  if (pathname.startsWith("/work/")) {
-    const slug = pathname.replace("/work/", "");
-    return <CaseStudyFold slug={slug} />;
-  }
-
-  const section = getSectionFromPathname(pathname);
-  if (section.id === "work") {
-    return <WorkFold />;
-  }
-  if (section.id === "experience") {
-    return <ExperienceFold isTransitionOverlay={options.isTransitionOverlay} />;
-  }
-  if (section.id === "about") {
-    return <AboutFold />;
-  }
-  if (section.id === "contact") {
-    return <ContactFold />;
-  }
-
-  return <HomeFold />;
 }

@@ -1,45 +1,48 @@
 "use client";
 
-import { TransitionLink } from "@/components/navigation/transition-link";
+import Link from "next/link";
+
 import { CASE_STUDIES } from "@/config/case-studies";
+
+const FEATURED_CASE_STUDIES = CASE_STUDIES.slice(0, 3);
+
+export const WORK_CASE_STUDY_COUNT = FEATURED_CASE_STUDIES.length;
 
 export function CaseStudyCards() {
   return (
-    <div className="work-case-study-list">
-      {CASE_STUDIES.map((caseStudy) => (
-        <TransitionLink
+    <div className="work-case-study-list" role="list">
+      {FEATURED_CASE_STUDIES.map((caseStudy) => (
+        <Link
           key={caseStudy.slug}
-          axis="y"
           className="work-case-study-card"
-          direction={1}
           href={`/work/${caseStudy.slug}`}
-          scroll
+          role="listitem"
         >
-          <div
-            aria-label={`${caseStudy.title} cover placeholder`}
-            className="work-case-study-card__cover"
-            data-cover={caseStudy.cover}
-            role="img"
-          />
-          <div className="work-case-study-card__body">
+          <dl className="work-case-study-card__meta font-sans text-button text-text-muted">
+            <div className="work-case-study-card__meta-item">
+              <dt>TIMELINE</dt>
+              <dd>{caseStudy.timeline}</dd>
+            </div>
+            <div className="work-case-study-card__meta-item">
+              <dt>ROLE</dt>
+              <dd>{caseStudy.role}</dd>
+            </div>
+            <div className="work-case-study-card__meta-item">
+              <dt>TEAM</dt>
+              <dd>{caseStudy.team}</dd>
+            </div>
+          </dl>
+          <article className="work-case-study-card__feature">
             <h2 className="work-case-study-card__title font-pixel text-headline text-text-primary">
               {caseStudy.cardTitle ?? caseStudy.title}
             </h2>
-            <p className="work-case-study-card__description font-sans text-subhead text-text-muted">
-              {caseStudy.description}
-            </p>
-            <dl className="work-case-study-card__meta font-sans text-button text-text-muted">
-              <div className="work-case-study-card__meta-item">
-                <dt>TIMELINE</dt>
-                <dd>{caseStudy.timeline}</dd>
-              </div>
-              <div className="work-case-study-card__meta-item">
-                <dt>ROLE</dt>
-                <dd>{caseStudy.role}</dd>
-              </div>
-            </dl>
-          </div>
-        </TransitionLink>
+            <div
+              aria-label={`${caseStudy.title} hero visual placeholder`}
+              className="work-case-study-card__placeholder"
+              role="img"
+            />
+          </article>
+        </Link>
       ))}
     </div>
   );

@@ -1,75 +1,53 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { TransitionLink } from "@/components/navigation/transition-link";
-import { useTransitionContext } from "@/components/navigation/transition-context";
-import { TOP_LEVEL_SECTIONS, getHorizontalDirection, getSectionFromPathname } from "@/config/sections";
-
-const RESUME_URL = "https://example.com/resume";
+const NAV_ITEMS = [
+  { href: "/#work", label: "Work", isActive: (pathname: string) => pathname.startsWith("/work") },
+  { href: "/about", label: "About", isActive: (pathname: string) => pathname === "/about" },
+  { href: "/#contact", label: "Contact", isActive: () => false },
+];
 
 export function TopNav() {
   const pathname = usePathname();
-  const activeSection = getSectionFromPathname(pathname);
-  const { isTransitioning } = useTransitionContext();
-  const homeSection = TOP_LEVEL_SECTIONS[0];
-  const navSections = TOP_LEVEL_SECTIONS.filter((section) => section.id !== "home");
 
   return (
     <header className="top-nav-surface fixed inset-x-0 top-0 z-50">
       <nav className="flex items-center justify-between px-[var(--spacing-home-edge-x)] pt-[var(--nav-padding-top)] pb-[var(--nav-padding-bottom)]">
-        <TransitionLink
-          axis="x"
+        <Link
           aria-label="Home"
-          className={`inline-flex items-center ${
-            isTransitioning ? "cursor-not-allowed opacity-70" : ""
-          }`}
-          direction={getHorizontalDirection(pathname, homeSection.href)}
-          href={homeSection.href}
+          className="inline-flex items-center"
+          href="/"
         >
-          <img
+          <Image
             alt=""
             aria-hidden="true"
             className="block h-10 w-10 object-cover"
+            height={40}
             src="/assets/profilepic.png"
+            width={40}
           />
-        </TransitionLink>
+        </Link>
 
         <div className="flex items-center gap-[var(--spacing-home-actions-gap)]">
-          {navSections.map((section) => {
-            const isActive = activeSection.id === section.id;
-            const direction = getHorizontalDirection(pathname, section.href);
+          {NAV_ITEMS.map((item) => {
+            const isActive = item.isActive(pathname);
 
             return (
-              <TransitionLink
-                key={section.id}
-                axis="x"
+              <Link
+                key={item.href}
                 aria-current={isActive ? "page" : undefined}
                 className={`font-pixel text-button font-normal text-text-primary transition-opacity hover:opacity-100 ${
                   isActive ? "opacity-100" : "opacity-80"
-                } ${isTransitioning ? "cursor-not-allowed opacity-70" : ""}`}
-                direction={direction}
-                href={section.href}
+                }`}
+                href={item.href}
               >
-                {section.label}
-              </TransitionLink>
+                {item.label}
+              </Link>
             );
           })}
-          <a
-            className={`font-pixel text-button font-normal text-text-primary transition-opacity hover:opacity-100 ${
-              isTransitioning ? "cursor-not-allowed opacity-70" : "opacity-80"
-            }`}
-            href={RESUME_URL}
-            onClick={(event) => {
-              if (isTransitioning) {
-                event.preventDefault();
-              }
-            }}
-            rel="noopener"
-            target="_blank"
-          >
-            Resume
-          </a>
         </div>
       </nav>
     </header>

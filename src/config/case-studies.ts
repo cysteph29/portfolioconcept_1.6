@@ -27,6 +27,7 @@ export type CaseStudyFrontmatter = {
   heroPoster?: string;
   timeline: string;
   role: string;
+  team: string;
   sections: CaseStudySection[];
 };
 
