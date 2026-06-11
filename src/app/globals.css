@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-canvas: #061502;
+  --color-canvas: #040F02;
   --color-fold-fill: #071803;
   --color-text-primary: #f4e7dd;
   --color-text-muted: rgb(244 231 221 / 80%);
