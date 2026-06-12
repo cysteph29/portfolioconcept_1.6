@@ -36,11 +36,26 @@ export function CaseStudyCards() {
             <h2 className="work-case-study-card__title font-pixel text-headline text-text-primary">
               {caseStudy.cardTitle ?? caseStudy.title}
             </h2>
-            <div
-              aria-label={`${caseStudy.title} hero visual placeholder`}
-              className="work-case-study-card__placeholder"
-              role="img"
-            />
+            {caseStudy.heroVideo ? (
+              <video
+                aria-label={`${caseStudy.title} hero visual`}
+                autoPlay
+                className="work-case-study-card__video"
+                loop
+                muted
+                playsInline
+                poster={caseStudy.heroPoster || undefined}
+                preload="metadata"
+              >
+                <source src={caseStudy.heroVideo} type="video/mp4" />
+              </video>
+            ) : (
+              <div
+                aria-label={`${caseStudy.title} hero visual placeholder`}
+                className="work-case-study-card__placeholder"
+                role="img"
+              />
+            )}
           </article>
         </Link>
       ))}

@@ -597,7 +597,7 @@ a {
     top: 0;
     height: 100vh;
     overflow: hidden;
-    border: var(--spacing-fold-frame) solid var(--color-canvas);
+    border: var(--spacing-fold-frame) solid #040F02;
     background: var(--color-fold-fill);
     color: var(--color-text-primary);
   }
@@ -672,6 +672,14 @@ a {
   .work-case-study-card__placeholder {
     min-height: clamp(24rem, 35vw, 34rem);
     background: color-mix(in srgb, var(--color-text-primary) 14%, transparent);
+  }
+
+  .work-case-study-card__video {
+    display: block;
+    width: 100%;
+    min-height: clamp(24rem, 35vw, 34rem);
+    background: color-mix(in srgb, var(--color-text-primary) 14%, transparent);
+    object-fit: cover;
   }
 
   .experience-fold {
