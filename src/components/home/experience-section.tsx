@@ -16,7 +16,7 @@ export function ExperienceSection() {
               className="experience-fold__mosaic-image"
             />
           </div>
-          <p className="experience-fold__label font-pixel text-headline text-text-primary">
+          <p className="experience-fold__label text-display-2 text-text-primary">
             Experience
           </p>
         </div>

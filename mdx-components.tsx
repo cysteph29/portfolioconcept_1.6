@@ -20,7 +20,7 @@ function Section({ children, id, sections }: SectionProps) {
 
   return (
     <section className="case-study-section" id={id}>
-      <p className="case-study-section__eyebrow font-pixel text-button text-text-muted">
+      <p className="case-study-section__eyebrow text-label-1 text-text-muted">
         {section.label}
       </p>
       <div className="case-study-section__body">{children}</div>
@@ -57,11 +57,11 @@ const components: MDXComponents = {
   CaseFigure,
   CaseVideo,
   h1: (props) => <h1 className="font-pixel text-headline text-text-primary" {...props} />,
-  h2: (props) => <h2 className="font-pixel text-subhead text-text-primary" {...props} />,
+  h2: (props) => <h2 className="text-heading-1 text-text-primary" {...props} />,
   h3: (props) => <h3 className="font-pixel text-button text-text-primary" {...props} />,
-  p: (props) => <p className="font-sans text-subhead text-text-muted" {...props} />,
+  p: (props) => <p className="text-body-1 text-text-muted" {...props} />,
   ul: (props) => <ul className="list-disc space-y-2 pl-5 text-text-muted" {...props} />,
-  li: (props) => <li className="leading-7" {...props} />,
+  li: (props) => <li className="text-body-1" {...props} />,
 };
 
 export function useMDXComponents(): MDXComponents {

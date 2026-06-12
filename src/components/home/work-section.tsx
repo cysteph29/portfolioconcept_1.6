@@ -117,7 +117,7 @@ export function WorkSection() {
               className="work-pin-mosaic-image"
             />
           </div>
-          <p className="work-fold__label font-pixel text-headline text-text-primary">
+          <p className="work-fold__label text-display-2 text-text-primary">
             Work
           </p>
         </aside>

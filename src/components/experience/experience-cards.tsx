@@ -20,8 +20,8 @@ export function ExperienceCards() {
             />
           </div>
           <div className="experience-card__body">
-            <h2 className="experience-card__title font-pixel text-text-primary">{entry.title}</h2>
-            <p className="experience-card__description font-sans text-subhead text-text-muted">
+            <h2 className="experience-card__title text-display-3 text-text-primary">{entry.title}</h2>
+            <p className="experience-card__description text-body-2 text-text-muted">
               {entry.description}
             </p>
           </div>

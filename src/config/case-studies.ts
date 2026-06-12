@@ -45,9 +45,9 @@ function defineCaseStudy(frontmatter: CaseStudyFrontmatter): CaseStudy {
 }
 
 export const CASE_STUDIES: CaseStudy[] = [
+  defineCaseStudy(salesforceTrailhead),
   defineCaseStudy(axway),
   defineCaseStudy(theKen),
-  defineCaseStudy(salesforceTrailhead),
   defineCaseStudy(dummyCaseStudyThree),
 ];
 

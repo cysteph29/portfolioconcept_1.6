@@ -68,7 +68,7 @@ function ContactMarqueeRow({
   return (
     <div className="contact-footer__marquee-row" data-direction={direction}>
       <motion.div
-        className="contact-footer__marquee-strip"
+        className="contact-footer__marquee-strip contact-footer__marquee-strip--regular font-normal"
         style={{ x: shouldReduceMotion ? restOffset : x }}
       >
         {text}
@@ -114,21 +114,27 @@ export function ContactFooter() {
             className="contact-footer__mosaic-image"
           />
         </div>
-        <h2 className="contact-footer__heading" id="contact-footer-heading">
+        <h2 className="contact-footer__heading text-display-2" id="contact-footer-heading">
           I&apos;m Currently Open For Product Design, Design Engineer &amp; Related Roles Anywhere
           Within The U.S.
         </h2>
-        <div className="contact-footer__mark" aria-hidden="true">
+        <div className="contact-footer__mark text-display-4" aria-hidden="true">
           \\
         </div>
-        <p className="contact-footer__email">cyrilstephenhere@gmail.com</p>
+        <p className="contact-footer__email text-display-3">cyrilstephenhere@gmail.com</p>
       </section>
 
       <div className="contact-footer__bottom-strip">
-        <p className="contact-footer__copyright">Vibe coded website | All rights reserved</p>
+        <p className="contact-footer__copyright text-body-2">Vibe coded website | All rights reserved</p>
         <nav className="contact-footer__links" aria-label="Social links">
           {socialLinks.map((link) => (
-            <a href={link.href} key={link.href} rel="noopener noreferrer" target="_blank">
+            <a
+              className="text-label-1"
+              href={link.href}
+              key={link.href}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               {link.label}
             </a>
           ))}

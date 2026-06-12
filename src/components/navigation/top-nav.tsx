@@ -39,7 +39,7 @@ export function TopNav() {
               <Link
                 key={item.href}
                 aria-current={isActive ? "page" : undefined}
-                className={`font-pixel text-button font-normal text-text-primary transition-opacity hover:opacity-100 ${
+                className={`text-label-1 text-text-primary transition-opacity hover:opacity-100 ${
                   isActive ? "opacity-100" : "opacity-80"
                 }`}
                 href={item.href}

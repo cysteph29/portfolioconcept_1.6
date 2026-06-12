@@ -120,7 +120,7 @@ export function CaseStudyToc({ sections }: Props) {
               <a
                 aria-current={isActive ? "location" : undefined}
                 className={[
-                  "case-study-sidebar__toc-link font-pixel text-button",
+                  "case-study-sidebar__toc-link text-label-1",
                   isActive
                     ? "case-study-sidebar__toc-link--active"
                     : "text-text-muted",

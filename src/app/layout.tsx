@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import Script from "next/script";
-import { GeistPixelSquare } from "geist/font/pixel";
-import { GeistSans } from "geist/font/sans";
 
 import { AppShell } from "@/components/navigation/app-shell";
 
@@ -54,6 +53,41 @@ const stripCursorRefsScript = `
 })();
 `;
 
+const neueBit = localFont({
+  src: [
+    {
+      path: "./fonts/PPNeueBit-Regular.woff2",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "./fonts/PPNeueBit-Bold.woff2",
+      weight: "700",
+      style: "normal",
+    },
+  ],
+  variable: "--font-neuebit",
+  display: "swap",
+  fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "Monaco", "Consolas", "monospace"],
+});
+
+const mondwest = localFont({
+  src: "./fonts/PPMondwest-Regular.woff2",
+  variable: "--font-mondwest",
+  weight: "400",
+  display: "swap",
+  fallback: ["ui-sans-serif", "system-ui", "sans-serif"],
+});
+
+// TODO: Convert this TTF to woff2 later for smaller file size.
+const fraktion = localFont({
+  src: "./fonts/PPFraktionSans-Variable.ttf",
+  variable: "--font-fraktion",
+  weight: "300 400",
+  display: "swap",
+  fallback: ["ui-sans-serif", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -62,7 +96,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} ${GeistPixelSquare.variable} h-full antialiased`}
+      className={`${neueBit.variable} ${mondwest.variable} ${fraktion.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-canvas font-sans text-text-primary">
         {process.env.NODE_ENV === "development" ? (

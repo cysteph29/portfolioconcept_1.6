@@ -168,8 +168,8 @@ function CaseStudyHeroSummaryItem({ emblem, label, summary }: CaseStudyHeroSumma
         ) : null}
       </div>
       <div className="case-study-hero__summary-copy">
-        <p className="case-study-hero__summary-label font-pixel">{label}</p>
-        <p className="case-study-hero__summary-text font-sans text-subhead">{summary}</p>
+        <p className="case-study-hero__summary-label text-display-4">{label}</p>
+        <p className="case-study-hero__summary-text text-body-1">{summary}</p>
       </div>
     </div>
   );
@@ -238,7 +238,7 @@ export function CaseStudyPageLayout({
         <CaseStudyHeroAmbient heroRef={heroRef} mosaic={caseStudy.heroMosaic} />
         <div className="case-study-hero__inner">
           <div className="case-study-hero__intro">
-            <h1 className="case-study-hero__title font-pixel text-headline">{caseStudy.title}</h1>
+            <h1 className="case-study-hero__title text-display-1">{caseStudy.title}</h1>
             <div className="case-study-hero__summary-stack">
               {caseStudy.summaryPattern ? (
                 <div
@@ -297,7 +297,7 @@ export function CaseStudyPageLayout({
       </div>
       {caseStudy.liveUrl ? (
         <a
-          className="case-study-live-cta"
+          className="case-study-live-cta text-label-1"
           href={caseStudy.liveUrl}
           rel="noopener noreferrer"
           target="_blank"
