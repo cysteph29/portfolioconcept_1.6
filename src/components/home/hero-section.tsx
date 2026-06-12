@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function HeroSection() {
   return (
-    <section className="home-section home-section--hero home-fold" id="hero">
+    <section className="home-section home-section--hero home-fold" data-smart-navbar-hero id="hero">
       <div className="home-fold__center">
         <Image
           alt="Portrait"

@@ -233,6 +233,7 @@ export function CaseStudyPageLayout({
         ]
           .filter(Boolean)
           .join(" ")}
+        data-smart-navbar-hero
         ref={heroRef}
       >
         <CaseStudyHeroAmbient heroRef={heroRef} mosaic={caseStudy.heroMosaic} />

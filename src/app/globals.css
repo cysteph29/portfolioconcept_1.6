@@ -82,7 +82,7 @@
   --nav-padding-top: 2.5rem;
   --nav-padding-bottom: 1.25rem;
   --nav-surface-color: rgb(7 24 3 / 12%);
-  --nav-surface-blur: 4px;
+  --nav-surface-blur: 8px;
 }
 
 @layer utilities {

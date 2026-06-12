@@ -164,7 +164,7 @@ export function AboutGrid() {
   }, []);
 
   return (
-    <section className="about-hero" aria-label="About Cyril">
+    <section className="about-hero" aria-label="About Cyril" data-smart-navbar-hero>
       <div className="about-grid" style={getGridStyle()}>
         <svg aria-hidden="true" className="about-grid-lines" preserveAspectRatio="none">
           {verticalLinePositions.map((position) => {
