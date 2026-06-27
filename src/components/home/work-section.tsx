@@ -102,11 +102,19 @@ export function WorkSection() {
   return (
     <section
       className="work-pin-section"
+      data-st-03="20"
+      data-st-mobile-resolution="14"
+      data-st-mode="reveal"
       id="work"
       ref={outerRef}
       style={sectionStyle}
     >
-      <div className="work-pin-sticky" ref={stickyRef} style={stickyStyle}>
+      <div
+        className="work-pin-sticky"
+        data-st-03-layer-host
+        ref={stickyRef}
+        style={stickyStyle}
+      >
         <aside className="work-pin-identity" style={identityStyle}>
           <div aria-hidden="true" className="work-pin-icon-placeholder">
             <Image

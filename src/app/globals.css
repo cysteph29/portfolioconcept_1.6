@@ -166,6 +166,10 @@ body {
     sans-serif;
 }
 
+main {
+  position: relative;
+}
+
 a {
   text-decoration: none;
 }
@@ -235,7 +239,10 @@ a {
   }
 
   .home-page {
-    background: var(--color-canvas);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #040F02;
   }
 
   .home-section,
@@ -253,8 +260,17 @@ a {
     scroll-margin-top: var(--nav-height);
   }
 
-  .home-section {
-    border: var(--spacing-fold-frame) solid #040F02;
+  [data-st-03] {
+    position: relative;
+    isolation: isolate;
+  }
+
+  [data-st-03-pixels] {
+    contain: layout paint;
+  }
+
+  [data-st-03-cell] {
+    will-change: opacity;
   }
 
   .site-contact-footer {
@@ -663,7 +679,6 @@ a {
     top: 0;
     height: 100vh;
     overflow: hidden;
-    border: var(--spacing-fold-frame) solid #040F02;
     background: var(--color-fold-fill);
     color: var(--color-text-primary);
   }
@@ -789,7 +804,7 @@ a {
     display: grid;
     min-height: calc(
       100svh - var(--spacing-experience-content-top-padding) -
-        var(--spacing-experience-content-bottom-padding) - (var(--spacing-fold-frame) * 2)
+        var(--spacing-experience-content-bottom-padding)
     );
     height: auto;
     width: 100%;
