@@ -749,9 +749,9 @@ a {
   }
 
   .experience-fold {
-    height: 100vh;
-    min-height: 100vh;
-    overflow: hidden;
+    height: auto;
+    min-height: 100svh;
+    overflow: visible;
     padding:
       var(--spacing-experience-content-top-padding) var(--spacing-home-edge-x)
       var(--spacing-experience-content-bottom-padding);
@@ -787,13 +787,17 @@ a {
 
   .experience-card-list {
     display: grid;
-    height: 100%;
+    min-height: calc(
+      100svh - var(--spacing-experience-content-top-padding) -
+        var(--spacing-experience-content-bottom-padding) - (var(--spacing-fold-frame) * 2)
+    );
+    height: auto;
     width: 100%;
     max-height: 100%;
     max-width: var(--spacing-placeholder-max);
     margin-inline: auto;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: repeat(2, minmax(min-content, 1fr));
     column-gap: 20px;
     row-gap: 20px;
     align-items: stretch;
@@ -801,6 +805,7 @@ a {
 
   .experience-card {
     display: flex;
+    box-sizing: border-box;
     min-width: 0;
     min-height: 0;
     flex-direction: column;
@@ -869,17 +874,20 @@ a {
 
   .experience-card__body {
     display: flex;
+    min-width: 0;
     flex-direction: column;
     gap: 0.4rem;
   }
 
   .experience-card__title {
     margin: 0;
+    overflow-wrap: break-word;
   }
 
   .experience-card__description {
     margin: 0;
-    max-width: var(--spacing-home-subhead-max);
+    max-width: 100%;
+    overflow-wrap: break-word;
   }
 
   .work-case-study-card__meta {
@@ -1179,6 +1187,18 @@ a {
       overflow: hidden;
       border-radius: 0.625rem;
       background: color-mix(in srgb, var(--color-text-primary) 9%, transparent);
+    }
+
+    .experience-card-list {
+      min-height: 0;
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+    }
+
+    .experience-fold__identity,
+    .experience-card {
+      grid-column: auto;
+      grid-row: auto;
     }
 
     .case-study-hero {
