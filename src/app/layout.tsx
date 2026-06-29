@@ -7,8 +7,8 @@ import { AppShell } from "@/components/navigation/app-shell";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Product Design Portfolio Foundation",
-  description: "Architecture and navigation prototype with route-driven transitions.",
+  title: "Cyril's Portfolio",
+  description: "Product designer specializing in compliance-driven, data-heavy products across fintech and regulated industries.",
 };
 
 const stripCursorRefsScript = `

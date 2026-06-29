@@ -1,4 +1,4 @@
-# Product Design Portfolio Foundation (Phase 1)
+# Cyril's Portfolio
 
 This project sets up the architecture and navigation system for a personal product design portfolio using:
 
