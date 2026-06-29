@@ -9,6 +9,30 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Cyril's Portfolio",
   description: "Product designer specializing in compliance-driven, data-heavy products across fintech and regulated industries.",
+  metadataBase: new URL("https://cyrilstephen.com"),
+  openGraph: {
+    title: "Cyril's Portfolio",
+    description: "Product designer specializing in compliance-driven, data-heavy products across fintech and regulated industries.",
+    url: "https://cyrilstephen.com",
+    siteName: "Cyril's Portfolio",
+    type: "website",
+    locale: "en_US",
+    images: [
+      {
+        url: "/assets/social-preview.png",
+        width: 1200,
+        height: 630,
+        alt: "Cyril Stephen — Product Designer specializing in fintech and regulated industries",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Cyril's Portfolio",
+    description: "Product designer specializing in compliance-driven, data-heavy products across fintech and regulated industries.",
+    images: ["/assets/social-preview.png"],
+    creator: "@cyril_design",
+  },
 };
 
 const stripCursorRefsScript = `
