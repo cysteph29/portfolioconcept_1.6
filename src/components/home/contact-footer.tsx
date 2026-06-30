@@ -5,6 +5,8 @@ import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "mo
 import Image from "next/image";
 import { useRef } from "react";
 
+import { FooterGridCanvas } from "./footer-grid-canvas";
+
 const MARQUEE_ROW_COUNT = 4;
 const MARQUEE_PHRASE = "→ REACH ME ←";
 // Each strip overflows the viewport on both sides by far more than
@@ -100,28 +102,32 @@ export function ContactFooter() {
       </div>
 
       <section className="contact-footer__surface" aria-labelledby="contact-footer-heading">
+        <FooterGridCanvas />
+
         <span className="contact-footer__corner contact-footer__corner--top-left" />
         <span className="contact-footer__corner contact-footer__corner--top-right" />
         <span className="contact-footer__corner contact-footer__corner--bottom-left" />
         <span className="contact-footer__corner contact-footer__corner--bottom-right" />
 
-        <div className="contact-footer__image-placeholder" aria-hidden="true">
-          <Image
-            src="/assets/contact-mosaic.png"
-            alt=""
-            width={120}
-            height={120}
-            className="contact-footer__mosaic-image"
-          />
+        <div className="contact-footer__surface-content">
+          <div className="contact-footer__image-placeholder" aria-hidden="true">
+            <Image
+              src="/assets/contact-mosaic.png"
+              alt=""
+              width={120}
+              height={120}
+              className="contact-footer__mosaic-image"
+            />
+          </div>
+          <h2 className="contact-footer__heading text-display-2" id="contact-footer-heading">
+            I&apos;m Currently Open For Product Design, Design Engineer &amp; Related Roles Anywhere
+            Within The U.S.
+          </h2>
+          <div className="contact-footer__mark text-display-4" aria-hidden="true">
+            \\
+          </div>
+          <p className="contact-footer__email text-display-3">cyrilstephenhere@gmail.com</p>
         </div>
-        <h2 className="contact-footer__heading text-display-2" id="contact-footer-heading">
-          I&apos;m Currently Open For Product Design, Design Engineer &amp; Related Roles Anywhere
-          Within The U.S.
-        </h2>
-        <div className="contact-footer__mark text-display-4" aria-hidden="true">
-          \\
-        </div>
-        <p className="contact-footer__email text-display-3">cyrilstephenhere@gmail.com</p>
       </section>
 
       <div className="contact-footer__bottom-strip">
