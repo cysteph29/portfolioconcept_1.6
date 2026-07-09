@@ -12,7 +12,7 @@ export function HeroSection() {
           src="/assets/profilepic.png"
           width={120}
         />
-        <h1 className="home-fold__headline text-display-2 text-text-primary">
+        <h1 className="home-fold__headline text-display-2 text-text-primary" data-reveal-05>
           I&apos;m A Product Designer Fascinated By People, And Leverage That To Build Products Worth
           Using.
         </h1>

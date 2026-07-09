@@ -125,7 +125,7 @@ export function WorkSection() {
               className="work-pin-mosaic-image"
             />
           </div>
-          <p className="work-fold__label text-display-2 text-text-primary">
+          <p className="work-fold__label text-display-2 text-text-primary" data-reveal-05 data-scroll="">
             Work
           </p>
         </aside>

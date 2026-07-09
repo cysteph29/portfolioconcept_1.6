@@ -3,9 +3,10 @@
 import type { MotionValue } from "motion/react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import Image from "next/image";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { FooterGridCanvas } from "./footer-grid-canvas";
+import { textReveal05 } from "./text-reveal-05";
 
 const MARQUEE_ROW_COUNT = 4;
 const MARQUEE_PHRASE = "→ REACH ME ←";
@@ -87,6 +88,27 @@ export function ContactFooter() {
   });
   const smoothProgress = useSpring(scrollYProgress, CONTACT_MARQUEE_SPRING);
 
+  useEffect(() => {
+    let cleanup: (() => void) | undefined;
+    let cancelled = false;
+
+    const init = () => {
+      if (cancelled || !footerRef.current) {
+        return;
+      }
+
+      cleanup?.();
+      cleanup = textReveal05(footerRef.current);
+    };
+
+    document.fonts.ready.then(init);
+
+    return () => {
+      cancelled = true;
+      cleanup?.();
+    };
+  }, []);
+
   return (
     <footer className="site-contact-footer" id="contact" ref={footerRef}>
       <div className="contact-footer__marquee" aria-hidden="true">
@@ -119,7 +141,12 @@ export function ContactFooter() {
               className="contact-footer__mosaic-image"
             />
           </div>
-          <h2 className="contact-footer__heading text-display-2" id="contact-footer-heading">
+          <h2
+            className="contact-footer__heading text-display-2"
+            data-reveal-05
+            data-scroll=""
+            id="contact-footer-heading"
+          >
             I&apos;m Currently Open For Product Design, Design Engineer &amp; Related Roles Anywhere
             Within The U.S.
           </h2>
