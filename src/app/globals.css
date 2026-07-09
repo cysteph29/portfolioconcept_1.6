@@ -893,6 +893,8 @@ a {
   }
 
   .experience-card__tile {
+    position: relative;
+    isolation: isolate;
     display: grid;
     flex: 0 0 var(--spacing-experience-card-tile-height);
     height: var(--spacing-experience-card-tile-height);
@@ -900,19 +902,26 @@ a {
     place-items: center;
     overflow: hidden;
     border: 1px solid #194b22;
-    background:
-      linear-gradient(
-        90deg,
-        color-mix(in srgb, var(--color-text-primary) 10%, transparent) var(--border-width-hairline),
-        transparent var(--border-width-hairline)
-      ),
-      linear-gradient(
-        0deg,
-        color-mix(in srgb, var(--color-text-primary) 10%, transparent) var(--border-width-hairline),
-        transparent var(--border-width-hairline)
-      ),
-      color-mix(in srgb, var(--color-text-primary) 7%, transparent);
-    background-size: 2rem 2rem;
+    background: rgb(7 24 3 / 80%);
+  }
+
+  .experience-card--slot-1 .experience-card__tile,
+  .experience-card--slot-2 .experience-card__tile,
+  .experience-card--slot-3 .experience-card__tile,
+  .experience-card--slot-4 .experience-card__tile,
+  .experience-card--slot-5 .experience-card__tile {
+    position: relative;
+    isolation: isolate;
+    background: rgb(7 24 3 / 80%);
+  }
+
+  .experience-card__tile .contact-footer__grid-canvas {
+    z-index: 0;
+  }
+
+  .experience-card__tile .experience-card__logo {
+    position: relative;
+    z-index: 1;
   }
 
   .experience-card__logo {
