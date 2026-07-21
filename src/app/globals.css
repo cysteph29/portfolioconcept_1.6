@@ -180,9 +180,10 @@ a {
 
 @layer components {
   .top-nav-surface {
-    background: var(--nav-surface-color);
-    -webkit-backdrop-filter: blur(var(--nav-surface-blur));
-    backdrop-filter: blur(var(--nav-surface-blur));
+    /* Temporarily disabled for visual comparison */
+    /* background: var(--nav-surface-color); */
+    /* -webkit-backdrop-filter: blur(var(--nav-surface-blur)); */
+    /* backdrop-filter: blur(var(--nav-surface-blur)); */
   }
 
   .fold-panel {
@@ -246,6 +247,13 @@ a {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    background: #040F02;
+  }
+
+  .trial-page {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
     background: #040F02;
   }
 
@@ -635,7 +643,22 @@ a {
     padding: var(--spacing-home-safe-y) var(--spacing-home-edge-x);
   }
 
+  .trial-page .home-section--hero {
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
+  }
+
+  .home-fold__background-layer {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    pointer-events: auto;
+  }
+
   .home-fold__center {
+    position: relative;
+    z-index: 1;
     display: flex;
     width: 100%;
     max-width: var(--spacing-home-headline-max);
@@ -663,6 +686,7 @@ a {
 
   .home-fold__credibility {
     position: absolute;
+    z-index: 1;
     bottom: var(--spacing-home-edge-bottom);
     left: var(--spacing-home-edge-x);
     max-width: var(--spacing-home-credibility-max);
@@ -670,6 +694,7 @@ a {
 
   .home-fold__actions {
     position: absolute;
+    z-index: 1;
     right: var(--spacing-home-edge-x);
     bottom: var(--spacing-home-edge-bottom);
     display: flex;

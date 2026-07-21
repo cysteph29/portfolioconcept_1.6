@@ -6,7 +6,13 @@ import { textReveal05 } from "@/components/home/text-reveal-05";
 
 type Cleanup = () => void;
 
-export function TextReveal05Initializer() {
+type TextReveal05InitializerProps = {
+  scopeSelector?: string;
+};
+
+export function TextReveal05Initializer({
+  scopeSelector = ".home-page",
+}: TextReveal05InitializerProps = {}) {
   useEffect(() => {
     let cleanup: Cleanup | undefined;
     let cancelled = false;
@@ -16,7 +22,7 @@ export function TextReveal05Initializer() {
         return;
       }
 
-      const homePage = document.querySelector(".home-page");
+      const homePage = document.querySelector(scopeSelector);
 
       if (!homePage) {
         return;
@@ -32,7 +38,7 @@ export function TextReveal05Initializer() {
       cancelled = true;
       cleanup?.();
     };
-  }, []);
+  }, [scopeSelector]);
 
   return null;
 }

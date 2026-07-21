@@ -1,9 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 
-export function HeroSection() {
+type HeroSectionProps = {
+  backgroundLayerContent?: ReactNode;
+  id?: string;
+  withBackgroundLayer?: boolean;
+};
+
+export function HeroSection({
+  backgroundLayerContent,
+  id = "hero",
+  withBackgroundLayer = false,
+}: HeroSectionProps) {
   return (
-    <section className="home-section home-section--hero home-fold" data-smart-navbar-hero id="hero">
+    <section className="home-section home-section--hero home-fold" data-smart-navbar-hero id={id}>
+      {withBackgroundLayer || backgroundLayerContent ? (
+        <div
+          aria-hidden="true"
+          className="home-fold__background-layer"
+        >
+          {backgroundLayerContent}
+        </div>
+      ) : null}
       <div className="home-fold__center">
         <Image
           alt="Portrait"
