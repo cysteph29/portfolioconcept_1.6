@@ -42,7 +42,7 @@ export function HeroSection({
         <div className="home-fold__actions">
           <a className="home-action home-action--primary text-label-1" href="#work">
             <span>See work</span>
-            <span aria-hidden="true">→</span>
+            <span aria-hidden="true">↓</span>
           </a>
           <Link className="home-action home-action--secondary text-label-1" href="/about">
             [Who am I]
