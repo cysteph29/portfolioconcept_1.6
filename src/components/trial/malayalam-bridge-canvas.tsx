@@ -234,22 +234,23 @@ function sampleGlyphBitmap(
 
 async function loadManjariFont() {
   const font = '96px "Manjari"';
+  const glyphs = MALAYALAM_GLYPH_POOL.active.join("");
 
   for (let attempt = 1; attempt <= 2; attempt += 1) {
     try {
-      await document.fonts.load(font);
+      await document.fonts.load(font, glyphs);
     } catch (error) {
       console.warn("Manjari font load attempt failed", { attempt, error });
       continue;
     }
 
-    if (document.fonts.check(font)) {
+    if (document.fonts.check(font, glyphs)) {
       console.info("Manjari font diagnostics", { attempt, documentFontsCheck: true, requestedFont: font });
       return true;
     }
   }
 
-  console.error("Manjari font diagnostics: font unavailable; sampling aborted", { requestedFont: font });
+  console.warn("Manjari font unavailable; retaining cached stamps", { requestedFont: font });
   return false;
 }
 
@@ -480,7 +481,6 @@ export function MalayalamBridgeCanvas({
   const [controls, setControls] = useState(MALAYALAM_BRIDGE_CONTROL_DEFAULTS);
   const [isPanelMinimized, setIsPanelMinimized] = useState(false);
   const [isPanelVisible, setIsPanelVisible] = useState(false);
-  const [isFontReady, setIsFontReady] = useState(false);
   const [glyphBitmaps, setGlyphBitmaps] = useState<GlyphBitmap[] | null>(null);
   const { cellSize, coverageThreshold, glyphScale, microDotSize } = controls;
 
@@ -489,29 +489,21 @@ export function MalayalamBridgeCanvas({
 
     void loadManjariFont().then((isLoaded) => {
       if (!cancelled && isLoaded) {
-        setIsFontReady(true);
+        setGlyphBitmaps(
+          buildGlyphBitmaps(glyphBitmapCacheRef.current, {
+            cellSize,
+            coverageThreshold,
+            glyphScale,
+            microDotSize,
+          }),
+        );
       }
     });
 
     return () => {
       cancelled = true;
     };
-  }, []);
-
-  useEffect(() => {
-    if (!isFontReady) {
-      return;
-    }
-
-    setGlyphBitmaps(
-      buildGlyphBitmaps(glyphBitmapCacheRef.current, {
-        cellSize,
-        coverageThreshold,
-        glyphScale,
-        microDotSize,
-      }),
-    );
-  }, [cellSize, coverageThreshold, glyphScale, isFontReady, microDotSize]);
+  }, [cellSize, coverageThreshold, glyphScale, microDotSize]);
 
   useEffect(() => {
     controlsRef.current = controls;
@@ -641,11 +633,6 @@ export function MalayalamBridgeCanvas({
     };
 
     const resizeCanvas = () => {
-      if (!document.fonts.check('96px "Manjari"')) {
-        console.error("Manjari font unavailable during resize; cached stamp rendering aborted");
-        return;
-      }
-
       const { height, width } = staticCanvas.getBoundingClientRect();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
 

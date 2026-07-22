@@ -39,21 +39,15 @@ export function HeroSection({
           Previously owned design for an enterprise FinTech platform used by 100+ companies globally.
           I&apos;m currently open to Product/UX Design opportunities.
         </p>
-      </div>
-
-      <p className="home-fold__credibility text-body-2 text-text-muted">
-        I work fast, care about tiny details, and have an appetite for things I haven&apos;t tried
-        before.
-      </p>
-
-      <div className="home-fold__actions">
-        <Link className="home-action home-action--secondary text-label-1" href="/about">
-          Who am I
-        </Link>
-        <a className="home-action home-action--primary text-label-1" href="#work">
-          <span>See work</span>
-          <span aria-hidden="true">→</span>
-        </a>
+        <div className="home-fold__actions">
+          <a className="home-action home-action--primary text-label-1" href="#work">
+            <span>See work</span>
+            <span aria-hidden="true">→</span>
+          </a>
+          <Link className="home-action home-action--secondary text-label-1" href="/about">
+            [Who am I]
+          </Link>
+        </div>
       </div>
     </section>
   );

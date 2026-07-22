@@ -17,8 +17,6 @@
   --text-subhead--line-height: 1.5rem;
   --text-button: 0.75rem;
   --text-button--line-height: 1.25rem;
-  --text-credibility: 0.75rem;
-  --text-credibility--line-height: 1.25rem;
   --text-display-1: clamp(2.5rem, 8vw, 4rem); /* PROVISIONAL mobile value, real mobile scale TBD */
   --text-display-1--line-height: clamp(3rem, 9vw, 4.5rem); /* PROVISIONAL mobile value, real mobile scale TBD */
   --text-display-2: clamp(2.125rem, 6.5vw, 3.25rem); /* PROVISIONAL mobile value, real mobile scale TBD */
@@ -49,7 +47,6 @@
   --spacing-home-portrait: 7.5rem;
   --spacing-home-headline-max: 45rem;
   --spacing-home-subhead-max: 39rem;
-  --spacing-home-credibility-max: 23rem;
   --spacing-home-actions-gap: 1.25rem;
   --spacing-home-button-x: 1.25rem;
   --spacing-home-button-y: 0.75rem;
@@ -684,20 +681,9 @@ a {
     max-width: var(--spacing-home-subhead-max);
   }
 
-  .home-fold__credibility {
-    position: absolute;
-    z-index: 1;
-    bottom: var(--spacing-home-edge-bottom);
-    left: var(--spacing-home-edge-x);
-    max-width: var(--spacing-home-credibility-max);
-  }
-
   .home-fold__actions {
-    position: absolute;
-    z-index: 1;
-    right: var(--spacing-home-edge-x);
-    bottom: var(--spacing-home-edge-bottom);
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: var(--spacing-home-actions-gap);
   }
