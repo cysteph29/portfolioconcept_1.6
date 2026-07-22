@@ -44,7 +44,7 @@
   --spacing-home-safe-y: clamp(2.5rem, 7vh, 5rem);
   --spacing-home-center-nudge-y: -3rem;
   --spacing-home-stack-gap: 1.25rem;
-  --spacing-home-portrait: 7.5rem;
+  --spacing-home-portrait: 4rem;
   --spacing-home-headline-max: 45rem;
   --spacing-home-subhead-max: 39rem;
   --spacing-home-actions-gap: 1.25rem;
@@ -1402,6 +1402,10 @@ a {
 }
 
 @media (max-width: 767px) {
+  :root {
+    --spacing-home-edge-x: 1rem;
+  }
+
   .top-nav-surface {
     background: var(--nav-surface-color);
     -webkit-backdrop-filter: blur(var(--nav-surface-blur));
