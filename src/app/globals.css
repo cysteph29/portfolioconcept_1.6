@@ -1406,6 +1406,15 @@ a {
     --spacing-home-edge-x: 1rem;
   }
 
+  .home-fold__center {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .home-fold__actions {
+    align-items: flex-start;
+  }
+
   .top-nav-surface {
     background: var(--nav-surface-color);
     -webkit-backdrop-filter: blur(var(--nav-surface-blur));
