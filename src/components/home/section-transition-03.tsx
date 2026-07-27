@@ -19,6 +19,8 @@ type SectionTransitionConfig = {
   mobile: {
     breakpoint: number;
     resolution?: number;
+    maxRevealDistanceVh?: number;
+    revealStart?: string;
   };
 };
 
@@ -33,7 +35,9 @@ const DEFAULT_CONFIG: SectionTransitionConfig = {
   revealStart: "top bottom",
   revealScrubDistance: 0.65,
   mobile: {
-    breakpoint: 768,
+    breakpoint: 767,
+    maxRevealDistanceVh: 0.6,
+    revealStart: "top 95%",
   },
 };
 
@@ -88,6 +92,33 @@ const getResolution = (section: HTMLElement, config: SectionTransitionConfig, is
     section.dataset.stMobileResolution,
     getPositiveInt(config.mobile.resolution, desktopResolution),
   );
+};
+
+const getRevealDistance = (layerHeight: number, config: SectionTransitionConfig, isMobile: boolean) => {
+  const proportionalDistance = Math.max(
+    layerHeight *
+      getPositiveFloat(config.revealScrubDistance, DEFAULT_CONFIG.revealScrubDistance),
+    1,
+  );
+
+  if (!isMobile) {
+    return proportionalDistance;
+  }
+
+  const maxRevealDistanceVh = getPositiveFloat(
+    config.mobile.maxRevealDistanceVh,
+    DEFAULT_CONFIG.mobile.maxRevealDistanceVh ?? 0.4,
+  );
+
+  return Math.min(proportionalDistance, window.innerHeight * maxRevealDistanceVh);
+};
+
+const getRevealStart = (config: SectionTransitionConfig, isMobile: boolean) => {
+  if (!isMobile) {
+    return config.revealStart;
+  }
+
+  return config.mobile.revealStart || config.revealStart;
 };
 
 const hash = (index: number) => {
@@ -223,10 +254,6 @@ function sectionTransition03(scopeOrConfig: Element | Document | Partial<Section
       layerHeight,
       config.mode,
     );
-    const revealScrubDistance = getPositiveFloat(
-      config.revealScrubDistance,
-      DEFAULT_CONFIG.revealScrubDistance,
-    );
     const maxDelay = Math.max(rows - 1 + spread, 1);
     const cellDelays = cells.map((_, index) => {
       const row = Math.floor(index / columns);
@@ -239,8 +266,8 @@ function sectionTransition03(scopeOrConfig: Element | Document | Partial<Section
       defaults: { ease: "none" },
       scrollTrigger: {
         trigger: section,
-        start: config.revealStart,
-        end: () => `+=${Math.max(layer.offsetHeight * revealScrubDistance, 1)}`,
+        start: getRevealStart(config, isMobile),
+        end: () => `+=${getRevealDistance(layer.offsetHeight, config, isMobile)}`,
         scrub: 1,
         invalidateOnRefresh: true,
       },

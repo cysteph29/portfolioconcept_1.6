@@ -1437,6 +1437,65 @@ a {
   .mobile-nav-menu {
     display: block;
   }
+
+  /* Work: normal document flow on phone (desktop pin/sticky unchanged) */
+  .work-pin-section {
+    min-height: auto;
+  }
+
+  .work-pin-sticky {
+    position: static;
+    height: auto;
+    overflow: visible;
+    padding:
+      calc(var(--nav-height) + var(--spacing-home-stack-gap)) var(--spacing-home-edge-x)
+      var(--spacing-home-safe-y);
+  }
+
+  .work-pin-identity {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    margin-bottom: var(--spacing-home-stack-gap);
+  }
+
+  .work-pin-track-window {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 100%;
+  }
+
+  .work-case-study-track {
+    transform: none !important;
+  }
+
+  .work-case-study-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-home-stack-gap);
+  }
+
+  .work-case-study-card__feature {
+    display: contents;
+  }
+
+  .work-case-study-card__video,
+  .work-case-study-card__placeholder {
+    order: 1;
+  }
+
+  .work-case-study-card__title {
+    order: 2;
+    max-width: none;
+  }
+
+  .work-case-study-card__meta {
+    order: 3;
+  }
 }
 
 .case-study-live-cta {
