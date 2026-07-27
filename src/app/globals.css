@@ -1415,6 +1415,11 @@ a {
     align-items: flex-start;
   }
 
+  .home-fold__background-layer {
+    inset: auto 0 0 0;
+    height: 42%;
+  }
+
   .top-nav-surface {
     background: var(--nav-surface-color);
     -webkit-backdrop-filter: blur(var(--nav-surface-blur));
