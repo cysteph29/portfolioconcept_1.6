@@ -81,7 +81,7 @@ export function WorkSection() {
       "max(var(--spacing-home-edge-x), calc((100vw - var(--spacing-work-pin-max)) / 2))",
     "--work-pin-column-1-width": "232px",
     "--work-pin-content-top": "calc(var(--nav-height) + var(--spacing-home-stack-gap))",
-    "--work-identity-icon-size": "80px",
+    "--work-identity-icon-size": "var(--spacing-home-portrait)",
   };
   const identityStyle: CSSProperties = {
     left: "var(--work-pin-container-inline)",
@@ -120,8 +120,8 @@ export function WorkSection() {
             <Image
               src="/assets/work-mosaic.png"
               alt=""
-              width={80}
-              height={80}
+              width={120}
+              height={120}
               className="work-pin-mosaic-image"
             />
           </div>

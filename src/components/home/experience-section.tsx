@@ -17,8 +17,8 @@ export function ExperienceSection() {
             <Image
               src="/assets/experience-mosaic.png"
               alt=""
-              width={80}
-              height={80}
+              width={120}
+              height={120}
               className="experience-fold__mosaic-image"
             />
           </div>
