@@ -37,7 +37,7 @@ const DEFAULT_CONFIG: SectionTransitionConfig = {
   mobile: {
     breakpoint: 767,
     maxRevealDistanceVh: 0.6,
-    revealStart: "top 95%",
+    revealStart: "top bottom",
   },
 };
 
