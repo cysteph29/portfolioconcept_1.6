@@ -961,16 +961,28 @@ a {
   }
 
   .work-case-study-card__meta {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--spacing-placeholder-stack-gap);
+    row-gap: var(--spacing-placeholder-stack-gap);
     min-width: 0;
-    flex-direction: column;
-    gap: var(--spacing-placeholder-stack-gap);
   }
 
   .work-case-study-card__meta-item {
     display: flex;
+    min-width: 0;
     flex-direction: column;
     gap: 0.35rem;
+  }
+
+  .work-case-study-card__meta-item dt,
+  .work-case-study-card__meta-item dd {
+    margin: 0;
+  }
+
+  .work-case-study-card__meta-item dd {
+    min-width: 0;
+    overflow-wrap: break-word;
   }
 
   .case-study-fold {
