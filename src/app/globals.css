@@ -1440,6 +1440,25 @@ a {
     --spacing-home-edge-x: 1rem;
   }
 
+  .site-contact-footer {
+    --contact-surface-width: calc(100vw - 2 * var(--spacing-home-edge-x));
+    --contact-surface-padding-x: clamp(1rem, 4vw, 1.5rem);
+    --contact-surface-padding-y: clamp(3.75rem, 12vw, 5rem);
+    --contact-surface-stack-gap: clamp(1rem, 4vw, 1.5rem);
+    --contact-surface-email-gap: clamp(2rem, 8vw, 3rem);
+  }
+
+  .contact-footer__heading {
+    max-width: none;
+  }
+
+  .contact-footer__surface {
+    top: 1rem;
+    height: calc(100% - 5rem);
+    justify-content: center;
+    transform: translateX(-50%);
+  }
+
   .home-fold__center {
     align-items: flex-start;
     text-align: left;
