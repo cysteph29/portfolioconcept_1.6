@@ -1283,6 +1283,28 @@ a {
       grid-row: auto;
     }
 
+    .experience-fold__identity {
+      align-items: flex-start;
+      justify-content: flex-start;
+      text-align: left;
+    }
+
+    .experience-card {
+      flex-direction: column;
+    }
+
+    .experience-card__tile {
+      flex: 0 0 3rem;
+      width: 3rem;
+      height: 3rem;
+      aspect-ratio: 1;
+    }
+
+    .experience-card__logo {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
     .case-study-hero {
       min-height: 0;
       padding:
