@@ -1,15 +1,19 @@
 "use client";
 
+import type { Icon } from "@phosphor-icons/react";
+import { LinkedinLogo, MediumLogo, XLogo } from "@phosphor-icons/react";
 import type { MotionValue } from "motion/react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { FooterGridCanvas } from "./footer-grid-canvas";
 import { textReveal05 } from "./text-reveal-05";
 
 const MARQUEE_ROW_COUNT = 4;
+const MARQUEE_ROW_COUNT_MOBILE = 6;
 const MARQUEE_PHRASE = "→ REACH ME ←";
+const MOBILE_BREAKPOINT_QUERY = "(max-width: 767px)";
 // Each strip overflows the viewport on both sides by far more than
 // (TRAVEL + largest rest offset), so no edge is exposed at any scroll position.
 const MARQUEE_PHRASE_REPETITIONS = 15;
@@ -19,7 +23,7 @@ const CONTACT_MARQUEE_TRAVEL_PX = 300;
 
 // Per-row resting horizontal offsets (px). Large, clearly distinct magnitudes so the
 // rows are obviously staggered at rest and the repeated text never lines up. Tune freely.
-const CONTACT_MARQUEE_REST_OFFSETS_PX = [-300, 260, -160, 340];
+const CONTACT_MARQUEE_REST_OFFSETS_PX = [-300, 260, -160, 340, -260, 300];
 
 // Smoothing spring applied to scroll progress before it drives the transforms.
 // Tuned responsive (high stiffness, near-critical damping) so output tracks the scroll
@@ -34,17 +38,19 @@ type MarqueeRow = {
   text: string;
 };
 
-const marqueeRows: MarqueeRow[] = Array.from({ length: MARQUEE_ROW_COUNT }, (_, index) => ({
-  direction: index % 2 === 0 ? "right" : "left",
-  restOffset: CONTACT_MARQUEE_REST_OFFSETS_PX[index] ?? 0,
-  text: Array.from({ length: MARQUEE_PHRASE_REPETITIONS }, () => MARQUEE_PHRASE).join(" "),
-}));
+function buildMarqueeRows(count: number): MarqueeRow[] {
+  return Array.from({ length: count }, (_, index) => ({
+    direction: index % 2 === 0 ? "right" : "left",
+    restOffset: CONTACT_MARQUEE_REST_OFFSETS_PX[index] ?? 0,
+    text: Array.from({ length: MARQUEE_PHRASE_REPETITIONS }, () => MARQUEE_PHRASE).join(" "),
+  }));
+}
 
 const socialLinks = [
-  { label: "LINKEDIN", href: "https://www.linkedin.com/in/cyril-stephen" },
-  { label: "TWITTER/X", href: "https://x.com/cyril_design" },
-  { label: "MEDIUM", href: "https://medium.com/@cyril_design" },
-];
+  { label: "LINKEDIN", href: "https://www.linkedin.com/in/cyril-stephen", Icon: LinkedinLogo },
+  { label: "TWITTER/X", href: "https://x.com/cyril_design", Icon: XLogo },
+  { label: "MEDIUM", href: "https://medium.com/@cyril_design", Icon: MediumLogo },
+] as const satisfies readonly { label: string; href: string; Icon: Icon }[];
 
 function ContactMarqueeRow({
   direction,
@@ -82,11 +88,27 @@ function ContactMarqueeRow({
 
 export function ContactFooter() {
   const footerRef = useRef<HTMLElement>(null);
+  const [marqueeRowCount, setMarqueeRowCount] = useState(MARQUEE_ROW_COUNT);
   const { scrollYProgress } = useScroll({
     target: footerRef,
     offset: ["start end", "start start"],
   });
   const smoothProgress = useSpring(scrollYProgress, CONTACT_MARQUEE_SPRING);
+  const marqueeRows = buildMarqueeRows(marqueeRowCount);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(MOBILE_BREAKPOINT_QUERY);
+    const updateMarqueeRowCount = () => {
+      setMarqueeRowCount(mediaQuery.matches ? MARQUEE_ROW_COUNT_MOBILE : MARQUEE_ROW_COUNT);
+    };
+
+    updateMarqueeRowCount();
+    mediaQuery.addEventListener("change", updateMarqueeRowCount);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateMarqueeRowCount);
+    };
+  }, []);
 
   useEffect(() => {
     let cleanup: (() => void) | undefined;
@@ -154,24 +176,39 @@ export function ContactFooter() {
             \\
           </div>
           <p className="contact-footer__email text-display-3">cyrilstephenhere@gmail.com</p>
+          <nav
+            className="contact-footer__social-links"
+            aria-label="Social links"
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "nowrap",
+              alignItems: "center",
+              gap: "1.5rem",
+              marginTop: "1.75rem",
+            }}
+          >
+            {socialLinks.map((link) => (
+              <a
+                aria-label={link.label}
+                className="contact-footer__social-link"
+                href={link.href}
+                key={link.href}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <link.Icon aria-hidden size={28} weight="regular" />
+              </a>
+            ))}
+          </nav>
         </div>
       </section>
 
-      <div className="contact-footer__bottom-strip">
+      <div
+        className="contact-footer__bottom-strip"
+        style={{ justifyContent: "center" }}
+      >
         <p className="contact-footer__copyright text-body-2">Vibe coded website | All rights reserved</p>
-        <nav className="contact-footer__links" aria-label="Social links">
-          {socialLinks.map((link) => (
-            <a
-              className="text-label-1"
-              href={link.href}
-              key={link.href}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
       </div>
     </footer>
   );
