@@ -285,7 +285,6 @@ a {
   }
 
   .site-contact-footer {
-    --contact-surface-offset: -48px;
     --contact-surface-width: 880px;
     --contact-surface-padding-x: 80px;
     --contact-surface-padding-y: 60px;
@@ -343,22 +342,23 @@ a {
 
   .contact-footer__surface {
     position: absolute;
-    top: calc(50% + var(--contact-surface-offset));
+    top: 1.25rem;
     left: 50%;
     z-index: 2;
     box-sizing: border-box;
     display: flex;
     width: var(--contact-surface-width);
-    height: auto;
+    height: calc(100% - 5rem); /* 1.25rem top + 3.75rem bottom */
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: var(--contact-surface-padding-y) var(--contact-surface-padding-x);
     background: rgb(7 24 3 / 80%);
     color: #f9f4f1;
     isolation: isolate;
     overflow: hidden;
     text-align: center;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
   }
 
   .contact-footer__grid-canvas {
