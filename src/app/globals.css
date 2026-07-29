@@ -6,6 +6,8 @@
   --color-text-primary: #f4e7dd;
   --color-text-muted: rgb(244 231 221 / 80%);
   --color-accent-gold: #d6a84a;
+  --color-accent-lime: #7cff6b;
+  --color-pixel-fill: #040f02;
   --color-summary-stroke: #23311d;
 
   --font-sans: var(--font-fraktion);
@@ -813,6 +815,10 @@ a {
     max-width: 18ch;
   }
 
+  .work-case-study-card__media {
+    position: relative;
+  }
+
   .work-case-study-card__placeholder {
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -823,8 +829,37 @@ a {
     display: block;
     width: 100%;
     aspect-ratio: 16 / 9;
-    background: #040f02;
+    background: var(--color-pixel-fill);
     object-fit: contain;
+  }
+
+  .work-case-study-card__hover {
+    position: fixed;
+    z-index: 50;
+    display: inline-flex;
+    inline-size: max-content;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-pixel-fill);
+    color: var(--color-text-primary);
+    pointer-events: none;
+  }
+
+  .work-case-study-card__hover-square {
+    flex-shrink: 0;
+    width: 0.625rem;
+    height: 0.625rem;
+    background: var(--color-accent-lime);
+  }
+
+  .work-case-study-card__hover-label {
+    font-family: var(--font-pixel);
+    font-size: var(--text-button);
+    line-height: var(--text-button--line-height);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .experience-fold {
@@ -1581,9 +1616,12 @@ a {
     display: contents;
   }
 
-  .work-case-study-card__video,
-  .work-case-study-card__placeholder {
+  .work-case-study-card__media {
     order: 1;
+  }
+
+  .work-case-study-card__hover {
+    display: none;
   }
 
   .work-case-study-card__title {
