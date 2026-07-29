@@ -40,7 +40,7 @@
   --spacing-home-edge-x: clamp(2rem, 7vw, 5.75rem);
   --spacing-edge-bottom: 2.1875rem;
   --spacing-home-edge-bottom: var(--spacing-edge-bottom);
-  --spacing-work-identity-bottom: var(--spacing-edge-bottom);
+  --spacing-work-identity-bottom: 2rem;
   --spacing-home-safe-y: clamp(2.5rem, 7vh, 5rem);
   --spacing-home-center-nudge-y: -3rem;
   --spacing-home-stack-gap: 1.25rem;
@@ -748,7 +748,7 @@ a {
 
   .work-pin-identity {
     position: absolute;
-    top: var(--work-pin-content-top);
+    bottom: var(--spacing-work-identity-bottom);
     left: var(--work-pin-container-inline);
     z-index: 3;
     display: flex;
@@ -1552,6 +1552,7 @@ a {
   .work-pin-identity {
     position: relative !important;
     top: auto !important;
+    bottom: auto !important;
     left: auto !important;
     width: 100% !important;
     margin-bottom: var(--spacing-home-stack-gap);

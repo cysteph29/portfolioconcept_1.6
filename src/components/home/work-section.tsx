@@ -84,9 +84,9 @@ export function WorkSection() {
     "--work-identity-icon-size": "var(--spacing-home-portrait)",
   };
   const identityStyle: CSSProperties = {
+    bottom: "var(--spacing-work-identity-bottom)",
     left: "var(--work-pin-container-inline)",
     position: "absolute",
-    top: "var(--work-pin-content-top)",
     width: "var(--work-pin-column-1-width)",
     zIndex: 3,
   };
