@@ -812,16 +812,17 @@ a {
   }
 
   .work-case-study-card__placeholder {
-    min-height: clamp(24rem, 35vw, 34rem);
+    width: 100%;
+    aspect-ratio: 16 / 9;
     background: color-mix(in srgb, var(--color-text-primary) 14%, transparent);
   }
 
   .work-case-study-card__video {
     display: block;
     width: 100%;
-    min-height: clamp(24rem, 35vw, 34rem);
-    background: color-mix(in srgb, var(--color-text-primary) 14%, transparent);
-    object-fit: cover;
+    aspect-ratio: 16 / 9;
+    background: #040f02;
+    object-fit: contain;
   }
 
   .experience-fold {
