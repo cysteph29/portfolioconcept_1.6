@@ -76,8 +76,8 @@
   --spacing-case-study-hero-panel-padding: clamp(1rem, 2.5vw, 2rem);
   --spacing-case-study-summary-emblem: 2.5rem;
   --spacing-case-study-summary-item-padding: 20px;
-  --nav-padding-top: 2.5rem;
-  --nav-padding-bottom: 1.25rem;
+  --nav-padding-top: 0.75rem;
+  --nav-padding-bottom: 0.75rem;
   --nav-surface-color: rgb(7 24 3 / 12%);
   --nav-surface-blur: 8px;
 }
@@ -144,7 +144,7 @@
 }
 
 :root {
-  --nav-height: 6.25rem;
+  --nav-height: 4rem;
 }
 
 html {

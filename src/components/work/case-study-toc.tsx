@@ -8,7 +8,7 @@ type Props = {
   sections: CaseStudySection[];
 };
 
-// Matches the sticky top offset: --nav-height (6.25rem = 100px) + --spacing-home-stack-gap (1.25rem = 20px)
+// Matches the sticky top offset: --nav-height (4rem = 64px) + --spacing-home-stack-gap (1.25rem = 20px)
 const STICKY_OFFSET_PX = 120;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
