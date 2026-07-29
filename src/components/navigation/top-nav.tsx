@@ -76,13 +76,13 @@ export function TopNav() {
         <nav className="flex items-center justify-between px-[var(--spacing-home-edge-x)] pt-[var(--nav-padding-top)] pb-[var(--nav-padding-bottom)]">
           <Link
             aria-label="Home"
-            className="inline-flex items-center"
+            className="top-nav-home"
             href="/"
           >
             <Image
               alt=""
               aria-hidden="true"
-              className="block h-10 w-10 object-cover"
+              className="top-nav-home__image"
               height={40}
               src="/assets/profilepic.png"
               width={40}

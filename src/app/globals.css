@@ -76,8 +76,8 @@
   --spacing-case-study-hero-panel-padding: clamp(1rem, 2.5vw, 2rem);
   --spacing-case-study-summary-emblem: 2.5rem;
   --spacing-case-study-summary-item-padding: 20px;
-  --nav-padding-top: 0.75rem;
-  --nav-padding-bottom: 0.75rem;
+  --nav-padding-top: 1.5rem;
+  --nav-padding-bottom: 1.5rem;
   --nav-surface-color: rgb(7 24 3 / 12%);
   --nav-surface-blur: 8px;
 }
@@ -144,7 +144,9 @@
 }
 
 :root {
-  --nav-height: 4rem;
+  --nav-height: 5.5rem;
+  --nav-home-image-size: 2.5rem;
+  --nav-mobile-toggle-justify: center;
 }
 
 html {
@@ -1375,6 +1377,21 @@ a {
   }
 }
 
+.top-nav-home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.top-nav-home__image {
+  display: block;
+  width: var(--nav-home-image-size);
+  height: var(--nav-home-image-size);
+  object-fit: cover;
+}
+
 .mobile-nav-toggle,
 .mobile-nav-menu {
   display: none;
@@ -1385,7 +1402,7 @@ a {
   width: 2.5rem;
   height: 2.5rem;
   align-items: center;
-  justify-content: center;
+  justify-content: var(--nav-mobile-toggle-justify);
   border: 0;
   padding: 0;
   background: transparent;
@@ -1454,6 +1471,11 @@ a {
 @media (max-width: 767px) {
   :root {
     --spacing-home-edge-x: 1rem;
+    --nav-padding-top: 0.75rem;
+    --nav-padding-bottom: 0.75rem;
+    --nav-height: 4rem;
+    --nav-home-image-size: 1.5rem;
+    --nav-mobile-toggle-justify: flex-end;
   }
 
   .site-contact-footer {
@@ -1499,6 +1521,10 @@ a {
 
   .top-nav-surface > nav > div {
     display: none;
+  }
+
+  .top-nav-home {
+    justify-content: flex-start;
   }
 
   .mobile-nav-toggle {
