@@ -156,21 +156,21 @@ function CaseStudyHeroAmbient({
 function CaseStudyHeroSummaryItem({ emblem, label, summary }: CaseStudyHeroSummaryItemProps) {
   return (
     <div className="case-study-hero__summary-item">
-      <div aria-hidden="true" className="case-study-hero__summary-emblem">
-        {emblem ? (
-          <Image
-            alt=""
-            className="case-study-hero__summary-emblem-image"
-            fill
-            sizes="2.5rem"
-            src={emblem}
-          />
-        ) : null}
-      </div>
-      <div className="case-study-hero__summary-copy">
+      <div className="case-study-hero__summary-heading">
         <p className="case-study-hero__summary-label text-display-4">{label}</p>
-        <p className="case-study-hero__summary-text text-body-1">{summary}</p>
+        <div aria-hidden="true" className="case-study-hero__summary-emblem">
+          {emblem ? (
+            <Image
+              alt=""
+              className="case-study-hero__summary-emblem-image"
+              fill
+              sizes="2.5rem"
+              src={emblem}
+            />
+          ) : null}
+        </div>
       </div>
+      <p className="case-study-hero__summary-text text-body-1">{summary}</p>
     </div>
   );
 }
@@ -190,16 +190,6 @@ export function CaseStudyPageLayout({
     const container = contentRef.current;
     if (!container) return;
 
-    const sections = Array.from(
-      container.querySelectorAll<HTMLElement>(".case-study-section"),
-    );
-    if (sections.length === 0) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      sections.forEach((section) => section.classList.add("case-study-section--revealed"));
-      return;
-    }
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -212,8 +202,33 @@ export function CaseStudyPageLayout({
       { rootMargin: "0px 0px -8% 0px", threshold: 0.04 },
     );
 
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    const observeSections = () => {
+      const sections = container.querySelectorAll<HTMLElement>(".case-study-section");
+      const shouldReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      sections.forEach((section) => {
+        if (section.classList.contains("case-study-section--revealed")) return;
+
+        if (shouldReduceMotion) {
+          section.classList.add("case-study-section--revealed");
+          return;
+        }
+
+        observer.observe(section);
+      });
+    };
+
+    observeSections();
+
+    // MDX content can change in place during Fast Refresh. Observe added
+    // sections so they receive the reveal class without changing hook inputs.
+    const mutationObserver = new MutationObserver(observeSections);
+    mutationObserver.observe(container, { childList: true, subtree: true });
+
+    return () => {
+      mutationObserver.disconnect();
+      observer.disconnect();
+    };
   }, []);
 
   if (!caseStudy) {
@@ -238,36 +253,38 @@ export function CaseStudyPageLayout({
       >
         <CaseStudyHeroAmbient heroRef={heroRef} mosaic={caseStudy.heroMosaic} />
         <div className="case-study-hero__inner">
-          <div className="case-study-hero__intro">
-            <h1 className="case-study-hero__title text-display-1">{caseStudy.title}</h1>
-            <div className="case-study-hero__summary-stack">
-              {caseStudy.summaryPattern ? (
-                <div
-                  aria-hidden="true"
-                  className="case-study-hero__summary-pattern"
-                  style={summaryPatternStyle}
-                />
-              ) : null}
-              <CaseStudyHeroSummaryItem
-                emblem={caseStudy.problemEmblem || DEFAULT_PROBLEM_EMBLEM}
-                label="Problem"
-                summary={caseStudy.problem}
+          <h1 className="case-study-hero__title text-display-1">{caseStudy.title}</h1>
+          <div className="case-study-hero__summary-stack">
+            {caseStudy.summaryPattern ? (
+              <div
+                aria-hidden="true"
+                className="case-study-hero__summary-pattern"
+                style={summaryPatternStyle}
               />
-              <CaseStudyHeroSummaryItem
-                emblem={caseStudy.solutionEmblem || DEFAULT_SOLUTION_EMBLEM}
-                label="Solution"
-                summary={caseStudy.solution}
-              />
-              <CaseStudyHeroSummaryItem
-                emblem={caseStudy.outcomeEmblem || DEFAULT_OUTCOME_EMBLEM}
-                label="Outcome"
-                summary={caseStudy.outcome}
-              />
-            </div>
+            ) : null}
+            <CaseStudyHeroSummaryItem
+              emblem={caseStudy.problemEmblem || DEFAULT_PROBLEM_EMBLEM}
+              label="Problem"
+              summary={caseStudy.problem}
+            />
+            <CaseStudyHeroSummaryItem
+              emblem={caseStudy.solutionEmblem || DEFAULT_SOLUTION_EMBLEM}
+              label="Solution"
+              summary={caseStudy.solution}
+            />
+            <CaseStudyHeroSummaryItem
+              emblem={caseStudy.outcomeEmblem || DEFAULT_OUTCOME_EMBLEM}
+              label="Outcome"
+              summary={caseStudy.outcome}
+            />
           </div>
 
           <div className="case-study-hero__media-panel" aria-label={`${caseStudy.title} media`}>
-            <div aria-hidden="true" className="case-study-hero__media-fill" />
+            <div
+              aria-hidden="true"
+              className="case-study-hero__media-fill"
+              style={summaryPatternStyle}
+            />
             {caseStudy.heroVideo ? (
               <video
                 autoPlay

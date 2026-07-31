@@ -2,6 +2,7 @@ import type { MDXComponents } from "mdx/types";
 import type { ReactNode } from "react";
 
 import { CaseFigure } from "@/components/work/case-figure";
+import { CaseMetrics, CasePercentageCards } from "@/components/work/case-metrics";
 import { CaseVideo } from "@/components/work/case-video";
 import type { CaseStudySection } from "@/config/case-studies";
 
@@ -55,6 +56,8 @@ const components: MDXComponents = {
   Section,
   ImagePlaceholder,
   CaseFigure,
+  CaseMetrics,
+  CasePercentageCards,
   CaseVideo,
   h1: (props) => <h1 className="font-pixel text-headline text-text-primary" {...props} />,
   h2: (props) => <h2 className="text-heading-1 text-text-primary" {...props} />,
