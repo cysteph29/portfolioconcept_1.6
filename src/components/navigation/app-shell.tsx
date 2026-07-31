@@ -29,14 +29,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, [pathname]);
 
   useEffect(() => {
-    if (!window.location.hash) {
+    const { hash } = window.location;
+
+    if (hash) {
+      const targetId = decodeURIComponent(hash.slice(1));
+      window.requestAnimationFrame(() => {
+        document.getElementById(targetId)?.scrollIntoView();
+      });
       return;
     }
 
-    const targetId = decodeURIComponent(window.location.hash.slice(1));
-    window.requestAnimationFrame(() => {
-      document.getElementById(targetId)?.scrollIntoView();
-    });
+    // The shell persists between App Router navigations, so explicitly reset
+    // the document scroll position when the route changes.
+    window.scrollTo({ left: 0, top: 0, behavior: "instant" });
   }, [pathname]);
 
   return (

@@ -6,8 +6,8 @@ export function ExperienceSection() {
   return (
     <section
       className="home-section home-section--experience experience-fold"
-      data-st-03="20"
-      data-st-mobile-resolution="14"
+      data-st-03="40"
+      data-st-mobile-resolution="15"
       data-st-mode="reveal"
       id="experience"
     >

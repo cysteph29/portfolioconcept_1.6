@@ -27,7 +27,7 @@ type SectionTransitionConfig = {
 type Cleanup = () => void;
 
 const DEFAULT_CONFIG: SectionTransitionConfig = {
-  resolution: 20,
+  resolution: 40,
   spread: 5,
   fillDuration: 0.03,
   layerHeight: "64vh",

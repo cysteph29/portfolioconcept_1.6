@@ -10,6 +10,10 @@ export const metadata: Metadata = {
   title: "Cyril's Portfolio",
   description: "Product designer specializing in compliance-driven, data-heavy products across fintech and regulated industries.",
   metadataBase: new URL("https://cyrilstephen.com"),
+  icons: {
+    icon: [{ url: "/assets/profilepic.png", type: "image/png" }],
+    apple: [{ url: "/assets/profilepic.png", type: "image/png" }],
+  },
   openGraph: {
     title: "Cyril's Portfolio",
     description: "Product designer specializing in compliance-driven, data-heavy products across fintech and regulated industries.",

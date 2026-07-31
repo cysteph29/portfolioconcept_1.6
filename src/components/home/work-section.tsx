@@ -102,8 +102,8 @@ export function WorkSection() {
   return (
     <section
       className="work-pin-section"
-      data-st-03="20"
-      data-st-mobile-resolution="14"
+      data-st-03="40"
+      data-st-mobile-resolution="15"
       data-st-mode="reveal"
       id="work"
       ref={outerRef}
