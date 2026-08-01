@@ -1,7 +1,7 @@
 "use client";
 
 import type { Icon } from "@phosphor-icons/react";
-import { LinkedinLogo, MediumLogo, XLogo } from "@phosphor-icons/react";
+import { GithubLogo, LinkedinLogo, MediumLogo, XLogo } from "@phosphor-icons/react";
 import type { MotionValue } from "motion/react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import Image from "next/image";
@@ -50,6 +50,7 @@ const socialLinks = [
   { label: "LINKEDIN", href: "https://www.linkedin.com/in/cyril-stephen", Icon: LinkedinLogo },
   { label: "TWITTER/X", href: "https://x.com/cyril_design", Icon: XLogo },
   { label: "MEDIUM", href: "https://medium.com/@cyril_design", Icon: MediumLogo },
+  { label: "GITHUB", href: "https://github.com/cysteph29", Icon: GithubLogo },
 ] as const satisfies readonly { label: string; href: string; Icon: Icon }[];
 
 function ContactMarqueeRow({
