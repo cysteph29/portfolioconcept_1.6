@@ -3,11 +3,11 @@ cover: ""
 title: "Salesforce Trailhead"
 cardTitle: "An AI-Powered Re-Engagement Strategy Trailhead's Power Users Preferred Over ChatGPT"
 description: "Salesforce Trailhead's expert users quietly stopped returning once they got certified, taking real work problems to ChatGPT and Slack instead. Over a 10-month capstone, our team researched why power users disengage and designed two connected AI features to bring them back. In testing, 6 of 8 preferred our solution over ChatGPT for Salesforce questions."
-problem: "Salesforce's most experienced power users were disengaging, coming back less and less. For a company built on community and advocacy, losing its best advocates is a real problem."
+problem: "Salesforce's most experienced users were taking their questions to ChatGPT and Slack instead of Trailhead's own community, and between milestones, nothing gave them a reason to come back."
 problemEmblem: ""
-solution: "A chatbot that answers real Salesforce problems inside Trailhead, paired with a dashboard that turns each visit into a reason to return."
+solution: "Plain-language answers to real Salesforce problems inside Trailhead, paired with proactive prompts that surface what's relevant next without being asked."
 solutionEmblem: ""
-outcome: "Given the same Salesforce question, 6 of 8 power users preferred our chatbot's answer over ChatGPT."
+outcome: "Given the same Salesforce question, 6 of 8 power users preferred Solve over ChatGPT. The prototype lifted session duration 35% and cut drop-off 22%."
 outcomeEmblem: ""
 heroMosaic: "/assets/salesforce-mosaic.svg"
 summaryPattern: "/assets/summary-pattern.svg"
@@ -34,8 +34,6 @@ sections:
     label: "Exploration 2"
   - id: "solution"
     label: "THE BET"
-  - id: "solution-2"
-    label: "SOLUTION"
   - id: "solution-3"
     label: "SOLUTION 01 / SOLVE"
   - id: "solution-4"
@@ -118,17 +116,9 @@ Round two focused on behavior: what people actually do, where they drop off, whe
 
 <Section id="converge-2" sections={frontmatter.sections}>
 
-## We explored a range of directions, and the two we killed taught us the most
+## Of everything we explored, two ideas stood out, so we skipped wireframes and vibe-coded them into working proofs of concept
 
-Two ideas got far enough that we designed them fully before deciding not to build them. What we learned by killing them is what shaped the two features we shipped.
-
-<CaseFigure
-  src="/work/salesforce-trailhead/case-study-trailhead-1.webp"
-  alt="Whiteboard synthesis with affinity mapping and concept sketches for Trailhead engagement directions"
-  caption="Whiteboard synthesis, affinity mapping, concept sketches"
-  width={1920}
-  height={1080}
-/>
+We explored a wide range of directions for bringing power users back: community engagement, status, skill visibility. The two strongest earned a quick build, enough to try each idea for ourselves. Neither held up, and killing them shaped the two features we shipped.
 
 </Section>
 
@@ -164,19 +154,11 @@ We killed it for two reasons. First, it only works if the outside world treats t
 
 <Section id="solution" sections={frontmatter.sections}>
 
-## We bet that plain-language answers drawn from Salesforce's own data would beat any general AI tool. We never got that access, so we proved the experience instead.
+## We bet that plain-language answers drawn from Salesforce's own data would beat any general AI tool, and shipped two connected experiences to prove it
 
-ChatGPT runs on public data. Slack answers depend on whoever happens to reply. We bet that Salesforce's proprietary knowledge could beat both.
+ChatGPT runs on public data. Slack answers depend on whoever happens to reply. We bet Salesforce's proprietary knowledge could beat both. Access to that data, and to Agentforce, was never on the table, so we built on OpenAI with curated Salesforce documentation and focused on proving the experience.
 
-Access to that data, and to Agentforce, was never on the table, so we built on OpenAI with curated Salesforce documentation and focused on what we could prove: the experience.
-
-</Section>
-
-<Section id="solution-2" sections={frontmatter.sections}>
-
-## We shipped two connected experiences: answers the moment a problem hits, and a system that surfaces what's relevant next without being asked
-
-Solve catches power users at the moment they would otherwise open ChatGPT. The second works in the background, resurfacing relevant next steps so returning is worth it. Neither works alone.
+That bet became two features: Solve catches power users at the moment they would otherwise open ChatGPT, and a proactive system that resurfaces what's relevant next so returning is worth it. Neither works alone.
 
 </Section>
 
