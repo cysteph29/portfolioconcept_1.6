@@ -290,7 +290,6 @@ a {
     --contact-surface-width: 880px;
     --contact-surface-padding-x: 80px;
     --contact-surface-padding-y: 60px;
-    --contact-surface-corner-size: 12px;
     --contact-surface-stack-gap: 28px;
     --contact-surface-email-gap: 54px;
     --contact-marquee-row-height: clamp(93px, 18.67vw, 280px); /* PROVISIONAL mobile value, real mobile scale TBD */
@@ -356,6 +355,7 @@ a {
     justify-content: center;
     padding: var(--contact-surface-padding-y) var(--contact-surface-padding-x);
     background: rgb(7 24 3 / 80%);
+    border: 1px solid rgb(124 255 107 / 20%);
     color: #f9f4f1;
     isolation: isolate;
     overflow: hidden;
@@ -389,36 +389,6 @@ a {
     width: 100%;
     flex-direction: column;
     align-items: center;
-  }
-
-  .contact-footer__corner {
-    position: absolute;
-    z-index: 1;
-    display: block;
-    width: var(--contact-surface-corner-size);
-    height: var(--contact-surface-corner-size);
-    background: rgb(249 244 241 / 50%);
-    pointer-events: none;
-  }
-
-  .contact-footer__corner--top-left {
-    top: 0;
-    left: 0;
-  }
-
-  .contact-footer__corner--top-right {
-    top: 0;
-    right: 0;
-  }
-
-  .contact-footer__corner--bottom-left {
-    bottom: 0;
-    left: 0;
-  }
-
-  .contact-footer__corner--bottom-right {
-    right: 0;
-    bottom: 0;
   }
 
   .contact-footer__image-placeholder {
@@ -792,9 +762,7 @@ a {
   }
 
   .work-case-study-card {
-    display: grid;
-    grid-template-columns: minmax(0, 280fr) minmax(0, 860fr);
-    gap: 30px;
+    display: block;
     color: inherit;
     cursor: pointer;
   }
@@ -812,7 +780,8 @@ a {
   }
 
   .work-case-study-card__title {
-    max-width: 18ch;
+    width: 100%;
+    max-width: none;
   }
 
   .work-case-study-card__media {
@@ -1716,31 +1685,8 @@ a {
     transform: none !important;
   }
 
-  .work-case-study-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-home-stack-gap);
-  }
-
-  .work-case-study-card__feature {
-    display: contents;
-  }
-
-  .work-case-study-card__media {
-    order: 1;
-  }
-
   .work-case-study-card__hover {
     display: none;
-  }
-
-  .work-case-study-card__title {
-    order: 2;
-    max-width: none;
-  }
-
-  .work-case-study-card__meta {
-    order: 3;
   }
 }
 

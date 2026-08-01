@@ -148,11 +148,6 @@ export function ContactFooter() {
       <section className="contact-footer__surface" aria-labelledby="contact-footer-heading">
         <FooterGridCanvas />
 
-        <span className="contact-footer__corner contact-footer__corner--top-left" />
-        <span className="contact-footer__corner contact-footer__corner--top-right" />
-        <span className="contact-footer__corner contact-footer__corner--bottom-left" />
-        <span className="contact-footer__corner contact-footer__corner--bottom-right" />
-
         <div className="contact-footer__surface-content">
           <div className="contact-footer__image-placeholder" aria-hidden="true">
             <Image
