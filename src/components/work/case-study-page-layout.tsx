@@ -236,7 +236,12 @@ export function CaseStudyPageLayout({
   }
 
   const summaryPatternStyle = caseStudy.summaryPattern
-    ? ({ backgroundImage: `url("${caseStudy.summaryPattern}")` } satisfies CSSProperties)
+    ? ({
+        backgroundImage: `url("${caseStudy.summaryPattern}")`,
+        backgroundPosition: "top left",
+        backgroundRepeat: "repeat",
+        backgroundSize: "85px 612px",
+      } satisfies CSSProperties)
     : undefined;
 
   return (
@@ -279,12 +284,11 @@ export function CaseStudyPageLayout({
             />
           </div>
 
-          <div className="case-study-hero__media-panel" aria-label={`${caseStudy.title} media`}>
-            <div
-              aria-hidden="true"
-              className="case-study-hero__media-fill"
-              style={summaryPatternStyle}
-            />
+          <div
+            className="case-study-hero__media-panel"
+            aria-label={`${caseStudy.title} media`}
+            style={summaryPatternStyle}
+          >
             {caseStudy.heroVideo ? (
               <video
                 autoPlay
