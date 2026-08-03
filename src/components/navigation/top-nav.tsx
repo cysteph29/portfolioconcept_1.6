@@ -9,9 +9,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useSmartNavbar } from "@/components/navigation/use-smart-navbar";
 
 const NAV_ITEMS = [
-  { href: "/#work", label: "Work", isActive: (pathname: string) => pathname.startsWith("/work") },
-  { href: "/about", label: "About", isActive: (pathname: string) => pathname === "/about" },
+  { href: "/#work", label: "Work", isActive: () => false },
   { href: "/playground", label: "AI & Play", isActive: (pathname: string) => pathname === "/playground" },
+  { href: "/about", label: "About", isActive: (pathname: string) => pathname === "/about" },
   { href: "/#contact", label: "Contact", isActive: () => false },
   {
     href: "https://drive.google.com/file/d/1vgbehuPY2rzH--WvdVkO-vv0TGn02LXM/view?usp=sharing",
@@ -99,7 +99,7 @@ export function TopNav() {
                   key={item.href}
                   aria-current={isActive ? "page" : undefined}
                   className={`text-label-1 text-text-primary transition-opacity hover:opacity-100 ${
-                    isActive ? "opacity-100" : "opacity-80"
+                    isActive ? "top-nav-link--active opacity-100" : "opacity-80"
                   }`}
                   href={item.href}
                   {...("external" in item && item.external
@@ -147,7 +147,9 @@ export function TopNav() {
                   <Link
                     key={item.href}
                     aria-current={isActive ? "page" : undefined}
-                    className={`text-label-1 text-text-primary ${isActive ? "opacity-100" : "opacity-80"}`}
+                    className={`text-label-1 text-text-primary ${
+                      isActive ? "top-nav-link--active opacity-100" : "opacity-80"
+                    }`}
                     href={item.href}
                     onClick={closeMobileMenu}
                     {...("external" in item && item.external

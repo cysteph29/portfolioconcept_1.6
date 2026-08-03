@@ -1571,6 +1571,11 @@ a {
   object-fit: cover;
 }
 
+.top-nav-link--active {
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
 .mobile-nav-toggle,
 .mobile-nav-menu {
   display: none;
