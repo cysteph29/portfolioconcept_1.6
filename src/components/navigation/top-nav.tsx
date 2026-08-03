@@ -11,6 +11,7 @@ import { useSmartNavbar } from "@/components/navigation/use-smart-navbar";
 const NAV_ITEMS = [
   { href: "/#work", label: "Work", isActive: (pathname: string) => pathname.startsWith("/work") },
   { href: "/about", label: "About", isActive: (pathname: string) => pathname === "/about" },
+  { href: "/playground", label: "AI & Play", isActive: (pathname: string) => pathname === "/playground" },
   { href: "/#contact", label: "Contact", isActive: () => false },
   {
     href: "https://drive.google.com/file/d/1vgbehuPY2rzH--WvdVkO-vv0TGn02LXM/view?usp=sharing",

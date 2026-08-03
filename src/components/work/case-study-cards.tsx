@@ -1,36 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { type PointerEvent, useState } from "react";
-import { createPortal } from "react-dom";
 
+import {
+  PointerFollowLabel,
+  usePointerFollowHover,
+} from "@/components/ui/pointer-follow-label";
 import { CASE_STUDIES } from "@/config/case-studies";
 
 const FEATURED_CASE_STUDIES = CASE_STUDIES.slice(0, 3);
-const WORK_CASE_STUDY_HOVER_OFFSET_X_PX = 8;
 
 export const WORK_CASE_STUDY_COUNT = FEATURED_CASE_STUDIES.length;
 
 export function CaseStudyCards() {
-  const [hoveredCard, setHoveredCard] = useState<{
-    slug: string;
-    x: number;
-    y: number;
-  } | null>(null);
-  const shouldReduceMotion = useReducedMotion();
-
-  const updateHoveredCard = (event: PointerEvent<HTMLElement>, slug: string) => {
-    if (event.pointerType !== "mouse") {
-      return;
-    }
-
-    setHoveredCard({
-      slug,
-      x: event.clientX + WORK_CASE_STUDY_HOVER_OFFSET_X_PX,
-      y: event.clientY,
-    });
-  };
+  const { hover, getHoverHandlers } = usePointerFollowHover();
 
   return (
     <div className="work-case-study-list" role="list">
@@ -39,16 +22,8 @@ export function CaseStudyCards() {
           key={caseStudy.slug}
           className="work-case-study-card"
           href={`/work/${caseStudy.slug}`}
-          onPointerEnter={(event) => {
-            updateHoveredCard(event, caseStudy.slug);
-          }}
-          onPointerLeave={() => {
-            setHoveredCard(null);
-          }}
-          onPointerMove={(event) => {
-            updateHoveredCard(event, caseStudy.slug);
-          }}
           role="listitem"
+          {...getHoverHandlers(caseStudy.slug)}
         >
           <article className="work-case-study-card__feature">
             <div className="work-case-study-card__media">
@@ -93,47 +68,7 @@ export function CaseStudyCards() {
           </article>
         </Link>
       ))}
-      {typeof document !== "undefined"
-        ? createPortal(
-            <AnimatePresence>
-              {hoveredCard ? (
-                <motion.span
-                  key="case-study-hover"
-                  aria-hidden="true"
-                  className="work-case-study-card__hover"
-                  initial={false}
-                  animate={{ opacity: 1 }}
-                  exit={{
-                    opacity: 0,
-                    transition: { duration: 0.12, ease: [0.16, 1, 0.3, 1] },
-                  }}
-                  style={{ left: hoveredCard.x, top: hoveredCard.y }}
-                >
-                  <motion.span
-                    className="work-case-study-card__hover-square"
-                    initial={{ opacity: 0 }}
-                    animate={
-                      shouldReduceMotion
-                        ? { opacity: 1 }
-                        : { opacity: [0, 1, 0, 1, 0, 1, 0, 1] }
-                    }
-                    transition={
-                      shouldReduceMotion
-                        ? { duration: 0.14, ease: [0.16, 1, 0.3, 1] }
-                        : {
-                            duration: 0.38,
-                            times: [0, 0.1, 0.22, 0.36, 0.48, 0.62, 0.74, 1],
-                            ease: "linear",
-                          }
-                    }
-                  />
-                  <span className="work-case-study-card__hover-label">VIEW CASE STUDY</span>
-                </motion.span>
-              ) : null}
-            </AnimatePresence>,
-            document.body,
-          )
-        : null}
+      <PointerFollowLabel hover={hover} label="VIEW CASE STUDY" />
     </div>
   );
 }
