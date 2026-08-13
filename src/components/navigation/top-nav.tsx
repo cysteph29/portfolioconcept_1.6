@@ -98,7 +98,7 @@ export function TopNav() {
                 <Link
                   key={item.href}
                   aria-current={isActive ? "page" : undefined}
-                  className={`text-label-1 text-text-primary transition-opacity hover:opacity-100 ${
+                  className={`text-heading-5 text-text-primary transition-opacity hover:opacity-100 ${
                     isActive ? "top-nav-link--active opacity-100" : "opacity-80"
                   }`}
                   href={item.href}
@@ -147,7 +147,7 @@ export function TopNav() {
                   <Link
                     key={item.href}
                     aria-current={isActive ? "page" : undefined}
-                    className={`text-label-1 text-text-primary ${
+                    className={`text-heading-5 text-text-primary ${
                       isActive ? "top-nav-link--active opacity-100" : "opacity-80"
                     }`}
                     href={item.href}

@@ -62,7 +62,7 @@ function PlaygroundCardContent({ card }: { card: PlaygroundCard }) {
           />
         ) : null}
       </div>
-      <h2 className="playground-card__title text-display-3 text-text-primary">
+      <h2 className="playground-card__title text-heading-2 text-text-primary">
         {card.title}
       </h2>
     </>

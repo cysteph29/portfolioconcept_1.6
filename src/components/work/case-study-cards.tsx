@@ -48,20 +48,20 @@ export function CaseStudyCards() {
                 />
               )}
             </div>
-            <h2 className="work-case-study-card__title text-display-3 text-text-primary">
+            <h2 className="work-case-study-card__title text-heading-2 text-text-primary">
               {caseStudy.cardTitle ?? caseStudy.title}
             </h2>
             <dl className="work-case-study-card__meta">
               <div className="work-case-study-card__meta-item">
-                <dt className="text-label-1 text-text-primary">TIMELINE</dt>
+                <dt className="text-heading-5 text-text-primary">TIMELINE</dt>
                 <dd className="text-body-1 text-text-muted">{caseStudy.timeline}</dd>
               </div>
               <div className="work-case-study-card__meta-item">
-                <dt className="text-label-1 text-text-primary">ROLE</dt>
+                <dt className="text-heading-5 text-text-primary">ROLE</dt>
                 <dd className="text-body-1 text-text-muted">{caseStudy.role}</dd>
               </div>
               <div className="work-case-study-card__meta-item">
-                <dt className="text-label-1 text-text-primary">TEAM</dt>
+                <dt className="text-heading-5 text-text-primary">TEAM</dt>
                 <dd className="text-body-1 text-text-muted">{caseStudy.team}</dd>
               </div>
             </dl>

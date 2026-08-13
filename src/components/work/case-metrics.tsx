@@ -23,7 +23,7 @@ export function CaseMetrics({ caption, items, label, variant }: CaseMetricsProps
       <ol className="case-metrics__list">
         {items.map((item) => (
           <li className="case-metric" key={item.label}>
-            <span className="case-metric__value text-display-3">{item.valueLabel}</span>
+            <span className="case-metric__value text-heading-2">{item.valueLabel}</span>
             <span className="case-metric__label text-body-2">{item.label}</span>
           </li>
         ))}
@@ -45,7 +45,7 @@ export function CasePercentageCards({
       <ol className="case-percentage-cards__grid">
         {items.map((item) => (
           <li className="case-percentage-card" key={item.label}>
-            <span className="case-percentage-card__value text-display-3">{item.valueLabel}</span>
+            <span className="case-percentage-card__value text-heading-2">{item.valueLabel}</span>
             <span className="case-percentage-card__label text-body-2">{item.label}</span>
           </li>
         ))}

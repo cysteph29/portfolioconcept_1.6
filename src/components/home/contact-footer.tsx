@@ -160,7 +160,7 @@ export function ContactFooter() {
             />
           </div>
           <h2
-            className="contact-footer__heading text-display-2"
+            className="contact-footer__heading text-display"
             data-reveal-05
             data-scroll=""
             id="contact-footer-heading"
@@ -168,10 +168,10 @@ export function ContactFooter() {
             I&apos;m Currently Open For Product Design, Design Engineer &amp; Related Roles Anywhere
             Within The U.S.
           </h2>
-          <div className="contact-footer__mark text-display-4" aria-hidden="true">
+          <div className="contact-footer__mark text-heading-3" aria-hidden="true">
             \\
           </div>
-          <p className="contact-footer__email text-display-3">cyrilstephenhere@gmail.com</p>
+          <p className="contact-footer__email text-heading-2">cyrilstephenhere@gmail.com</p>
           <nav
             className="contact-footer__social-links"
             aria-label="Social links"

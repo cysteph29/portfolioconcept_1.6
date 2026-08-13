@@ -23,7 +23,7 @@ export function ExperienceSection() {
             />
           </div>
           <p
-            className="experience-fold__label text-display-2 text-text-primary"
+            className="experience-fold__label text-display text-text-primary"
             data-reveal-05
             data-scroll=""
           >

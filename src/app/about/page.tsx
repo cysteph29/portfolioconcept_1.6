@@ -5,12 +5,12 @@ export default function AboutPage() {
     <main className="about-page">
       <AboutGrid />
       <section className="about-page-copy">
-        <h1 className="text-display-3 text-text-primary">
+        <h1 className="text-heading-2 text-text-primary">
           Values I live by, despite falling short of them from time-to-time
         </h1>
         <div className="about-page-values">
           <article className="about-page-value">
-            <h2 className="about-page-value__title text-heading-1 text-text-primary">
+            <h2 className="about-page-value__title text-heading-4 text-text-primary">
               Uncommon Care: Good enough isn&apos;t good enough
             </h2>
             <p className="text-body-1 text-text-muted">
@@ -19,7 +19,7 @@ export default function AboutPage() {
             </p>
           </article>
           <article className="about-page-value">
-            <h2 className="about-page-value__title text-heading-1 text-text-primary">
+            <h2 className="about-page-value__title text-heading-4 text-text-primary">
               Communication: The highest-leverage skill
             </h2>
             <p className="text-body-1 text-text-muted">
@@ -27,7 +27,7 @@ export default function AboutPage() {
             </p>
           </article>
           <article className="about-page-value">
-            <h2 className="about-page-value__title text-heading-1 text-text-primary">
+            <h2 className="about-page-value__title text-heading-4 text-text-primary">
               Connection: The right people make life richer
             </h2>
             <p className="text-body-1 text-text-muted">
@@ -36,7 +36,7 @@ export default function AboutPage() {
             </p>
           </article>
           <article className="about-page-value">
-            <h2 className="about-page-value__title text-heading-1 text-text-primary">
+            <h2 className="about-page-value__title text-heading-4 text-text-primary">
               Conviction: Committed, but never closed
             </h2>
             <p className="text-body-1 text-text-muted">
@@ -45,7 +45,7 @@ export default function AboutPage() {
             </p>
           </article>
           <article className="about-page-value">
-            <h2 className="about-page-value__title text-heading-1 text-text-primary">
+            <h2 className="about-page-value__title text-heading-4 text-text-primary">
               Growth: Always seeking, never settled
             </h2>
             <p className="text-body-1 text-text-muted">
@@ -55,7 +55,7 @@ export default function AboutPage() {
         </div>
       </section>
       <section className="about-page-copy">
-        <h1 className="text-display-3 text-text-primary">
+        <h1 className="text-heading-2 text-text-primary">
           How&apos;d I end up in design?
         </h1>
         <div className="about-page-narrative">
@@ -89,7 +89,7 @@ export default function AboutPage() {
         </div>
       </section>
       <section className="about-page-copy">
-        <h1 className="text-display-3 text-text-primary">
+        <h1 className="text-heading-2 text-text-primary">
           What I&apos;ve learned working as a designer
         </h1>
         <div className="about-page-narrative">
@@ -115,12 +115,12 @@ export default function AboutPage() {
         </div>
       </section>
       <section className="about-page-copy">
-        <h1 className="text-display-3 text-text-primary">
+        <h1 className="text-heading-2 text-text-primary">
           What do I do when I&apos;m not designing?
         </h1>
         <div className="about-page-values">
           <article className="about-page-value">
-            <h2 className="about-page-value__title text-heading-1 text-text-primary">
+            <h2 className="about-page-value__title text-heading-4 text-text-primary">
               Music: Performing, listening, and breaking down songs
             </h2>
             <p className="text-body-1 text-text-muted">
@@ -130,7 +130,7 @@ export default function AboutPage() {
             </p>
           </article>
           <article className="about-page-value">
-            <h2 className="about-page-value__title text-heading-1 text-text-primary">
+            <h2 className="about-page-value__title text-heading-4 text-text-primary">
               Fashion: An unexpected interest
             </h2>
             <p className="text-body-1 text-text-muted">
@@ -141,7 +141,7 @@ export default function AboutPage() {
             </p>
           </article>
           <article className="about-page-value">
-            <h2 className="about-page-value__title text-heading-1 text-text-primary">
+            <h2 className="about-page-value__title text-heading-4 text-text-primary">
               Reading: From self-improvement onto classical literature
             </h2>
             <p className="text-body-1 text-text-muted">
@@ -152,7 +152,7 @@ export default function AboutPage() {
             </p>
           </article>
           <article className="about-page-value">
-            <h2 className="about-page-value__title text-heading-1 text-text-primary">
+            <h2 className="about-page-value__title text-heading-4 text-text-primary">
               Exploring humanity: I can be very social
             </h2>
             <p className="text-body-1 text-text-muted">

@@ -19,24 +19,24 @@
   --text-subhead--line-height: 1.5rem;
   --text-button: 0.75rem;
   --text-button--line-height: 1.25rem;
-  --text-display-1: clamp(2.5rem, 8vw, 4rem); /* PROVISIONAL mobile value, real mobile scale TBD */
-  --text-display-1--line-height: clamp(3rem, 9vw, 4.5rem); /* PROVISIONAL mobile value, real mobile scale TBD */
-  --text-display-2: clamp(2.125rem, 6.5vw, 3.25rem); /* PROVISIONAL mobile value, real mobile scale TBD */
-  --text-display-2--line-height: clamp(2.5rem, 7.25vw, 3.625rem); /* PROVISIONAL mobile value, real mobile scale TBD */
-  --text-display-3: clamp(1.75rem, 5vw, 2.5rem); /* PROVISIONAL mobile value, real mobile scale TBD */
-  --text-display-3--line-height: clamp(2.125rem, 6vw, 3rem); /* PROVISIONAL mobile value, real mobile scale TBD */
-  --text-display-4: clamp(1.25rem, 3.25vw, 1.625rem); /* PROVISIONAL mobile value, real mobile scale TBD */
-  --text-display-4--line-height: clamp(1.625rem, 4vw, 2rem); /* PROVISIONAL mobile value, real mobile scale TBD */
-  --text-heading-1: 1.375rem;
-  --text-heading-1--line-height: 1.875rem;
+  --text-display: clamp(2.125rem, 6.5vw, 3.25rem); /* PROVISIONAL mobile value, real mobile scale TBD */
+  --text-display--line-height: clamp(2.5rem, 7.25vw, 3.625rem); /* PROVISIONAL mobile value, real mobile scale TBD */
+  --text-heading-1: clamp(2.5rem, 8vw, 4rem); /* PROVISIONAL mobile value, real mobile scale TBD */
+  --text-heading-1--line-height: clamp(3rem, 9vw, 4.5rem); /* PROVISIONAL mobile value, real mobile scale TBD */
+  --text-heading-2: clamp(1.75rem, 5vw, 2.5rem); /* PROVISIONAL mobile value, real mobile scale TBD */
+  --text-heading-2--line-height: clamp(2.125rem, 6vw, 3rem); /* PROVISIONAL mobile value, real mobile scale TBD */
+  --text-heading-3: clamp(1.25rem, 3.25vw, 1.625rem); /* PROVISIONAL mobile value, real mobile scale TBD */
+  --text-heading-3--line-height: clamp(1.625rem, 4vw, 2rem); /* PROVISIONAL mobile value, real mobile scale TBD */
+  --text-heading-4: 1.375rem;
+  --text-heading-4--line-height: 1.875rem;
+  --text-heading-5: 1rem;
+  --text-heading-5--line-height: 1.5rem;
   --text-body-1: 1.125rem;
   --text-body-1--line-height: 1.75rem;
   --text-body-2: 1rem;
   --text-body-2--line-height: 1.5rem;
   --text-body-3: 0.875rem;
   --text-body-3--line-height: 1.25rem;
-  --text-label-1: 1rem;
-  --text-label-1--line-height: 1.5rem;
 
   --border-width-hairline: 0.0625rem;
   --tracking-placeholder: 0.2em;
@@ -88,40 +88,49 @@
 }
 
 @layer utilities {
-  .text-display-1 {
-    font-family: var(--font-neuebit);
-    font-size: var(--text-display-1);
-    font-weight: 700;
-    line-height: var(--text-display-1--line-height);
-  }
-
-  .text-display-2 {
+  .text-display {
     font-family: var(--font-mondwest);
-    font-size: var(--text-display-2);
+    font-size: var(--text-display);
     font-weight: 400;
-    line-height: var(--text-display-2--line-height);
-  }
-
-  .text-display-3 {
-    font-family: var(--font-neuebit);
-    font-size: var(--text-display-3);
-    font-weight: 700;
-    line-height: var(--text-display-3--line-height);
-  }
-
-  .text-display-4 {
-    font-family: var(--font-neuebit);
-    font-size: var(--text-display-4);
-    font-weight: 700;
-    line-height: var(--text-display-4--line-height);
-    text-transform: uppercase;
+    line-height: var(--text-display--line-height);
   }
 
   .text-heading-1 {
-    font-family: var(--font-fraktion);
+    font-family: var(--font-neuebit);
     font-size: var(--text-heading-1);
-    font-weight: 400;
+    font-weight: 700;
     line-height: var(--text-heading-1--line-height);
+  }
+
+  .text-heading-2 {
+    font-family: var(--font-neuebit);
+    font-size: var(--text-heading-2);
+    font-weight: 700;
+    line-height: var(--text-heading-2--line-height);
+  }
+
+  .text-heading-3 {
+    font-family: var(--font-neuebit);
+    font-size: var(--text-heading-3);
+    font-weight: 700;
+    line-height: var(--text-heading-3--line-height);
+    text-transform: uppercase;
+  }
+
+  .text-heading-4 {
+    font-family: var(--font-fraktion);
+    font-size: var(--text-heading-4);
+    font-weight: 400;
+    line-height: var(--text-heading-4--line-height);
+  }
+
+  .text-heading-5 {
+    font-family: var(--font-neuebit);
+    font-size: var(--text-heading-5);
+    font-weight: 700;
+    line-height: var(--text-heading-5--line-height);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
   .text-body-1 {
@@ -143,15 +152,6 @@
     font-size: var(--text-body-3);
     font-weight: 300;
     line-height: var(--text-body-3--line-height);
-  }
-
-  .text-label-1 {
-    font-family: var(--font-neuebit);
-    font-size: var(--text-label-1);
-    font-weight: 700;
-    line-height: var(--text-label-1--line-height);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
   }
 }
 
@@ -328,7 +328,7 @@ a {
   }
 
   .playground-card__title {
-    min-height: var(--text-display-3--line-height);
+    min-height: var(--text-heading-2--line-height);
     margin: 0;
   }
 

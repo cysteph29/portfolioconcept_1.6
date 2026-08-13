@@ -58,7 +58,7 @@ export function HeroSection({
           width={120}
         />
         <h1
-          className="home-fold__headline text-display-2 text-text-primary"
+          className="home-fold__headline text-display text-text-primary"
           data-reveal-05={shouldAnimateHeadline || undefined}
         >
           {headline}
@@ -68,11 +68,11 @@ export function HeroSection({
         ) : null}
         {showActions ? (
           <div className="home-fold__actions">
-            <a className="home-action home-action--primary text-label-1" href="#work">
+            <a className="home-action home-action--primary text-heading-5" href="#work">
               <span>See work</span>
               <span aria-hidden="true">↓</span>
             </a>
-            <Link className="home-action home-action--secondary text-label-1" href="/about">
+            <Link className="home-action home-action--secondary text-heading-5" href="/about">
               [Who am I]
             </Link>
           </div>
