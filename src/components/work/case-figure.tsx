@@ -195,7 +195,7 @@ export function CaseFigure({
       </button>
 
       {caption ? (
-        <figcaption className="font-pixel text-[0.625rem] leading-4 text-left text-text-muted">
+        <figcaption className="text-body-3 text-left text-text-muted">
           {caption}
         </figcaption>
       ) : null}

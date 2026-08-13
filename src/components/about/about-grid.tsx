@@ -269,7 +269,7 @@ export function AboutGrid() {
       </div>
 
       {tooltip ? (
-        <div className="about-grid-tooltip font-pixel" style={{ left: tooltip.x, top: tooltip.y }}>
+        <div className="about-grid-tooltip text-body-3" style={{ left: tooltip.x, top: tooltip.y }}>
           {tooltip.caption}
         </div>
       ) : null}
