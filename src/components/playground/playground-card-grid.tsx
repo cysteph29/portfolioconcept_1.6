@@ -16,6 +16,11 @@ type PlaygroundCard = {
 
 const PLAYGROUND_CARDS: PlaygroundCard[] = [
   {
+    title: "Graphic work for Accredited Educational Activities for Healthcare Professionals",
+    video: "/work/playground/cehp vid.mp4",
+    href: "https://cehp-gallery.vercel.app/",
+  },
+  {
     title: "A fun way to learn coding terms for vibe-coders",
     video: "/work/playground/game video.mp4",
     href: "https://techterms.vercel.app/",
