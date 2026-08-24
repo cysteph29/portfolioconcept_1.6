@@ -14,7 +14,7 @@ const NAV_ITEMS = [
   { href: "/about", label: "About", isActive: (pathname: string) => pathname === "/about" },
   { href: "/#contact", label: "Contact", isActive: () => false },
   {
-    href: "https://drive.google.com/file/d/1vgbehuPY2rzH--WvdVkO-vv0TGn02LXM/view?usp=sharing",
+    href: "https://drive.google.com/file/d/1FpM6T3gdd5pTjueUj4N9ho0zTApPaJpL/view?usp=sharing",
     label: "Resume",
     isActive: () => false,
     external: true,
