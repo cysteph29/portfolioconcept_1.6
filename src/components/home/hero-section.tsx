@@ -3,10 +3,10 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 const DEFAULT_HEADLINE =
-  "Product designer & builder based out of the bay area.";
+  "AI-native product designer with a history of designing complex, information-heavy products.";
 
 const DEFAULT_SUBHEAD =
-  "Previously owned design for an enterprise FinTech platform used by 100+ companies globally. I'm currently open to Product/UX Design opportunities.";
+  "I've worked across enterprise fintech, AI and growth, usually as the only designer. I'm highly curious and comfortable figuring things out as I go.";
 
 type HeroSectionProps = {
   backgroundLayerContent?: ReactNode;
