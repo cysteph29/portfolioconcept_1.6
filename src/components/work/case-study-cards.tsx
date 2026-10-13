@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-
+import { ReviewLink } from "@/components/navigation/review-link";
 import {
   PointerFollowLabel,
   usePointerFollowHover,
@@ -18,7 +17,7 @@ export function CaseStudyCards() {
   return (
     <div className="work-case-study-list" role="list">
       {FEATURED_CASE_STUDIES.map((caseStudy) => (
-        <Link
+        <ReviewLink
           key={caseStudy.slug}
           className="work-case-study-card"
           href={`/work/${caseStudy.slug}`}
@@ -66,7 +65,7 @@ export function CaseStudyCards() {
               </div>
             </dl>
           </article>
-        </Link>
+        </ReviewLink>
       ))}
       <PointerFollowLabel hover={hover} label="VIEW CASE STUDY" />
     </div>

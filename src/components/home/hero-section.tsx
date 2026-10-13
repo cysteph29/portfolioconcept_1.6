@@ -1,6 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import type { ReactNode } from "react";
+
+import { ReviewLink } from "@/components/navigation/review-link";
 
 const DEFAULT_HEADLINE =
   "AI-native product designer with a history of designing complex, information-heavy products.";
@@ -72,9 +73,9 @@ export function HeroSection({
               <span>See work</span>
               <span aria-hidden="true">↓</span>
             </a>
-            <Link className="home-action home-action--secondary text-heading-5" href="/about">
+            <ReviewLink className="home-action home-action--secondary text-heading-5" href="/about">
               [Who am I]
-            </Link>
+            </ReviewLink>
           </div>
         ) : null}
       </div>

@@ -1,8 +1,11 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+
+import { isDiveReviewPath, toReviewHref } from "@/lib/review-path";
 
 export function BackToWorkLink() {
+  const pathname = usePathname();
   const router = useRouter();
 
   function returnToPreviousPage() {
@@ -16,7 +19,7 @@ export function BackToWorkLink() {
       return;
     }
 
-    router.push("/#work");
+    router.push(toReviewHref("/#work", isDiveReviewPath(pathname)));
   }
 
   return (

@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useSmartNavbar } from "@/components/navigation/use-smart-navbar";
+import { isDiveReviewPath, toReviewHref } from "@/lib/review-path";
 
 const NAV_ITEMS = [
   { href: "/#work", label: "Work", isActive: () => false },
@@ -23,6 +24,8 @@ const NAV_ITEMS = [
 
 export function TopNav() {
   const pathname = usePathname();
+  const review = isDiveReviewPath(pathname);
+  const publicPathname = review ? pathname.slice("/dive".length) || "/" : pathname;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -78,7 +81,7 @@ export function TopNav() {
           <Link
             aria-label="Home"
             className="top-nav-home"
-            href="/"
+            href={review ? "/dive" : "/"}
           >
             <Image
               alt=""
@@ -92,7 +95,7 @@ export function TopNav() {
 
           <div className="flex items-center gap-[var(--spacing-home-actions-gap)]">
             {NAV_ITEMS.map((item) => {
-              const isActive = item.isActive(pathname);
+              const isActive = item.isActive(publicPathname);
 
               return (
                 <Link
@@ -101,7 +104,7 @@ export function TopNav() {
                   className={`text-heading-5 text-text-primary transition-opacity hover:opacity-100 ${
                     isActive ? "top-nav-link--active opacity-100" : "opacity-80"
                   }`}
-                  href={item.href}
+                  href={toReviewHref(item.href, review)}
                   {...("external" in item && item.external
                     ? { rel: "noopener noreferrer", target: "_blank" }
                     : {})}
@@ -142,7 +145,7 @@ export function TopNav() {
           >
             <div className="mobile-nav-menu__items">
               {NAV_ITEMS.map((item) => {
-                const isActive = item.isActive(pathname);
+                const isActive = item.isActive(publicPathname);
                 return (
                   <Link
                     key={item.href}
@@ -150,7 +153,7 @@ export function TopNav() {
                     className={`text-heading-5 text-text-primary ${
                       isActive ? "top-nav-link--active opacity-100" : "opacity-80"
                     }`}
-                    href={item.href}
+                    href={toReviewHref(item.href, review)}
                     onClick={closeMobileMenu}
                     {...("external" in item && item.external
                       ? { rel: "noopener noreferrer", target: "_blank" }
