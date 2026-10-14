@@ -4,10 +4,10 @@ import type { ReactNode } from "react";
 import { ReviewLink } from "@/components/navigation/review-link";
 
 const DEFAULT_HEADLINE =
-  "AI-native product designer with a history of designing complex, information-heavy products.";
+  "SF-based, AI-native Product Designer working across enterprise and consumer products.";
 
 const DEFAULT_SUBHEAD =
-  "I've worked across enterprise fintech, AI and growth, usually as the only designer. I'm highly curious and comfortable figuring things out as I go.";
+  "I've worked across fintech, AI, and growth, often as the only designer. I like getting close to customers, figuring out what matters, and building things that work.";
 
 type HeroSectionProps = {
   backgroundLayerContent?: ReactNode;
