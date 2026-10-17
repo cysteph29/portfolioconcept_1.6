@@ -1,7 +1,6 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -79,18 +78,13 @@ export function TopNav() {
       >
         <nav className="flex items-center justify-between px-[var(--spacing-home-edge-x)] pt-[var(--nav-padding-top)] pb-[var(--nav-padding-bottom)]">
           <Link
-            aria-label="Home"
-            className="top-nav-home"
+            aria-current={publicPathname === "/" ? "page" : undefined}
+            className={`text-heading-5 text-text-primary transition-opacity hover:opacity-100 ${
+              publicPathname === "/" ? "top-nav-link--active opacity-100" : "opacity-80"
+            }`}
             href={review ? "/dive" : "/"}
           >
-            <Image
-              alt=""
-              aria-hidden="true"
-              className="top-nav-home__image"
-              height={40}
-              src="/assets/profilepic.png"
-              width={40}
-            />
+            Home
           </Link>
 
           <div className="flex items-center gap-[var(--spacing-home-actions-gap)]">

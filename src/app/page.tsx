@@ -10,7 +10,9 @@ export default function HomePage() {
     <div className="home-page">
       <HeroSection
         backgroundLayerContent={<MalayalamBridgeCanvas pauseWhenOffscreen showControls={false} />}
+        showActions={false}
         withBackgroundLayer
+        withViewportHeight={false}
       />
       <WorkSection />
       <ExperienceSection />

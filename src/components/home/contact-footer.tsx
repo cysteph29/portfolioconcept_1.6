@@ -92,7 +92,7 @@ export function ContactFooter() {
   const [marqueeRowCount, setMarqueeRowCount] = useState(MARQUEE_ROW_COUNT);
   const { scrollYProgress } = useScroll({
     target: footerRef,
-    offset: ["start end", "start start"],
+    offset: ["start end", "end end"],
   });
   const smoothProgress = useSpring(scrollYProgress, CONTACT_MARQUEE_SPRING);
   const marqueeRows = buildMarqueeRows(marqueeRowCount);
