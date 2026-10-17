@@ -81,8 +81,8 @@
   --spacing-case-study-hero-panel-padding: clamp(1rem, 2.5vw, 2rem);
   --spacing-case-study-summary-emblem: 2.5rem;
   --spacing-case-study-summary-item-padding: 20px;
-  --nav-padding-top: 1.5rem;
-  --nav-padding-bottom: 1.5rem;
+  --nav-padding-top: calc((var(--nav-height) - 1.5rem - 1px) / 2);
+  --nav-padding-bottom: calc((var(--nav-height) - 1.5rem - 1px) / 2);
 }
 
 @layer utilities {
@@ -161,7 +161,8 @@
 }
 
 :root {
-  --nav-height: 5.5rem;
+  --nav-height: 3.75rem;
+  --editorial-below-nav: 1.75rem;
   --nav-mobile-toggle-justify: center;
   --nav-border-color: color-mix(in srgb, var(--color-summary-stroke) 42%, var(--color-canvas));
 }
@@ -200,7 +201,7 @@ a {
     top: 0;
     z-index: 60;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     box-sizing: border-box;
     height: var(--nav-height);
     margin-bottom: calc(-1 * var(--nav-height));
@@ -276,7 +277,7 @@ a {
     display: flex;
     flex-direction: column;
     gap: 0;
-    padding-top: var(--nav-height);
+    padding-top: var(--editorial-below-nav);
     padding-inline: var(--editorial-gutter, 1.25rem);
     padding-bottom: 6px;
     background: var(--color-canvas);
@@ -405,10 +406,10 @@ a {
 
     .editorial-intro {
       position: sticky;
-      top: var(--nav-height);
+      top: calc(var(--nav-height) + var(--editorial-below-nav));
       z-index: 1;
-      height: calc(100svh - var(--nav-height));
-      max-height: calc(100svh - var(--nav-height));
+      height: calc(100svh - var(--nav-height) - var(--editorial-below-nav));
+      max-height: calc(100svh - var(--nav-height) - var(--editorial-below-nav));
       min-height: 0;
       justify-content: flex-start;
     }
@@ -993,6 +994,16 @@ a {
     min-width: 0;
     flex-direction: column;
     gap: var(--spacing-home-stack-gap);
+  }
+
+  .work-case-study-card__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .work-case-study-card__type {
+    margin: 0;
   }
 
   .work-case-study-card__title {
@@ -1850,8 +1861,16 @@ body:has(.editorial-stage) {
   }
 }
 
+body:has(.editorial-stage) .top-nav-surface {
+  margin-bottom: 0;
+}
+
 body:has(.editorial-stage) .top-nav-surface > nav {
   padding-inline: var(--editorial-gutter);
+}
+
+body:has(.editorial-stage) #work {
+  scroll-margin-top: calc(var(--nav-height) + var(--editorial-below-nav));
 }
 
 body:has(.editorial-stage) .mobile-nav-menu {

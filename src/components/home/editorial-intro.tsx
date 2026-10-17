@@ -24,7 +24,7 @@ export function EditorialIntro() {
         <p className="editorial-intro__subhead text-body-2 text-text-muted">{HOME_HERO_SUBHEAD}</p>
       </div>
       <div className="editorial-intro__bridge">
-        <MalayalamBridgeCanvas pauseWhenOffscreen showControls={false} />
+        <MalayalamBridgeCanvas pauseWhenOffscreen profile="editorial" showControls={false} />
       </div>
     </section>
   );

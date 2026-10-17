@@ -2,6 +2,7 @@ export type PlaygroundProject = {
   href?: string;
   image?: string;
   title: string;
+  typeLabel?: string;
   video?: string;
 };
 
@@ -24,11 +25,13 @@ export const PLAYGROUND_PROJECTS: PlaygroundProject[] = [
   {
     title: "Automated email summaries using n8n",
     video: "/work/playground/n8n vid.mp4",
+    typeLabel: "Play",
   },
   {
     title: "One of my final projects as an audio engineer for a feature film",
     image: "/work/playground/cet.jpg",
     href: "https://youtu.be/55Q-Wp7MGsI?si=c4tn7xZjhMrlm8K5",
+    typeLabel: "Play",
   },
   {
     title: "Music credit lookup tool, inspired by my time as a musician and audio engineer",

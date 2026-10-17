@@ -303,11 +303,23 @@ function buildGlyphBitmaps(
   });
 }
 
-function buildBridgeCells(metrics: CanvasMetrics, controls: MalayalamBridgeControls) {
+function buildBridgeCells(
+  metrics: CanvasMetrics,
+  controls: MalayalamBridgeControls,
+  horizontalInset = 0,
+  profile: "default" | "editorial" = "default",
+) {
   const { cellSize, fillProbability, mainSpanSag, sideCableSag } = controls;
   const { edgeDitherRate } = MALAYALAM_BRIDGE_CANVAS_CONFIG;
   const columns = Math.ceil(metrics.width / cellSize);
   const rows = Math.ceil(metrics.height / cellSize);
+  const insetColumns = Math.max(
+    0,
+    Math.min(Math.round(columns * horizontalInset), Math.floor((columns - 4) / 2)),
+  );
+  const spanStart = insetColumns;
+  const spanEnd = columns - 1 - insetColumns;
+  const span = Math.max(1, spanEnd - spanStart);
   const cells = new Map<string, BridgeCell>();
 
   const addCell = (column: number, row: number) => {
@@ -342,50 +354,91 @@ function buildBridgeCells(metrics: CanvasMetrics, controls: MalayalamBridgeContr
     }
   };
 
-  const deckRow = Math.round(rows * 0.76);
-  const towerTopRow = Math.round(rows * 0.04);
-  const towerBottomRow = Math.round(rows * 0.98);
-  const leftTower = Math.round(columns * 0.27);
-  const rightTower = Math.round(columns * 0.73);
-  const towerWidth = Math.max(1, Math.round(columns * 0.0065));
-  const towerCrossbeamWidth = towerWidth + 1;
-  const towerCrossbeams = [Math.round(rows * 0.29), Math.round(rows * 0.5)];
+  const editorial = profile === "editorial";
+  // The last cell row extends past the bitmap, so feet stop on the last row that fits.
+  const lastFittedRow = Math.max(0, Math.floor((metrics.height - cellSize) / cellSize));
+  const towerBottomRow = editorial ? lastFittedRow : Math.round(rows * 0.98);
+  const deckRow = editorial
+    ? Math.max(4, towerBottomRow - Math.max(4, Math.round(rows * 0.18)))
+    : Math.round(rows * 0.76);
+  const towerTopRow = editorial
+    ? Math.min(Math.round(rows * 0.12), Math.max(0, deckRow - 4))
+    : Math.round(rows * 0.04);
+  const leftTower = spanStart + Math.round(span * (editorial ? 0.24 : 0.27));
+  const rightTower = spanStart + Math.round(span * (editorial ? 0.76 : 0.73));
+  const towerHalfSpan = editorial ? 0 : Math.max(1, Math.round(columns * 0.0065));
+  const towerCapHalfSpan = editorial ? 1 : towerHalfSpan;
+  const crossbeamHalfSpan = editorial ? 1 : towerHalfSpan + 1;
+  const towerCrossbeams = editorial
+    ? [0.38, 0.66].map((position) => Math.round(towerTopRow + (deckRow - towerTopRow) * position))
+    : [Math.round(rows * 0.29), Math.round(rows * 0.5)];
 
-  addLine(0, deckRow, columns - 1, deckRow, 1);
-  addLine(0, deckRow + 2, columns - 1, deckRow + 2);
+  if (editorial) {
+    addLine(spanStart, deckRow, spanEnd, deckRow);
+    addLine(spanStart, deckRow + 1, spanEnd, deckRow + 1);
+  } else {
+    addLine(spanStart, deckRow, spanEnd, deckRow, 1);
+    addLine(spanStart, deckRow + 2, spanEnd, deckRow + 2);
+  }
 
   for (const tower of [leftTower, rightTower]) {
-    addLine(tower - towerWidth, towerTopRow, tower - towerWidth, towerBottomRow);
-    addLine(tower + towerWidth, towerTopRow, tower + towerWidth, towerBottomRow);
-    addLine(tower - towerWidth, towerTopRow, tower + towerWidth, towerTopRow);
+    addLine(tower - towerHalfSpan, towerTopRow, tower - towerHalfSpan, towerBottomRow);
+    if (towerHalfSpan > 0) {
+      addLine(tower + towerHalfSpan, towerTopRow, tower + towerHalfSpan, towerBottomRow);
+    }
+    if (editorial) {
+      // Legs below the deck are two columns, widened toward the center so the bridge stays mirrored.
+      const legColumn = tower === leftTower ? tower + 1 : tower - 1;
+      addLine(legColumn, deckRow + 2, legColumn, towerBottomRow);
+    }
+    addLine(tower - towerCapHalfSpan, towerTopRow, tower + towerCapHalfSpan, towerTopRow);
 
     for (const crossbeamRow of towerCrossbeams) {
-      addLine(tower - towerCrossbeamWidth, crossbeamRow, tower + towerCrossbeamWidth, crossbeamRow);
+      addLine(tower - crossbeamHalfSpan, crossbeamRow, tower + crossbeamHalfSpan, crossbeamRow);
     }
   }
 
   const getParabolicRow = (fromRow: number, toRow: number, progress: number, sag: number) => {
     return Math.round(fromRow + (toRow - fromRow) * progress + 4 * sag * progress * (1 - progress));
   };
-  const mainSpanSagRows = (deckRow - towerTopRow) * mainSpanSag;
+  const mainSpanSagRows = (deckRow - towerTopRow) * (editorial ? 0.65 : mainSpanSag);
   const sideCableSagRows = (deckRow - towerTopRow) * sideCableSag;
+  // A parabola tops out at a tangent landing (exponent 2); a higher exponent drops steeply off the
+  // tower and flattens toward the deck, which keeps the short side spans reading as curves.
+  const editorialSideCableExponent = 2.6;
+  const getSideCableRow = (progress: number) => {
+    if (editorial) {
+      return Math.round(towerTopRow + (deckRow - towerTopRow) * (1 - (1 - progress) ** editorialSideCableExponent));
+    }
+
+    return getParabolicRow(towerTopRow, deckRow, progress, sideCableSagRows);
+  };
   const getCableRow = (column: number) => {
     if (column < leftTower) {
-      const progress = (leftTower - column) / leftTower;
-      return getParabolicRow(towerTopRow, deckRow, progress, sideCableSagRows);
+      return getSideCableRow((leftTower - column) / Math.max(1, leftTower - spanStart));
     }
 
     if (column > rightTower) {
-      const progress = (column - rightTower) / (columns - 1 - rightTower);
-      return getParabolicRow(towerTopRow, deckRow, progress, sideCableSagRows);
+      return getSideCableRow((column - rightTower) / Math.max(1, spanEnd - rightTower));
     }
 
     const progress = (column - leftTower) / (rightTower - leftTower);
     return getParabolicRow(towerTopRow, towerTopRow, progress, mainSpanSagRows);
   };
 
-  for (let column = 0; column <= columns - 1; column += 0.5) {
-    addSquare(Math.round(column), getCableRow(column));
+  let previousCablePoint: { column: number; row: number } | null = null;
+
+  for (let column = spanStart; column <= spanEnd; column += 0.5) {
+    const cablePoint = { column: Math.round(column), row: getCableRow(column) };
+
+    if (editorial && previousCablePoint) {
+      // Steep cable segments jump several rows per column; bridging them keeps the curve continuous.
+      addLine(previousCablePoint.column, previousCablePoint.row, cablePoint.column, cablePoint.row);
+    } else {
+      addSquare(cablePoint.column, cablePoint.row);
+    }
+
+    previousCablePoint = cablePoint;
   }
 
   const addSuspenders = (fromColumn: number, toColumn: number, spacing: number) => {
@@ -398,9 +451,9 @@ function buildBridgeCells(metrics: CanvasMetrics, controls: MalayalamBridgeContr
     }
   };
 
-  addSuspenders(0, leftTower, controls.sideSuspenderSpacing);
+  addSuspenders(spanStart, leftTower, controls.sideSuspenderSpacing);
   addSuspenders(leftTower, rightTower, controls.mainSpanSuspenderSpacing);
-  addSuspenders(rightTower, columns - 1, controls.sideSuspenderSpacing);
+  addSuspenders(rightTower, spanEnd, controls.sideSuspenderSpacing);
 
   const retainedCells = new Map<string, BridgeCell>();
 
@@ -459,12 +512,16 @@ function drawRenderedDot(context: CanvasRenderingContext2D, dot: RenderedDot) {
 }
 
 type MalayalamBridgeCanvasProps = {
+  horizontalInset?: number;
   pauseWhenOffscreen?: boolean;
+  profile?: "default" | "editorial";
   showControls?: boolean;
 };
 
 export function MalayalamBridgeCanvas({
+  horizontalInset = 0,
   pauseWhenOffscreen = false,
+  profile = "default",
   showControls = true,
 }: MalayalamBridgeCanvasProps) {
   const activeCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -478,6 +535,10 @@ export function MalayalamBridgeCanvas({
   const repaintStaticRef = useRef<() => void>(() => {});
   const controlsRef = useRef<MalayalamBridgeControls>(MALAYALAM_BRIDGE_CONTROL_DEFAULTS);
   const glyphBitmapCacheRef = useRef<Map<string, GlyphBitmap>>(new Map());
+  const horizontalInsetRef = useRef(horizontalInset);
+  const profileRef = useRef(profile);
+  horizontalInsetRef.current = horizontalInset;
+  profileRef.current = profile;
   const [controls, setControls] = useState(MALAYALAM_BRIDGE_CONTROL_DEFAULTS);
   const [isPanelMinimized, setIsPanelMinimized] = useState(false);
   const [isPanelVisible, setIsPanelVisible] = useState(false);
@@ -562,7 +623,12 @@ export function MalayalamBridgeCanvas({
       renderedDotsRef.current.forEach((dot) => drawRenderedDot(staticContext, dot));
     };
     repaintStaticRef.current = () => {
-      bridgeCellsRef.current = buildBridgeCells(metricsRef.current, controlsRef.current);
+      bridgeCellsRef.current = buildBridgeCells(
+        metricsRef.current,
+        controlsRef.current,
+        horizontalInsetRef.current,
+        profileRef.current,
+      );
       renderedDotsRef.current = buildRenderedDots(
         bridgeCellsRef.current,
         glyphBitmaps,

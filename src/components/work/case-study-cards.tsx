@@ -14,6 +14,8 @@ import { PLAYGROUND_PROJECTS } from "@/config/playground";
 const FEATURED_CASE_STUDIES = CASE_STUDIES.slice(0, 3);
 const CASE_STUDY_HOVER_LABEL = "VIEW CASE STUDY";
 const PLAYGROUND_HOVER_LABEL = "TAKE ME THERE";
+const CASE_STUDY_TYPE_LABEL = "Case study";
+const WEB_TYPE_LABEL = "Web";
 
 type WorkGridCard = {
   external: boolean;
@@ -24,6 +26,7 @@ type WorkGridCard = {
   mediaLabel: string;
   poster?: string;
   title: string;
+  typeLabel: string;
   video?: string;
 };
 
@@ -41,6 +44,7 @@ const WORK_GRID_CARDS: WorkGridCard[] = [
     href: `/work/${caseStudy.slug}`,
     external: false,
     hoverLabel: CASE_STUDY_HOVER_LABEL,
+    typeLabel: CASE_STUDY_TYPE_LABEL,
   })),
   ...PLAYGROUND_PROJECTS.map((project) => ({
     id: project.video ?? project.image ?? project.title,
@@ -51,6 +55,7 @@ const WORK_GRID_CARDS: WorkGridCard[] = [
     href: project.href,
     external: project.href ? isExternalHref(project.href) : false,
     hoverLabel: project.href ? PLAYGROUND_HOVER_LABEL : undefined,
+    typeLabel: project.typeLabel ?? WEB_TYPE_LABEL,
   })),
 ];
 
@@ -109,7 +114,10 @@ function WorkProjectCard({
   const body = (
     <article className="work-case-study-card__feature">
       <WorkCardMedia card={card} />
-      <h3 className={`work-case-study-card__title text-text-primary ${titleClassName}`}>{card.title}</h3>
+      <div className="work-case-study-card__copy">
+        <p className="work-case-study-card__type text-heading-5 text-text-muted">{card.typeLabel}</p>
+        <h3 className={`work-case-study-card__title text-text-primary ${titleClassName}`}>{card.title}</h3>
+      </div>
     </article>
   );
 

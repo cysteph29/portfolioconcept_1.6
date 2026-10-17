@@ -8,8 +8,8 @@ type Props = {
   sections: CaseStudySection[];
 };
 
-// Matches the sticky top offset: --nav-height (5.5rem = 88px) + --spacing-home-stack-gap (1.25rem = 20px)
-const STICKY_OFFSET_PX = 108;
+// Matches the sticky top offset: --nav-height (3.75rem = 60px) + --spacing-home-stack-gap (1.25rem = 20px)
+const STICKY_OFFSET_PX = 80;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
 function usePrefersReducedMotion() {
