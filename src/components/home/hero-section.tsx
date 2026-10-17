@@ -3,10 +3,10 @@ import type { ReactNode } from "react";
 
 import { ReviewLink } from "@/components/navigation/review-link";
 
-const DEFAULT_HEADLINE =
+export const HOME_HERO_HEADLINE =
   "SF-based, AI-native Product Designer working across enterprise and consumer products.";
 
-const DEFAULT_SUBHEAD =
+export const HOME_HERO_SUBHEAD =
   "I've worked across fintech, AI, and growth, often as the only designer. I like getting close to customers, figuring out what matters, and building things that work.";
 
 type HeroSectionProps = {
@@ -24,7 +24,7 @@ type HeroSectionProps = {
 
 export function HeroSection({
   backgroundLayerContent,
-  headline = DEFAULT_HEADLINE,
+  headline = HOME_HERO_HEADLINE,
   id = "hero",
   portraitAlt = "Portrait",
   portraitSrc = "/assets/profilepic.png",
@@ -65,7 +65,7 @@ export function HeroSection({
           {headline}
         </h1>
         {showSubhead ? (
-          <p className="home-fold__subhead text-body-2 text-text-muted">{DEFAULT_SUBHEAD}</p>
+          <p className="home-fold__subhead text-body-2 text-text-muted">{HOME_HERO_SUBHEAD}</p>
         ) : null}
         {showActions ? (
           <div className="home-fold__actions">

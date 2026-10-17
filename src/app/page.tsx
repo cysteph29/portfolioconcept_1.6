@@ -1,22 +1,14 @@
-import { ExperienceSection } from "@/components/home/experience-section";
-import { HeroSection } from "@/components/home/hero-section";
-import { SectionTransition03 } from "@/components/home/section-transition-03";
+import { EditorialIntro } from "@/components/home/editorial-intro";
 import { TextReveal05Initializer } from "@/components/home/text-reveal-05-initializer";
 import { WorkSection } from "@/components/home/work-section";
-import { MalayalamBridgeCanvas } from "@/components/trial/malayalam-bridge-canvas";
 
 export default function HomePage() {
   return (
     <div className="home-page">
-      <HeroSection
-        backgroundLayerContent={<MalayalamBridgeCanvas pauseWhenOffscreen showControls={false} />}
-        showActions={false}
-        withBackgroundLayer
-        withViewportHeight={false}
-      />
-      <WorkSection />
-      <ExperienceSection />
-      <SectionTransition03 />
+      <div className="editorial-stage">
+        <EditorialIntro />
+        <WorkSection />
+      </div>
       <TextReveal05Initializer />
     </div>
   );

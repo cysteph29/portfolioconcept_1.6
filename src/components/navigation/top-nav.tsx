@@ -1,16 +1,14 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { useSmartNavbar } from "@/components/navigation/use-smart-navbar";
 import { isDiveReviewPath, toReviewHref } from "@/lib/review-path";
 
 const NAV_ITEMS = [
   { href: "/#work", label: "Work", isActive: () => false },
-  { href: "/playground", label: "AI & Play", isActive: (pathname: string) => pathname === "/playground" },
   { href: "/about", label: "About", isActive: (pathname: string) => pathname === "/about" },
   { href: "/#contact", label: "Contact", isActive: () => false },
   {
@@ -28,15 +26,7 @@ export function TopNav() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const {
-    hidden,
-    navRef,
-    onBlurCapture,
-    onClickCapture,
-    onFocusCapture,
-    onPointerDownCapture,
-    shouldReduceMotion,
-  } = useSmartNavbar({ isMobileMenuOpen });
+  const shouldReduceMotion = useReducedMotion() ?? false;
 
   const closeMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(false);
@@ -65,17 +55,7 @@ export function TopNav() {
 
   return (
     <>
-      <motion.header
-        animate={{ opacity: hidden ? 0 : 1, y: hidden ? "-100%" : "0%" }}
-        className="top-nav-surface fixed inset-x-0 top-0 z-50"
-        initial={false}
-        onBlurCapture={onBlurCapture}
-        onClickCapture={onClickCapture}
-        onFocusCapture={onFocusCapture}
-        onPointerDownCapture={onPointerDownCapture}
-        ref={navRef}
-        transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.25, ease: "easeOut" }}
-      >
+      <header className="top-nav-surface">
         <nav className="flex items-center justify-between px-[var(--spacing-home-edge-x)] pt-[var(--nav-padding-top)] pb-[var(--nav-padding-bottom)]">
           <Link
             aria-current={publicPathname === "/" ? "page" : undefined}
@@ -123,7 +103,7 @@ export function TopNav() {
             </span>
           </button>
         </nav>
-      </motion.header>
+      </header>
       <AnimatePresence initial={false}>
         {isMobileMenuOpen ? (
           <motion.div
@@ -132,8 +112,6 @@ export function TopNav() {
             exit={shouldReduceMotion ? { opacity: 0, height: 0 } : { opacity: 0, height: 0 }}
             id="mobile-navigation-menu"
             initial={shouldReduceMotion ? { opacity: 1, height: "auto" } : { opacity: 0, height: 0 }}
-            onClickCapture={onClickCapture}
-            onPointerDownCapture={onPointerDownCapture}
             ref={menuRef}
             transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.2, ease: "easeOut" }}
           >
