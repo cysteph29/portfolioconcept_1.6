@@ -42,38 +42,6 @@ const GLYPH_HEIGHT_RATIO = 0.84;
 const GLYPH_FONT_FAMILY = '"Manjari"';
 const MALAYALAM_GLYPHS = ["പ", "മ", "യ", "വ", "ല", "സ", "ഗ", "ന"] as const;
 
-const SITE_WHITE: readonly RGB[] = [
-  [249, 244, 241],
-  [232, 217, 196],
-  [204, 192, 154],
-  [164, 166, 112],
-  [120, 132, 78],
-];
-
-const SITE_BLACK: readonly RGB[] = [
-  [132, 146, 84],
-  [86, 104, 58],
-  [54, 74, 42],
-  [36, 54, 32],
-  [24, 40, 22],
-];
-
-const SITE_LIME_WHITE: readonly RGB[] = [
-  [210, 255, 176],
-  [124, 255, 107],
-  [82, 206, 90],
-  [48, 150, 68],
-  [32, 104, 50],
-];
-
-const SITE_LIME_BLACK: readonly RGB[] = [
-  [156, 232, 118],
-  [96, 188, 84],
-  [52, 132, 60],
-  [30, 90, 42],
-  [18, 56, 28],
-];
-
 const MULTICOLOR_BLOBS = [
   { color: [255, 55, 170], rx: 6.8, ry: 0.38, x: 50.5, y: 0.3 },
   { color: [255, 210, 45], rx: 5.4, ry: 0.34, x: 57, y: 0.58 },
@@ -147,33 +115,6 @@ function valueNoise(x: number, y: number) {
   return (a * (1 - sx) + b * sx) * (1 - sy) + (c * (1 - sx) + d * sx) * sy;
 }
 
-function whiteTone(u: number, v: number) {
-  const edge = Math.min(u, 1 - u);
-  let tone = 1;
-
-  if (v < 0.1) {
-    tone = 0;
-  } else if (v < 0.36) {
-    tone = 1;
-  } else if (v < 0.7) {
-    tone = 2;
-  } else {
-    tone = 3;
-  }
-
-  if (edge < 0.08 || u > 0.92) {
-    tone = Math.min(4, tone + 2);
-  } else if (edge < 0.16) {
-    tone = Math.min(4, tone + 1);
-  }
-
-  if (u > 0.32 && u < 0.52 && v < 0.42 && tone > 0) {
-    tone -= 1;
-  }
-
-  return tone;
-}
-
 function blackTone(u: number, v: number) {
   let tone = 2;
 
@@ -196,19 +137,6 @@ function blackTone(u: number, v: number) {
   }
 
   return tone;
-}
-
-function siteColor(isBlack: boolean, u: number, v: number, active: boolean): RGB {
-  const tone = isBlack ? blackTone(u, v) : whiteTone(u, v);
-  const ramp = active
-    ? isBlack
-      ? SITE_LIME_BLACK
-      : SITE_LIME_WHITE
-    : isBlack
-      ? SITE_BLACK
-      : SITE_WHITE;
-
-  return ramp[tone];
 }
 
 function blobWeight(kx: number, ky: number, blob: ColorBlob, warpX: number, warpY: number) {
@@ -389,37 +317,7 @@ function multicolorDot(
   return color;
 }
 
-function colorForDot(
-  palette: PianoPaletteId,
-  sample: {
-    active: boolean;
-    isBlack: boolean;
-    keyUnitsX: number;
-    keyUnitsY: number;
-    u: number;
-    v: number;
-  },
-): RGB {
-  if (palette === "site") {
-    return siteColor(sample.isBlack, sample.u, sample.v, sample.active);
-  }
-
-  return multicolorDot(
-    sample.keyUnitsX,
-    sample.keyUnitsY,
-    sample.isBlack,
-    sample.u,
-    sample.v,
-    sample.active,
-  );
-}
-
-export function measurePianoDotLayout(
-  root: HTMLElement,
-  keys: HTMLElement,
-  palette: PianoPaletteId,
-): PianoDotLayout | null {
-  const perWhiteKey = palette === "malayalam" ? GLYPHS_PER_WHITE_KEY : DOTS_PER_WHITE_KEY;
+export function measurePianoDotLayout(root: HTMLElement, keys: HTMLElement): PianoDotLayout | null {
   const rootRect = root.getBoundingClientRect();
   const keysRect = keys.getBoundingClientRect();
   const width = root.clientWidth;
@@ -437,8 +335,8 @@ export function measurePianoDotLayout(
     return null;
   }
 
-  const cell = whiteWidth / perWhiteKey;
-  const cols = whiteKeys.length * perWhiteKey;
+  const cell = whiteWidth / GLYPHS_PER_WHITE_KEY;
+  const cols = whiteKeys.length * GLYPHS_PER_WHITE_KEY;
   const rows = Math.max(1, Math.floor(keysRect.height / cell));
   const originX = rootRect.left - keysRect.left;
   const originY = rootRect.top - keysRect.top;
@@ -503,76 +401,9 @@ export function measurePianoDotLayout(
     keyboardHeight: keysRect.height,
     originX,
     originY,
-    radius: cell * DOT_RADIUS_RATIO,
     rows,
     width,
   };
-}
-
-export function paintPianoDots(
-  context: CanvasRenderingContext2D,
-  layout: PianoDotLayout,
-  palette: PianoPaletteId,
-  activeNotes: ReadonlySet<string>,
-) {
-  const { blackHeight, cell, columns, height, keyboardHeight, originX, originY, radius, rows, width } =
-    layout;
-  const firstCol = Math.max(0, Math.floor(originX / cell) - 1);
-  const lastCol = Math.min(columns.length - 1, Math.ceil((originX + width) / cell) + 1);
-  const firstRow = Math.max(0, Math.floor(originY / cell) - 1);
-  const lastRow = Math.min(rows - 1, Math.ceil((originY + height) / cell) + 1);
-  const buckets = new Map<string, number[]>();
-
-  context.clearRect(0, 0, width, height);
-
-  for (let col = firstCol; col <= lastCol; col += 1) {
-    const info = columns[col];
-
-    if (!info) {
-      continue;
-    }
-
-    const cx = (col + 0.5) * cell;
-
-    for (let row = firstRow; row <= lastRow; row += 1) {
-      const cy = (row + 0.5) * cell;
-      const isBlack = Boolean(info.black) && cy < blackHeight;
-      const note = isBlack && info.black ? info.black.id : info.whiteId;
-      const u = isBlack && info.black ? (cx - info.black.left) / info.black.width : (cx - info.whiteLeft) / info.whiteWidth;
-      const v = isBlack ? cy / blackHeight : cy / keyboardHeight;
-      const rgb = colorForDot(palette, {
-        active: activeNotes.has(note),
-        isBlack,
-        keyUnitsX: cx / info.whiteWidth,
-        keyUnitsY: cy / keyboardHeight,
-        u,
-        v,
-      });
-      const fill = fillStyle(rgb);
-      let points = buckets.get(fill);
-
-      if (!points) {
-        points = [];
-        buckets.set(fill, points);
-      }
-
-      points.push(cx - originX, cy - originY);
-    }
-  }
-
-  for (const [fill, points] of buckets) {
-    context.fillStyle = fill;
-    context.beginPath();
-
-    for (let index = 0; index < points.length; index += 2) {
-      const x = points[index];
-      const y = points[index + 1];
-      context.moveTo(x + radius, y);
-      context.arc(x, y, radius, 0, Math.PI * 2);
-    }
-
-    context.fill();
-  }
 }
 
 type GlyphMetric = {

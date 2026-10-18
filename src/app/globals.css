@@ -865,14 +865,6 @@ a {
     justify-content: flex-end;
   }
 
-  .piano-keyboard-frame {
-    position: relative;
-    width: 100%;
-    min-width: 0;
-    flex: 0 0 auto;
-    margin-top: clamp(2.75rem, 6vh, 4.5rem);
-  }
-
   .piano-keyboard {
     --piano-white-width: 60px;
     --piano-height: 180px;
@@ -883,7 +875,9 @@ a {
     width: 100%;
     min-width: 0;
     height: var(--piano-height);
+    flex: 0 0 auto;
     justify-content: center;
+    margin-top: clamp(2.75rem, 6vh, 4.5rem);
     overflow: hidden;
     pointer-events: none;
     user-select: none;
@@ -923,51 +917,6 @@ a {
     width: var(--piano-black-width);
     height: 60%;
     background: transparent;
-  }
-
-  .piano-keyboard-switch {
-    position: absolute;
-    z-index: 3;
-    top: 0.5rem;
-    left: 0.75rem;
-    display: flex;
-    min-inline-size: 0;
-    margin: 0;
-    padding: 0.15rem;
-    border: var(--border-width-hairline) solid color-mix(in srgb, var(--color-text-primary) 42%, transparent);
-    background: color-mix(in srgb, var(--color-canvas) 88%, black);
-    color: var(--color-text-primary);
-    font-size: var(--text-button);
-    line-height: var(--text-button--line-height);
-    pointer-events: auto;
-  }
-
-  .piano-keyboard-switch__option {
-    position: relative;
-    display: inline-flex;
-    min-width: 4.75rem;
-    min-height: 2rem;
-    align-items: center;
-    justify-content: center;
-    padding: 0.3rem 0.7rem;
-    cursor: pointer;
-  }
-
-  .piano-keyboard-switch__option input {
-    position: absolute;
-    inset: 0;
-    margin: 0;
-    opacity: 0;
-    cursor: pointer;
-  }
-
-  .piano-keyboard-switch__option:has(:checked) span {
-    color: var(--color-accent-lime);
-  }
-
-  .piano-keyboard-switch__option:has(:focus-visible) {
-    outline: 1px solid currentColor;
-    outline-offset: 0.25rem;
   }
 
   .about-page {
@@ -2070,13 +2019,10 @@ a {
     padding-top: clamp(2rem, 9vw, 3rem);
   }
 
-  .piano-keyboard-frame {
-    margin-top: clamp(2.25rem, 8vw, 3.5rem);
-  }
-
   .piano-keyboard {
     --piano-white-width: 44px;
     --piano-height: 135px;
+    margin-top: clamp(2.25rem, 8vw, 3.5rem);
   }
 
   .contact-footer__contact {

@@ -1,14 +1,12 @@
 "use client";
 
-import { type CSSProperties, type RefObject, useEffect, useRef, useState } from "react";
+import { type CSSProperties, type RefObject, useEffect, useRef } from "react";
 
 import {
   buildPianoGlyphMask,
   loadPianoGlyphFont,
   measurePianoDotLayout,
-  paintPianoDots,
   paintPianoGlyphs,
-  type PianoPaletteId,
 } from "@/components/home/piano-dot-matrix";
 
 import "@/app/trial/trial.module.css";
@@ -343,12 +341,7 @@ function collectActiveNotes(keys: HTMLElement) {
 function usePianoDotMatrix(
   rootRef: RefObject<HTMLDivElement | null>,
   canvasRef: RefObject<HTMLCanvasElement | null>,
-  palette: PianoPaletteId,
 ) {
-  const paletteRef = useRef(palette);
-  const paintRef = useRef<() => void>(() => {});
-  const refreshRef = useRef<() => void>(() => {});
-
   useEffect(() => {
     const root = rootRef.current;
     const canvas = canvasRef.current;
@@ -360,21 +353,15 @@ function usePianoDotMatrix(
     }
 
     let frame = 0;
+    let disposed = false;
     let dpr = 1;
-    let layout = measurePianoDotLayout(root, keys, paletteRef.current);
+    let layout = measurePianoDotLayout(root, keys);
     let glyphMask: HTMLCanvasElement | null = null;
 
     const paint = () => {
       frame = 0;
 
       if (!layout) {
-        return;
-      }
-
-      const activeNotes = collectActiveNotes(keys);
-
-      if (paletteRef.current !== "malayalam") {
-        paintPianoDots(context, layout, paletteRef.current, activeNotes);
         return;
       }
 
@@ -385,11 +372,11 @@ function usePianoDotMatrix(
         return;
       }
 
-      paintPianoGlyphs(context, layout, dpr, glyphMask, activeNotes);
+      paintPianoGlyphs(context, layout, dpr, glyphMask, collectActiveNotes(keys));
     };
 
     const resize = () => {
-      const next = measurePianoDotLayout(root, keys, paletteRef.current);
+      const next = measurePianoDotLayout(root, keys);
       layout = next;
       glyphMask = null;
 
@@ -422,104 +409,57 @@ function usePianoDotMatrix(
     resizeObserver.observe(keys);
     window.addEventListener("resize", resize);
     window.visualViewport?.addEventListener("resize", resize);
-    paintRef.current = schedulePaint;
-    refreshRef.current = resize;
     resize();
 
+    void loadPianoGlyphFont().then((loaded) => {
+      if (!disposed && loaded) {
+        glyphMask = null;
+        schedulePaint();
+      }
+    });
+
     return () => {
+      disposed = true;
+
       if (frame !== 0) {
         window.cancelAnimationFrame(frame);
       }
 
-      paintRef.current = () => {};
-      refreshRef.current = () => {};
       classObserver.disconnect();
       resizeObserver.disconnect();
       window.removeEventListener("resize", resize);
       window.visualViewport?.removeEventListener("resize", resize);
     };
   }, [canvasRef, rootRef]);
-
-  useEffect(() => {
-    paletteRef.current = palette;
-    refreshRef.current();
-
-    if (palette === "malayalam") {
-      void loadPianoGlyphFont().then((loaded) => {
-        if (loaded && paletteRef.current === "malayalam") {
-          paintRef.current();
-        }
-      });
-    }
-  }, [palette]);
-}
-
-const PALETTE_OPTIONS = [
-  { id: "site", label: "Site" },
-  { id: "multicolor", label: "Multicolor" },
-  { id: "malayalam", label: "Malayalam" },
-] as const satisfies readonly { id: PianoPaletteId; label: string }[];
-
-function PianoPaletteSwitch({
-  onChange,
-  palette,
-}: {
-  onChange: (palette: PianoPaletteId) => void;
-  palette: PianoPaletteId;
-}) {
-  return (
-    <fieldset className="piano-keyboard-switch">
-      <legend className="sr-only">Piano color treatment</legend>
-      {PALETTE_OPTIONS.map((option) => (
-        <label className="piano-keyboard-switch__option" key={option.id}>
-          <input
-            checked={palette === option.id}
-            name="piano-palette-treatment"
-            onChange={() => onChange(option.id)}
-            type="radio"
-            value={option.id}
-          />
-          <span>{option.label}</span>
-        </label>
-      ))}
-    </fieldset>
-  );
 }
 
 export function PianoKeyboard() {
   const rootRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [palette, setPalette] = useState<PianoPaletteId>("site");
   usePianoPhrase(rootRef);
-  usePianoDotMatrix(rootRef, canvasRef, palette);
+  usePianoDotMatrix(rootRef, canvasRef);
 
   return (
-    <div className="piano-keyboard-frame">
-      {/* Temporary local comparison. Remove this switch after choosing a palette. */}
-      {process.env.NODE_ENV === "development" ? (
-        <PianoPaletteSwitch onChange={setPalette} palette={palette} />
-      ) : null}
-      <div aria-hidden="true" className="piano-keyboard" data-palette={palette} ref={rootRef}>
-        <canvas className="piano-keyboard__dots" ref={canvasRef} />
-        <div className="piano-keyboard__keys">
-          {PIANO_KEYS.white.map((key) => (
-            <div
-              className="piano-keyboard__key piano-keyboard__key--white"
-              data-note={key.id}
-              data-piano-key="white"
-              key={key.id}
-            />
-          ))}
-          {PIANO_KEYS.black.map((key) => (
-            <div
-              className="piano-keyboard__key piano-keyboard__key--black"
-              data-note={key.id}
-              data-piano-key="black"
-              key={key.id}
-              style={{ "--piano-key-index": key.whiteIndex } as CSSProperties}
-            />
-          ))}
-        </div>
+    <div aria-hidden="true" className="piano-keyboard" ref={rootRef}>
+      <canvas className="piano-keyboard__dots" ref={canvasRef} />
+      <div className="piano-keyboard__keys">
+        {PIANO_KEYS.white.map((key) => (
+          <div
+            className="piano-keyboard__key piano-keyboard__key--white"
+            data-note={key.id}
+            data-piano-key="white"
+            key={key.id}
+          />
+        ))}
+        {PIANO_KEYS.black.map((key) => (
+          <div
+            className="piano-keyboard__key piano-keyboard__key--black"
+            data-note={key.id}
+            data-piano-key="black"
+            key={key.id}
+            style={{ "--piano-key-index": key.whiteIndex } as CSSProperties}
+          />
+        ))}
       </div>
     </div>
   );
