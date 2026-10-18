@@ -359,7 +359,7 @@ a {
   .editorial-work__play {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.15rem 8px;
+    gap: 1.5rem 8px;
     margin-top: 1.35rem;
   }
 
@@ -369,12 +369,22 @@ a {
   }
 
   .editorial-stage .work-case-study-card__feature {
-    gap: 0.45rem;
+    gap: 0.5rem;
   }
 
   .editorial-stage .work-case-study-card__title {
     margin: 0;
     text-wrap: pretty;
+  }
+
+  /* Line-heights stay as they are. These margins cancel the empty
+     space inside those line boxes so the category and title sit together. */
+  .editorial-stage .editorial-featured-title {
+    margin-top: calc(-0.275rem - var(--text-heading-2--line-height) / 2 + 0.335em);
+  }
+
+  .editorial-stage .editorial-play-title {
+    margin-top: calc(-0.275rem - 0.167em);
   }
 
   .editorial-featured-title {
