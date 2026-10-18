@@ -8,7 +8,7 @@ export type PlaygroundProject = {
 
 export const PLAYGROUND_PROJECTS: PlaygroundProject[] = [
   {
-    title: "Showcasing some of my favorite albums of all time",
+    title: "My Favorite Albums",
     video: "/work/playground/albumshowcase.mp4",
     href: "https://albumshowcase.vercel.app/",
   },
@@ -18,12 +18,12 @@ export const PLAYGROUND_PROJECTS: PlaygroundProject[] = [
     href: "https://cehp-gallery.vercel.app/",
   },
   {
-    title: "A fun way to learn coding terms for vibe-coders",
+    title: "Coding Terms, Explained",
     video: "/work/playground/game video.mp4",
     href: "https://techterms.vercel.app/",
   },
   {
-    title: "Automated email summaries using n8n",
+    title: "Automated Email Summaries with n8n",
     video: "/work/playground/n8n vid.mp4",
     typeLabel: "Play",
   },
@@ -34,7 +34,7 @@ export const PLAYGROUND_PROJECTS: PlaygroundProject[] = [
     typeLabel: "Play",
   },
   {
-    title: "Music credit lookup tool, inspired by my time as a musician and audio engineer",
+    title: "Who Made This Song?",
     image: "/work/playground/musictool.png",
     href: "https://produced4.vercel.app/",
   },

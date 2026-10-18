@@ -64,6 +64,8 @@ export function textReveal05(
         const elDelay = Number.isNaN(delayVal) ? 0 : delayVal;
         const shuffles = Number.isNaN(shufflesVal) ? CONFIG.shuffles : shufflesVal;
         const once = el.hasAttribute("data-once") ? el.getAttribute("data-once") !== "false" : CONFIG.once;
+        const triggerSelector = el.getAttribute("data-scroll-trigger");
+        const trigger = (triggerSelector ? document.querySelector(triggerSelector) : null) ?? el;
         const totalSteps = shuffles + 1;
         const wordData = instance.words.map((wordEl) => {
           const charEls = [...wordEl.querySelectorAll(".char")];
@@ -101,7 +103,7 @@ export function textReveal05(
         };
         if (useScrub) {
           tweenVars.scrollTrigger = {
-            trigger: el,
+            trigger,
             start: CONFIG.scrubStart,
             end: CONFIG.scrubEnd,
             scrub: true,
@@ -111,7 +113,7 @@ export function textReveal05(
         } else if (useScroll) {
           const start = scrollMode || CONFIG.scrollStart;
           tweenVars.scrollTrigger = {
-            trigger: el,
+            trigger,
             start: `clamp(${start})`,
             markers: CONFIG.markers,
             ...(once ? { once: true } : { toggleActions: "play none none reverse" }),
