@@ -5,9 +5,11 @@ import { useEffect, useRef, useState } from "react";
 import {
   buildFigureCells,
   getFigureGlyphSeed,
+  SPECIMEN_GLYPH,
   type CapabilityFigureId,
   type FigureCell,
-  type FigureInk,
+  type FigureTone,
+  type GlyphMask,
 } from "@/components/home/capability-figures";
 
 import "@/app/trial/trial.module.css";
@@ -16,16 +18,23 @@ const CAPABILITY_CANVAS_CONFIG = {
   cellSize: 8,
   glyphScale: 0.75,
   microDotSize: 1,
-  cream: "rgba(249, 244, 241, 0.62)",
-  lime: "rgba(124, 255, 107, 0.82)",
+  tones: {
+    faint: "rgba(249, 244, 241, 0.2)",
+    mid: "rgba(249, 244, 241, 0.42)",
+    full: "rgba(249, 244, 241, 0.7)",
+    lime: "rgba(124, 255, 107, 0.85)",
+  } satisfies Record<FigureTone, string>,
   resizeDebounceMs: 120,
   sampling: {
     alphaThreshold: 0.15,
     fontSize: 128,
+    maskThreshold: 0.35,
     offscreenSize: 256,
   },
   minStrokeThreshold: 0.08,
 } as const;
+
+const TONE_ORDER: FigureTone[] = ["faint", "mid", "full", "lime"];
 
 const MALAYALAM_GLYPH_POOL = ["അ", "ആ", "ഇ", "ഉ", "ക", "ഗ", "മ", "യ", "ര", "ല", "വ", "സ"] as const;
 
@@ -33,14 +42,6 @@ type CanvasMetrics = {
   dpr: number;
   height: number;
   width: number;
-};
-
-type RenderedDot = {
-  height: number;
-  ink: FigureInk;
-  width: number;
-  x: number;
-  y: number;
 };
 
 type GlyphBitmap = {
@@ -60,13 +61,42 @@ type InkBounds = {
 };
 
 const glyphBitmapCache = new Map<string, GlyphBitmap>();
+const glyphSetCache = new Map<string, GlyphBitmap[]>();
+const glyphMaskCache = new Map<string, GlyphMask | null>();
+let samplingContext: CanvasRenderingContext2D | null = null;
+let glyphResourcesPromise: Promise<boolean> | null = null;
 
 function getCellKey(column: number, row: number) {
   return `${column}:${row}`;
 }
 
+function getSamplingContext() {
+  if (!samplingContext) {
+    samplingContext = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+  }
+
+  return samplingContext;
+}
+
+function resolveOffscreenSize(context: CanvasRenderingContext2D, glyph: string, fontSize: number) {
+  const base = CAPABILITY_CANVAS_CONFIG.sampling.offscreenSize;
+
+  if ([...glyph].length <= 1) {
+    return base;
+  }
+
+  context.font = `${fontSize}px "Manjari"`;
+  const metrics = context.measureText(glyph);
+  const width = Math.ceil(metrics.width);
+  const height = Math.ceil(
+    (metrics.actualBoundingBoxAscent || fontSize) + (metrics.actualBoundingBoxDescent || fontSize * 0.5),
+  );
+
+  return Math.max(base, width + 32, height + 32);
+}
+
 function renderAndMeasureGlyph(context: CanvasRenderingContext2D, glyph: string, fontSize: number): InkBounds | null {
-  const { offscreenSize } = CAPABILITY_CANVAS_CONFIG.sampling;
+  const offscreenSize = resolveOffscreenSize(context, glyph, fontSize);
   context.canvas.width = offscreenSize;
   context.canvas.height = offscreenSize;
   context.clearRect(0, 0, offscreenSize, offscreenSize);
@@ -108,8 +138,8 @@ function sampleGlyphBitmap(
   fontSize: number,
   bitmapBudget: number,
   coverageThreshold: number,
+  fit: "max" | "height" = "max",
 ): GlyphBitmap | null {
-  const { offscreenSize } = CAPABILITY_CANVAS_CONFIG.sampling;
   const { minStrokeThreshold } = CAPABILITY_CANVAS_CONFIG;
   const bounds = renderAndMeasureGlyph(context, glyph, fontSize);
 
@@ -118,8 +148,10 @@ function sampleGlyphBitmap(
     return null;
   }
 
+  const offscreenSize = context.canvas.width;
   const image = context.getImageData(0, 0, offscreenSize, offscreenSize).data;
-  const scale = Math.min(bitmapBudget / bounds.width, bitmapBudget / bounds.height);
+  const scale =
+    fit === "height" ? bitmapBudget / bounds.height : Math.min(bitmapBudget / bounds.width, bitmapBudget / bounds.height);
   const width = Math.max(1, Math.round(bounds.width * scale));
   const height = Math.max(1, Math.round(bounds.height * scale));
   const coverageGrid = Array.from({ length: height }, () => Array<number>(width).fill(0));
@@ -191,7 +223,7 @@ function sampleGlyphBitmap(
 
 async function loadManjariFont() {
   const font = '96px "Manjari"';
-  const glyphs = MALAYALAM_GLYPH_POOL.join("");
+  const glyphs = `${MALAYALAM_GLYPH_POOL.join("")}${SPECIMEN_GLYPH}ലിപിണ`;
 
   for (let attempt = 1; attempt <= 2; attempt += 1) {
     try {
@@ -210,16 +242,29 @@ async function loadManjariFont() {
   return false;
 }
 
-function buildGlyphBitmaps() {
-  const canvas = document.createElement("canvas");
-  const context = canvas.getContext("2d", { willReadFrequently: true });
+function loadGlyphResources() {
+  glyphResourcesPromise ??= document.fonts.ready.then(() => loadManjariFont());
+
+  return glyphResourcesPromise;
+}
+
+/** The pool sampled at a given span and dot size, sorted from the lightest glyph to the heaviest. */
+function getGlyphSet(span: number, microDotSize: number) {
+  const setKey = `${span}:${microDotSize}`;
+  const cached = glyphSetCache.get(setKey);
+
+  if (cached) {
+    return cached;
+  }
+
+  const context = getSamplingContext();
 
   if (!context) {
     console.error("Capability figure sampling aborted: offscreen context unavailable");
     return [];
   }
 
-  const { cellSize, glyphScale, microDotSize, sampling } = CAPABILITY_CANVAS_CONFIG;
+  const { cellSize, glyphScale, sampling } = CAPABILITY_CANVAS_CONFIG;
   const referenceBounds = renderAndMeasureGlyph(context, "അ", sampling.fontSize);
 
   if (!referenceBounds) {
@@ -227,9 +272,8 @@ function buildGlyphBitmaps() {
     return [];
   }
 
-  const bitmapBudget = Math.max(1, Math.floor((cellSize * glyphScale) / microDotSize));
-
-  return MALAYALAM_GLYPH_POOL.flatMap((glyph) => {
+  const bitmapBudget = Math.max(1, Math.floor((cellSize * span * glyphScale) / microDotSize));
+  const bitmaps = MALAYALAM_GLYPH_POOL.flatMap((glyph) => {
     const cacheKey = `${glyph}:${bitmapBudget}:${sampling.alphaThreshold}`;
     const cachedBitmap = glyphBitmapCache.get(cacheKey);
 
@@ -241,13 +285,7 @@ function buildGlyphBitmaps() {
     const normalizedFontSize = glyphBounds
       ? sampling.fontSize * (referenceBounds.height / glyphBounds.height)
       : sampling.fontSize;
-    const bitmap = sampleGlyphBitmap(
-      context,
-      glyph,
-      normalizedFontSize,
-      bitmapBudget,
-      sampling.alphaThreshold,
-    );
+    const bitmap = sampleGlyphBitmap(context, glyph, normalizedFontSize, bitmapBudget, sampling.alphaThreshold);
 
     if (bitmap) {
       glyphBitmapCache.set(cacheKey, bitmap);
@@ -256,47 +294,93 @@ function buildGlyphBitmaps() {
 
     return [];
   });
+
+  bitmaps.sort((a, b) => a.cells.length - b.cells.length);
+
+  if (bitmaps.length > 0) {
+    glyphSetCache.set(setKey, bitmaps);
+  }
+
+  return bitmaps;
 }
 
-function buildRenderedDots(cells: Map<string, FigureCell>, glyphBitmaps: GlyphBitmap[]) {
-  const { cellSize, microDotSize } = CAPABILITY_CANVAS_CONFIG;
-  const bitmapsByGlyph = new Map(glyphBitmaps.map((bitmap) => [bitmap.glyph, bitmap]));
+function getGlyphMask(glyph: string, budget: number, fit: "max" | "height" = "max") {
+  const cacheKey = `${glyph}:${budget}:${fit}`;
 
-  return [...cells.values()].flatMap((cell) => {
-    const glyph = MALAYALAM_GLYPH_POOL[Math.floor(getFigureGlyphSeed(cell.column, cell.row) * MALAYALAM_GLYPH_POOL.length)];
-    const bitmap = bitmapsByGlyph.get(glyph);
+  if (glyphMaskCache.has(cacheKey)) {
+    return glyphMaskCache.get(cacheKey) ?? null;
+  }
 
-    if (!bitmap) {
-      return [];
-    }
+  const context = getSamplingContext();
+  const bitmap = context
+    ? sampleGlyphBitmap(
+        context,
+        glyph,
+        CAPABILITY_CANVAS_CONFIG.sampling.fontSize,
+        budget,
+        CAPABILITY_CANVAS_CONFIG.sampling.maskThreshold,
+        fit,
+      )
+    : null;
+  const mask = bitmap ? { cells: bitmap.cells, height: bitmap.height, width: bitmap.width } : null;
 
-    const offsetX = (cellSize - bitmap.width * microDotSize) / 2;
-    const offsetY = (cellSize - bitmap.height * microDotSize) / 2;
-
-    return bitmap.cells.map(({ column, row }) => ({
-      height: microDotSize,
-      ink: cell.ink,
-      width: microDotSize,
-      x: cell.column * cellSize + offsetX + column * microDotSize,
-      y: cell.row * cellSize + offsetY + row * microDotSize,
-    }));
-  });
+  glyphMaskCache.set(cacheKey, mask);
+  return mask;
 }
 
-function paintDots(context: CanvasRenderingContext2D, dots: RenderedDot[]) {
-  const { cream, lime } = CAPABILITY_CANVAS_CONFIG;
+function pickGlyph(bitmaps: GlyphBitmap[], cell: FigureCell) {
+  if (cell.glyph) {
+    const named = bitmaps.find((bitmap) => bitmap.glyph === cell.glyph);
 
-  context.fillStyle = cream;
-  for (const dot of dots) {
-    if (dot.ink === "cream") {
-      context.fillRect(dot.x, dot.y, dot.width, dot.height);
+    if (named) {
+      return named;
     }
   }
 
-  context.fillStyle = lime;
-  for (const dot of dots) {
-    if (dot.ink === "lime") {
-      context.fillRect(dot.x, dot.y, dot.width, dot.height);
+  const seed = getFigureGlyphSeed(cell.column, cell.row);
+
+  if (cell.weight === undefined) {
+    return bitmaps[Math.floor(seed * bitmaps.length)];
+  }
+
+  const center = Math.round(cell.weight * (bitmaps.length - 1));
+  const from = Math.max(0, center - 1);
+  const to = Math.min(bitmaps.length - 1, center + 1);
+
+  return bitmaps[from + Math.floor(seed * (to - from + 1))];
+}
+
+function paintCells(
+  context: CanvasRenderingContext2D,
+  cells: Iterable<FigureCell>,
+  origin: { x: number; y: number },
+  microDotSize: number,
+) {
+  const { cellSize, tones } = CAPABILITY_CANVAS_CONFIG;
+  const byTone = new Map<FigureTone, FigureCell[]>(TONE_ORDER.map((tone) => [tone, []]));
+
+  for (const cell of cells) {
+    byTone.get(cell.tone)?.push(cell);
+  }
+
+  for (const tone of TONE_ORDER) {
+    context.fillStyle = tones[tone];
+
+    for (const cell of byTone.get(tone) ?? []) {
+      const span = cell.span ?? 1;
+      const bitmap = pickGlyph(getGlyphSet(span, microDotSize), cell);
+
+      if (!bitmap) {
+        continue;
+      }
+
+      const blockSize = cellSize * span;
+      const x = origin.x + cell.column * cellSize + (blockSize - bitmap.width * microDotSize) / 2;
+      const y = origin.y + cell.row * cellSize + (blockSize - bitmap.height * microDotSize) / 2;
+
+      for (const dot of bitmap.cells) {
+        context.fillRect(x + dot.column * microDotSize, y + dot.row * microDotSize, microDotSize, microDotSize);
+      }
     }
   }
 }
@@ -308,24 +392,16 @@ type CapabilityCanvasProps = {
 export function CapabilityCanvas({ figure }: CapabilityCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const metricsRef = useRef<CanvasMetrics>({ dpr: 1, height: 0, width: 0 });
-  const [glyphBitmaps, setGlyphBitmaps] = useState<GlyphBitmap[] | null>(null);
+  const [glyphsReady, setGlyphsReady] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
 
-    void document.fonts.ready
-      .then(() => loadManjariFont())
-      .then(() => {
-        if (cancelled) {
-          return;
-        }
-
-        const bitmaps = buildGlyphBitmaps();
-
-        if (bitmaps.length > 0) {
-          setGlyphBitmaps(bitmaps);
-        }
-      });
+    void loadGlyphResources().then((loaded) => {
+      if (!cancelled && loaded && getGlyphSet(1, CAPABILITY_CANVAS_CONFIG.microDotSize).length > 0) {
+        setGlyphsReady(true);
+      }
+    });
 
     return () => {
       cancelled = true;
@@ -335,7 +411,7 @@ export function CapabilityCanvas({ figure }: CapabilityCanvasProps) {
   useEffect(() => {
     const canvas = canvasRef.current;
 
-    if (!canvas || !glyphBitmaps || glyphBitmaps.length === 0) {
+    if (!canvas || !glyphsReady) {
       return undefined;
     }
 
@@ -346,17 +422,24 @@ export function CapabilityCanvas({ figure }: CapabilityCanvasProps) {
     }
 
     const paint = () => {
-      const { height, width } = metricsRef.current;
+      const { dpr, height, width } = metricsRef.current;
+      const { cellSize } = CAPABILITY_CANVAS_CONFIG;
+      const microDotSize = dpr >= 2 ? CAPABILITY_CANVAS_CONFIG.microDotSize / 2 : CAPABILITY_CANVAS_CONFIG.microDotSize;
 
-      if (width < 2 || height < 2) {
+      if (width < cellSize || height < cellSize) {
         return;
       }
 
-      const cells = buildFigureCells(figure, width, height, CAPABILITY_CANVAS_CONFIG.cellSize);
-      const dots = buildRenderedDots(cells, glyphBitmaps);
+      const columns = Math.floor(width / cellSize);
+      const rows = Math.floor(height / cellSize);
+      const origin = {
+        x: Math.floor((width - columns * cellSize) / 2),
+        y: Math.floor((height - rows * cellSize) / 2),
+      };
+      const cells = buildFigureCells(figure, { columns, rows }, { glyphMask: getGlyphMask });
 
       context.clearRect(0, 0, width, height);
-      paintDots(context, dots);
+      paintCells(context, cells.values(), origin, microDotSize);
     };
 
     const resizeCanvas = () => {
@@ -396,7 +479,7 @@ export function CapabilityCanvas({ figure }: CapabilityCanvasProps) {
         window.clearTimeout(resizeTimer);
       }
     };
-  }, [figure, glyphBitmaps]);
+  }, [figure, glyphsReady]);
 
   return <canvas className="what-i-bring__canvas" ref={canvasRef} />;
 }

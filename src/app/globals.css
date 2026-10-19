@@ -356,14 +356,15 @@ a {
   .editorial-work__featured {
     display: flex;
     flex-direction: column;
-    gap: 1.35rem;
+    gap: 3rem;
   }
 
   .editorial-work__play {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem 8px;
-    margin-top: 1.35rem;
+    row-gap: 3rem;
+    column-gap: 1rem;
+    margin-top: 3rem;
   }
 
   .editorial-work__featured > *,
@@ -371,23 +372,23 @@ a {
     min-width: 0;
   }
 
+  /* Gaps are the visible space. text-box trim below removes the line-box padding. */
   .editorial-stage .work-case-study-card__feature {
-    gap: 0.5rem;
+    gap: var(--spacing-home-stack-gap);
+  }
+
+  .editorial-stage .work-case-study-card__copy {
+    gap: 0.9375rem;
+  }
+
+  .editorial-stage .work-case-study-card__type {
+    text-box: trim-both cap alphabetic;
   }
 
   .editorial-stage .work-case-study-card__title {
     margin: 0;
     text-wrap: pretty;
-  }
-
-  /* Line-heights stay as they are. These margins cancel the empty
-     space inside those line boxes so the category and title sit together. */
-  .editorial-stage .editorial-featured-title {
-    margin-top: calc(-0.275rem - var(--text-heading-2--line-height) / 2 + 0.335em);
-  }
-
-  .editorial-stage .editorial-play-title {
-    margin-top: calc(-0.275rem - 0.167em);
+    text-box: trim-both cap text;
   }
 
   .editorial-featured-title {
@@ -440,12 +441,24 @@ a {
 
   .editorial-content {
     min-width: 0;
+    padding-bottom: var(--editorial-below-nav);
   }
 
   .what-i-bring {
+    --what-i-bring-rule: color-mix(in srgb, var(--color-text-primary) 16%, transparent);
+    --what-i-bring-fade: 320ms ease;
+
     min-width: 0;
     padding-top: clamp(3.5rem, 6vw, 5.5rem);
     padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .what-i-bring__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 1.25rem;
+    row-gap: 0.5rem;
   }
 
   .what-i-bring__heading {
@@ -453,41 +466,80 @@ a {
     text-wrap: balance;
   }
 
-  .what-i-bring__rows {
-    margin: 0;
-    padding: 0;
+  .what-i-bring__playback {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+    border: 0;
+    background: none;
+    font-family: var(--font-neuebit);
+    font-size: var(--text-body-3);
+    font-weight: 700;
+    line-height: var(--text-body-3--line-height);
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 200ms ease;
   }
 
-  .what-i-bring__row {
-    --emphasis: 1;
+  .what-i-bring__playback:hover {
+    color: var(--color-text-primary);
+  }
 
+  .what-i-bring__playback:focus-visible {
+    outline: var(--border-width-hairline) solid var(--color-text-primary);
+    outline-offset: 0.25rem;
+  }
+
+  /* Play triangle by default; two pause bars while playing. */
+  .what-i-bring__playback-icon {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: currentColor;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+  }
+
+  .what-i-bring__playback[data-playing] .what-i-bring__playback-icon {
+    background: none;
+    border-inline: 0.1875rem solid currentColor;
+    clip-path: none;
+  }
+
+  .what-i-bring__showcase {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    row-gap: 1rem;
-    padding-block: clamp(1.25rem, 2.25vw, 2rem);
+    row-gap: 1.5rem;
+    margin-top: clamp(1.25rem, 2vw, 1.75rem);
   }
 
-  .what-i-bring__row:last-child {
-    padding-bottom: 0;
-  }
-
-  .what-i-bring__row > * {
+  .what-i-bring__showcase > * {
     min-width: 0;
   }
 
-  .what-i-bring__figure {
-    display: flex;
-    align-items: flex-end;
+  .what-i-bring__art {
+    position: relative;
     justify-self: start;
-    width: min(100%, 15.625rem);
+    width: min(100%, 18.75rem);
     aspect-ratio: 1;
-    padding: 0.625rem;
-    outline: var(--border-width-hairline) solid
-      color-mix(in srgb, var(--color-text-primary) 16%, transparent);
-    outline-offset: calc(-1 * var(--border-width-hairline));
+    border: var(--border-width-hairline) solid var(--what-i-bring-rule);
   }
 
-  .what-i-bring__figure-label {
+  .what-i-bring__art-layer {
+    position: absolute;
+    inset: 8%;
+    display: flex;
+    align-items: flex-end;
+    opacity: 0;
+    transition: opacity var(--what-i-bring-fade);
+  }
+
+  .what-i-bring__art-layer[data-active] {
+    opacity: 1;
+  }
+
+  .what-i-bring__art-label {
     font-family: var(--font-neuebit);
     font-size: var(--text-body-3);
     font-weight: 700;
@@ -495,13 +547,6 @@ a {
     letter-spacing: 0.1em;
     color: color-mix(in srgb, var(--color-text-primary) 45%, transparent);
     text-transform: uppercase;
-  }
-
-  .what-i-bring__figure:has(.what-i-bring__canvas) {
-    position: relative;
-    display: block;
-    padding: 0;
-    outline: none;
   }
 
   .what-i-bring__canvas {
@@ -513,43 +558,121 @@ a {
     height: 100%;
   }
 
-  .what-i-bring__copy {
-    display: flex;
-    max-width: 38rem;
-    flex-direction: column;
-    gap: 0.75rem;
+  .what-i-bring__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: var(--border-width-hairline) solid var(--what-i-bring-rule);
+  }
+
+  .what-i-bring__item {
+    position: relative;
+    padding-block: 1rem;
+    padding-inline-start: 1.125rem;
+    border-top: var(--border-width-hairline) solid var(--what-i-bring-rule);
+    cursor: pointer;
+  }
+
+  .what-i-bring__item:has(.what-i-bring__trigger:focus-visible) {
+    outline: var(--border-width-hairline) solid var(--color-text-primary);
+    outline-offset: calc(-1 * var(--border-width-hairline));
   }
 
   .what-i-bring__headline {
     margin: 0;
     font-family: var(--font-mondwest);
-    font-size: clamp(1.5rem, 1.15rem + 0.75vw, 2rem);
+    font-size: clamp(1.25rem, 1rem + 0.6vw, 1.625rem);
     font-weight: 400;
-    line-height: 1.12;
+    line-height: 1.15;
     text-wrap: balance;
+    opacity: 0.65;
+    transition: opacity var(--what-i-bring-fade);
+  }
+
+  .what-i-bring__trigger {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .what-i-bring__trigger:focus-visible {
+    outline: none;
+  }
+
+  /* Stretches the button over the whole row so the row is the hit area. */
+  .what-i-bring__trigger::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Sits in the row's start padding, centered on the headline's first line. */
+  .what-i-bring__marker {
+    position: absolute;
+    top: calc(1rem + 0.575em - 0.1875rem);
+    left: 0;
+    width: 0.375rem;
+    height: 0.375rem;
+    background: var(--color-accent-lime);
+    opacity: 0;
+    transition: opacity var(--what-i-bring-fade);
   }
 
   .what-i-bring__description {
+    max-width: 38rem;
     margin: 0;
+    padding-top: 0.375rem;
     text-wrap: pretty;
+    opacity: 0.75;
+    transition: opacity var(--what-i-bring-fade);
+  }
+
+  .what-i-bring__item[data-active] .what-i-bring__headline,
+  .what-i-bring__item[data-active] .what-i-bring__marker,
+  .what-i-bring__item[data-active] .what-i-bring__description {
+    opacity: 1;
+  }
+
+  @media (max-width: 767.98px) {
+    .what-i-bring__description-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 250ms ease;
+    }
+
+    .what-i-bring__description-clip {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .what-i-bring__item[data-active] .what-i-bring__description-wrap {
+      grid-template-rows: 1fr;
+    }
   }
 
   @media (min-width: 768px) {
-    .what-i-bring__row {
+    .what-i-bring__playback {
+      display: inline-flex;
+    }
+
+    .what-i-bring__showcase {
       grid-template-columns: var(--editorial-grid-columns);
       column-gap: clamp(1.25rem, 2vw, 1.75rem);
-      align-items: center;
-      row-gap: 0;
+      align-items: start;
     }
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    .what-i-bring__figure {
-      opacity: calc(0.4 + 0.6 * var(--emphasis));
-    }
-
-    .what-i-bring__headline {
-      opacity: calc(0.8 + 0.2 * var(--emphasis));
+  @media (prefers-reduced-motion: reduce) {
+    .what-i-bring__art-layer,
+    .what-i-bring__headline,
+    .what-i-bring__marker,
+    .what-i-bring__description,
+    .what-i-bring__description-wrap {
+      transition: none;
     }
   }
 
@@ -1250,6 +1373,15 @@ a {
     aspect-ratio: 16 / 9;
     background: var(--color-pixel-fill);
     object-fit: contain;
+  }
+
+  .video-thumbnail__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
   }
 
   .work-case-study-card__hover {

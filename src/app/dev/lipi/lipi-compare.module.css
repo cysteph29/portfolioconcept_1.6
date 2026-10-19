@@ -1,0 +1,35 @@
+.page {
+  padding: calc(var(--nav-height) + 1.5rem) 1.25rem 4rem;
+}
+
+.page h1 {
+  margin: 0;
+}
+
+.note {
+  max-width: 38rem;
+  margin: 0.5rem 0 0;
+  color: var(--color-text-muted);
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 18.75rem);
+  gap: 2rem 1.5rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.frame:global(.what-i-bring__art) {
+  width: 18.75rem;
+  height: 18.75rem;
+}
+
+.name {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-mondwest);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.15;
+}

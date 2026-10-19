@@ -6,6 +6,7 @@ import {
   PointerFollowLabel,
   usePointerFollowHover,
 } from "@/components/ui/pointer-follow-label";
+import { VideoThumbnail } from "@/components/ui/video-thumbnail";
 import { PLAYGROUND_PROJECTS, type PlaygroundProject } from "@/config/playground";
 
 function PlaygroundCardContent({ card }: { card: PlaygroundProject }) {
@@ -13,17 +14,12 @@ function PlaygroundCardContent({ card }: { card: PlaygroundProject }) {
     <>
       <div className="playground-card__media-frame">
         {card.video ? (
-          <video
-            aria-label={`${card.title} preview`}
-            autoPlay
+          <VideoThumbnail
             className="playground-card__media"
-            loop
-            muted
-            playsInline
-            preload="metadata"
-          >
-            <source src={card.video} type="video/mp4" />
-          </video>
+            label={`${card.title} preview`}
+            poster={card.poster}
+            src={card.video}
+          />
         ) : card.image ? (
           <Image
             alt=""

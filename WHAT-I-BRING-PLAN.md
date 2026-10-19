@@ -1,8 +1,187 @@
 # What I Bring — Plan
 
-Status: Phase 0 approved with revisions (below). Phase 1 implemented, then corrected (revision 2: section moved into the right-hand content column). Phase 2 implemented (active-position emphasis; awaiting review). Phases 3–4 not started.
+Status: **Revision 3 (Stripe-inspired showcase) — Phase A approved; Phase B implemented, awaiting visual review.** Revision 3 replaces the five-row layout and the scroll-driven emphasis. Everything below the revision 3 block is history from the earlier phases (0–2 and the start of the figure work), kept for reference.
 
-Branch: `experiment/editorial-homepage`. Nothing committed, pushed, merged, or deployed.
+Branch: `experiment/editorial-homepage`. The old five-row section, scroll emphasis, and the first figure are committed (`1cd0f01`). Phase B is uncommitted. Nothing pushed, merged, or deployed.
+
+## Phase B — approved decisions (implemented)
+
+These override the Phase A proposal below where they differ.
+
+1. **Permanent bordered artwork frame.** One square frame, hairline border at `--color-text-primary` 16% (the same color as the list rules). The border is part of the design and stays after all five illustrations exist. It is not a placeholder outline.
+2. **Initial size 300px.** `width: min(100%, 18.75rem)`, `aspect-ratio: 1`, left-aligned in the 32% sub-column, top-aligned with the list’s first rule. 300px is a starting point for visual review. At 1440 the sub-column is ~289px, so the frame fills it; at 1920 the frame stops at 300px inside a ~400px sub-column.
+3. **Breathing room.** Each artwork layer is inset 8% inside the frame. The frame never resizes; all five layers occupy the same box.
+4. **Pause / Play control** beside the `h2`, Neue Bit `text-body-3` uppercase, muted cream, with a CSS-drawn pause (two bars) / play (triangle) glyph. `aria-label` reads “Pause capability rotation” / “Play capability rotation”. Pausing keeps the current selection; Play starts a fresh 5s dwell. Hidden below 768px, where there is no auto-cycle.
+5. **Reduced motion.** Auto-cycle is off by default (the control shows Play). The visitor can still press Play. Crossfades and copy transitions are instant. Manual selection works.
+6. **Mobile (below 768px).** Artwork above the list, square, up to 300px. Auto-cycle disabled. All five headlines visible and tappable; only the active description is expanded (`grid-template-rows: 0fr → 1fr`, 250ms). Collapsed descriptions stay in the DOM.
+7. **Lime marker.** 6px `--color-accent-lime` square in the row’s start padding, centered on the headline’s first line. Always present, opacity 0 → 1, so nothing shifts.
+8. **No progress bar or countdown.**
+9. **Keyboard pause.** Any focus inside the list that did not come from a pointer press pauses cycling (tracked with a pointer-down flag, not the `:focus-visible` heuristic). Leaving the list resumes with a fresh 5s dwell.
+
+### As built
+
+| Setting | Value |
+| --- | --- |
+| Cycle | 5,000ms single `setTimeout`, rescheduled on every active change |
+| Touch hold (tablet, 768px+) | 10,000ms after a tap, then 5s dwells |
+| Hover intent | 100ms (mouse only) |
+| In view | `IntersectionObserver` at 35% of the showcase |
+| Crossfade | 320ms ease, opacity only, outgoing and incoming together |
+| Inactive headline / copy | 65% / 75% opacity |
+| Headline | Mondwest `clamp(1.25rem, 1rem + 0.6vw, 1.625rem)`, line-height 1.15 |
+| Row | `padding-block: 1rem`, `padding-inline-start: 1.125rem`, hairline top rule, list has a bottom rule |
+
+Measured: section ≈ 876px tall at 1440 (list 650px), 837px at 1920, 813px at 768, 881px at 390. No horizontal overflow at any width.
+
+### Files
+
+- `src/components/home/capability-showcase.tsx` (new, client): header with control, artwork frame with five memoized layers, list, timer and observers.
+- `src/components/home/what-i-bring.tsx` (server): section wrapper only.
+- `src/app/globals.css`: `what-i-bring` block rewritten; old row, figure, and `--emphasis` rules removed.
+- `src/components/home/what-i-bring-emphasis.tsx`: deleted.
+- `capability-canvas.tsx`, `capability-figures.ts`, `src/config/what-i-bring.ts`: unchanged.
+
+## Revision 3 — single artwork + capability list (Phase A proposal)
+
+This overrides the layout, the interaction model, and the phase list in every earlier section. The five headlines, the supporting copy, the illustration concepts, and the shared glyph visual system stay as they are.
+
+### What stays
+
+- Outer homepage architecture: `.editorial-stage` 32/68, sticky `EditorialIntro`, `.editorial-content` holding `WorkSection` then `WhatIBring`. The intro stays beside the whole section and releases when the stage ends. No change to `page.tsx`.
+- Visible `h2` “What I Bring” (Neue Bit `text-heading-2`) on the left edge of the right column, the same edge as the project thumbnails.
+- Copy in `src/config/what-i-bring.ts`, unchanged.
+- `CapabilityCanvas` and `capability-figures.ts` (the “Hard Problems” knot-to-line figure) are reused as they are.
+- No `data-reveal-05`, no GSAP, no new dependencies.
+
+### What gets retired (in Phase B, once the replacement works)
+
+| Item | Action |
+| --- | --- |
+| `what-i-bring-emphasis.tsx` (focal-line scroll reader, `--emphasis`) | Delete |
+| `.what-i-bring__row` per-row nested grid, `--emphasis` opacity rules, the `prefers-reduced-motion: no-preference` emphasis block | Replace with the new layout rules |
+| One figure slot per row | Replace with one shared artwork frame |
+| `.what-i-bring__figure:has(.what-i-bring__canvas)` | Replace with layer rules inside the shared frame |
+
+### Layout
+
+```text
+.editorial-content (68% of the stage)
+└── section.what-i-bring
+    ├── h2 “What I Bring”
+    └── .what-i-bring__showcase        ← nested grid, var(--editorial-grid-columns) from 768px
+        ├── .what-i-bring__art  (≈32%) ← one square frame, five stacked layers, aria-hidden
+        └── ol.what-i-bring__list (≈68%)
+            └── li × 5                 ← hairline rule on top, h3 > button, p
+```
+
+- **Desktop (1100px+).** Nested 32/68 inside the right column, gap `clamp(1.25rem, 2vw, 1.75rem)`. The artwork is 1 / 1, fills its sub-column (≈280px at 1440, ≈390px at 1920, capped at about 22rem). It is top-aligned with the first rule of the list, the way Stripe aligns the image with the first topic. It is in normal flow, not sticky.
+- **List.** Five entries separated by hairline rules (`--color-text-primary` at ~16%), including one above the first entry. No cards, no backgrounds. Row padding about `1rem` block. Headline Mondwest at `clamp(1.25rem, 1rem + 0.6vw, 1.625rem)` (smaller than the old 2rem). Copy Fraktion `text-body-2`, `max-width: 38rem`. Estimated list height ≈ 700–750px at 1440, against ≈2,000px+ for the old five rows.
+- **768–1099px.** The stage already stacks (intro on top, not sticky). The nested split stays; artwork ≈ 220px.
+- **Below 768px.** See the mobile decision below.
+- **Content height only.** No `min-height`, `vh` units, pinning, snapping, or sticky artwork.
+
+### Active state
+
+| | Inactive | Active |
+| --- | --- | --- |
+| Headline | `--color-text-primary` at ~65% opacity | 100% |
+| Supporting copy | `--color-text-muted` at ~75% opacity | `--color-text-muted` at 100% |
+| Marker | none | small lime square (`#7cff6b`, about 6px) left of the headline, echoing the bridge cells and Stripe’s square bullets |
+| Rule above the row | ~16% cream | unchanged |
+
+Color and opacity change over about 250ms. No size, weight, or position change, so the list never reflows when the active row changes. Inactive values get checked against contrast in Phase B (copy must stay ≥ 4.5:1 on `#071803`); if 75% fails, inactive copy stays at full muted and only the headline dims.
+
+### Interaction
+
+One `activeIndex` (0–4). Initial value 0 on the server and on the client, so the HTML without JavaScript shows the first capability active and all five readable.
+
+**Auto-cycle**
+
+- One `setTimeout` of 5,000ms, rescheduled each time the active index changes (manual or automatic). No `setInterval`, no `requestAnimationFrame`.
+- Runs only when all of these are true: the section is in view (`IntersectionObserver`, about 35% visible), the tab is visible (`visibilitychange`), there is no active interaction (below), and reduced motion is off.
+- When a condition stops being true, the timer is cleared. When it becomes true again, a fresh 5s dwell starts on the current item (no immediate jump on scroll-back).
+- After item 5 it wraps to item 1.
+
+**Desktop pointer (hover-capable, `pointerType === "mouse"`)**
+
+- Pointer enters the list: auto-cycle pauses.
+- Pointer rests on a row for about 100ms: that row becomes active. The short intent delay stops the artwork flickering when the cursor sweeps across the list.
+- Click on a row: activates it immediately (same result as hover).
+- Pointer leaves the list: the selection stays. Auto-cycle resumes with a fresh 5s dwell, then advances to the next item.
+
+**Touch**
+
+- Tap a row: activates it. No hover dependency.
+- Auto-cycle holds for 10s after the last tap, then resumes from the tapped item.
+
+**Keyboard**
+
+- Each headline is a real `button` inside the `h3`. A pseudo-element stretches the button’s hit area over the whole row, so the full row is clickable without nesting block content in a button.
+- Focus inside the list pauses auto-cycle. Enter/Space activates. Leaving the list resumes it with a fresh 5s dwell.
+- Visible `:focus-visible` ring on the row.
+
+**Reduced motion**
+
+- No auto-cycle. Artwork swap is instant (no crossfade). Manual hover/click/tap selection still works.
+
+### Artwork rendering and transitions
+
+- The frame holds five absolutely stacked layers, one per capability. Layer 1 is the existing `CapabilityCanvas figure="hard-problems"`. Layers 2–5 are the existing placeholder labels (“Branching rule”, “Sketch → grid”, …) until Phase C.
+- Each canvas paints once per size (its current behavior). Switching capabilities only toggles a `data-active` attribute on the layers; CSS crossfades `opacity` over about 320ms, outgoing and incoming at the same time. No canvas repaint, no geometry rebuild, no remount.
+- Nothing moves: no translate, scale, rotate, blur, or 3D.
+- React rerenders the small client component only when `activeIndex` changes (at most every 5s). Canvas layers are memoized with stable props, so they do not rerender.
+- Memory: five canvases at ≈390px and DPR 2 is about 3MB total. Fine next to the bridge.
+- Phase C: share the Manjari font load and glyph bitmaps through one module-level promise, so five canvases do not each sample glyphs. The glyph cache is already module-level.
+- The frame keeps a faint hairline outline (as the placeholders do now) so the artwork reads as one stable canvas, not five cards.
+
+### Component structure
+
+| File | Role |
+| --- | --- |
+| `what-i-bring.tsx` | Server component. Renders the section, `h2`, and `<CapabilityShowcase capabilities={CAPABILITIES} />`. |
+| `capability-showcase.tsx` (new) | Client component. Owns `activeIndex`, the timer, observers, and pointer/focus handlers. Renders the art frame and the list. All copy is server-rendered HTML. |
+| `capability-canvas.tsx` | Unchanged in Phase B apart from the CSS class it uses; shared font/glyph promise in Phase C. |
+| `capability-figures.ts` | Unchanged in Phase B; gains four figure builders in Phase C. |
+| `what-i-bring-emphasis.tsx` | Deleted in Phase B. |
+| `globals.css` | `what-i-bring` block rewritten. Nothing outside it changes. |
+
+The timer and observers stay inside `capability-showcase.tsx` as one effect. They could be extracted into a hook later if another section needs them.
+
+### Accessibility
+
+- Section `aria-labelledby` the `h2`. Heading order is unchanged: `h2` What I Bring, then five `h3`.
+- Buttons use `aria-pressed` for the active entry. The artwork is `aria-hidden`; the selection only changes visuals, so nothing essential is hidden.
+- Supporting copy for every capability stays in the DOM and is visible on desktop.
+- Auto-updating content: WCAG 2.2.2 asks for a way to pause content that changes automatically for more than 5 seconds. Hover, focus, and tap already pause it, and reduced motion turns it off. See the decisions below for whether to also add a visible pause control.
+
+### Decisions needing approval
+
+1. **Mobile arrangement (below 768px).** Recommended: artwork on top (full column width, 4 / 3, capped around 16rem tall), then all five headlines as tappable rows; only the active row shows its description. Auto-cycle is off below 768px, so the list only changes height when the visitor taps. The block (≈650px) fits about one phone screen, so the artwork never scrolls away from the row being read. Alternative: keep every description visible and auto-cycle on mobile too. That keeps the copy always visible but makes the block ≈1,100px tall, so tapping a lower row changes artwork that is already off screen.
+2. **Pause control.** Recommended: no visible control in Phase B; rely on hover/focus/tap pausing and reduced motion. Alternative: a small Neue Bit “Pause / Play” toggle beside the heading, which fully satisfies WCAG 2.2.2.
+3. **Progress cue.** Recommended: none at first (Stripe has none, and it keeps the section quiet). Alternative: a hairline on the active row’s top rule that fills over 5s (CSS `transform: scaleX`, compositor-only, paused with the timer). This makes the auto-advance easier to predict.
+4. **Active marker.** Lime square next to the active headline, as specified above, or no marker (contrast alone).
+5. **Artwork outline.** Keep the faint hairline frame around the artwork, or drop it once real artwork exists for all five.
+
+### Risks
+
+| Risk | Mitigation |
+| --- | --- |
+| List (≈730px) is much taller than the artwork (≈280px); when item 5 is active, its artwork sits far above it | Accepted on desktop, as in the Stripe layout: the whole block fits in one desktop viewport. Not solved with sticky. |
+| “Hard Problems” figure was tuned for a 250px square; the new frame is 280–390px | Check density at 1440 and 1920 in Phase B; adjust cell size only in Phase C if needed. |
+| Auto-cycle and the bridge’s pointer loop running at the same time | Auto-cycle is a single timeout plus CSS transitions; no frame loop. Verify in the Performance panel in Phase C. |
+| Hover selection fights auto-cycle | Pointer inside the list always pauses the timer; selection changes only from hover/click. |
+| Mobile copy collapse hides inactive descriptions | Headlines stay visible; descriptions stay in the DOM; only applies below 768px if decision 1 is approved. |
+
+### Revised phases
+
+- **Phase A — Inspect and propose.** This section. Stop for approval.
+- **Phase B — Layout and interaction.** Build `capability-showcase.tsx`, rewrite the `what-i-bring` CSS, reuse the Hard Problems canvas, placeholders for 2–5, auto-cycle/hover/click/tap/keyboard/reduced motion. Delete `what-i-bring-emphasis.tsx` once the replacement works. Type check, build, local preview at 1440, 1920, 768, 390. Stop.
+- **Phase C — Illustrations.** Build the remaining four figures one at a time with review between each, in the shared glyph style. Shared font/glyph promise. Tune crossfade. Profile alongside the bridge.
+- **Phase D — Polish.** Type, spacing, active/inactive contrast, cycle interval, mobile, accessibility and reduced motion audit, performance.
+
+---
+
+## History: earlier phases (superseded by revision 3)
 
 ## Corrected architecture (revision 2)
 

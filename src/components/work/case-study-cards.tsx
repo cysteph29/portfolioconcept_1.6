@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
 
 import { ReviewLink } from "@/components/navigation/review-link";
 import {
   PointerFollowLabel,
   usePointerFollowHover,
 } from "@/components/ui/pointer-follow-label";
+import { VideoThumbnail } from "@/components/ui/video-thumbnail";
 import { CASE_STUDIES } from "@/config/case-studies";
 import { PLAYGROUND_PROJECTS } from "@/config/playground";
 
@@ -51,6 +51,7 @@ const WORK_GRID_CARDS: WorkGridCard[] = [
     title: project.title,
     mediaLabel: `${project.title} hero visual`,
     video: project.video,
+    poster: project.poster,
     image: project.image,
     href: project.href,
     external: project.href ? isExternalHref(project.href) : false,
@@ -59,22 +60,17 @@ const WORK_GRID_CARDS: WorkGridCard[] = [
   })),
 ];
 
-function WorkCardMedia({ card }: { card: WorkGridCard }) {
+function WorkCardMedia({ card, eager = false }: { card: WorkGridCard; eager?: boolean }) {
   if (card.video) {
     return (
       <div className="work-case-study-card__media">
-        <video
-          aria-label={card.mediaLabel}
-          autoPlay
+        <VideoThumbnail
           className="work-case-study-card__video"
-          loop
-          muted
-          playsInline
-          poster={card.poster || undefined}
-          preload="metadata"
-        >
-          <source src={card.video} type="video/mp4" />
-        </video>
+          eager={eager}
+          label={card.mediaLabel}
+          poster={card.poster}
+          src={card.video}
+        />
       </div>
     );
   }
@@ -103,17 +99,19 @@ function WorkCardMedia({ card }: { card: WorkGridCard }) {
 
 function WorkProjectCard({
   card,
+  eager = false,
   getHoverHandlers,
   titleClassName,
 }: {
   card: WorkGridCard;
+  eager?: boolean;
   getHoverHandlers: ReturnType<typeof usePointerFollowHover>["getHoverHandlers"];
   titleClassName: string;
 }) {
   const handlers = card.hoverLabel ? getHoverHandlers(card.id) : undefined;
   const body = (
     <article className="work-case-study-card__feature">
-      <WorkCardMedia card={card} />
+      <WorkCardMedia card={card} eager={eager} />
       <div className="work-case-study-card__copy">
         <p className="work-case-study-card__type text-heading-5 text-text-muted">{card.typeLabel}</p>
         <h3 className={`work-case-study-card__title text-text-primary ${titleClassName}`}>{card.title}</h3>
@@ -147,76 +145,22 @@ function WorkProjectCard({
 }
 
 export function CaseStudyCards() {
-  const listRef = useRef<HTMLDivElement>(null);
   const { hover, getHoverHandlers } = usePointerFollowHover();
   const hoverLabel = hover
     ? WORK_GRID_CARDS.find((card) => card.id === hover.id)?.hoverLabel
     : undefined;
 
-  useEffect(() => {
-    const list = listRef.current;
-    if (!list) {
-      return;
-    }
-
-    const videos = [...list.querySelectorAll("video")];
-    const visibleVideos = new WeakSet<HTMLVideoElement>();
-
-    const playIfVisible = (video: HTMLVideoElement) => {
-      if (!visibleVideos.has(video)) {
-        return;
-      }
-
-      void video.play().catch(() => {});
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!(entry.target instanceof HTMLVideoElement)) {
-            return;
-          }
-
-          if (entry.isIntersecting) {
-            visibleVideos.add(entry.target);
-            playIfVisible(entry.target);
-            return;
-          }
-
-          visibleVideos.delete(entry.target);
-          entry.target.pause();
-        });
-      },
-      { rootMargin: "100px 0px", threshold: 0 },
-    );
-
-    const handleCanPlay = (event: Event) => {
-      if (event.currentTarget instanceof HTMLVideoElement) {
-        playIfVisible(event.currentTarget);
-      }
-    };
-
-    videos.forEach((video) => {
-      observer.observe(video);
-      video.addEventListener("canplay", handleCanPlay);
-    });
-
-    return () => {
-      observer.disconnect();
-      videos.forEach((video) => video.removeEventListener("canplay", handleCanPlay));
-    };
-  }, []);
-
   const featuredCards = WORK_GRID_CARDS.slice(0, FEATURED_CASE_STUDIES.length);
   const playCards = WORK_GRID_CARDS.slice(FEATURED_CASE_STUDIES.length);
 
   return (
-    <div className="editorial-work__projects" ref={listRef}>
+    <div className="editorial-work__projects">
       <div className="editorial-work__featured" role="list">
-        {featuredCards.map((card) => (
+        {featuredCards.map((card, index) => (
           <div key={card.id} role="listitem">
             <WorkProjectCard
               card={card}
+              eager={index === 0 && Boolean(card.video)}
               getHoverHandlers={getHoverHandlers}
               titleClassName="editorial-featured-title"
             />

@@ -7,6 +7,9 @@ export type Capability = {
 
 export const WHAT_I_BRING_HEADING = "What I Bring";
 
+/** "lipi" restores the five Malayalam canvases; "forms" is the single evolving artwork. */
+export const WHAT_I_BRING_ART: "lipi" | "forms" = "forms";
+
 export const CAPABILITIES: Capability[] = [
   {
     id: "hard-problems",
