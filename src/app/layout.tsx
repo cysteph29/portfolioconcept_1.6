@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import Script from "next/script";
 
 import { AppShell } from "@/components/navigation/app-shell";
 
@@ -126,14 +125,15 @@ export default function RootLayout({
       lang="en"
       className={`${neueBit.variable} ${mondwest.variable} ${fraktion.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-canvas font-sans text-text-primary">
-        {process.env.NODE_ENV === "development" ? (
-          <Script
+      {process.env.NODE_ENV === "development" ? (
+        <head>
+          <script
             id="strip-cursor-refs-before-hydration"
-            strategy="beforeInteractive"
             dangerouslySetInnerHTML={{ __html: stripCursorRefsScript }}
           />
-        ) : null}
+        </head>
+      ) : null}
+      <body className="min-h-full bg-canvas font-sans text-text-primary">
         <AppShell>{children}</AppShell>
       </body>
     </html>

@@ -12,6 +12,13 @@ import {
   useState,
 } from "react";
 
+export type CaseFigureCrop = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
 export type CaseFigureProps = {
   src: string;
   alt: string;
@@ -19,6 +26,9 @@ export type CaseFigureProps = {
   width: number;
   height: number;
   ratio?: string;
+  crop?: CaseFigureCrop;
+  figureClassName?: string;
+  captionClassName?: string;
 };
 
 // Derived from CaseStudyPageLayout/globals.css:
@@ -44,6 +54,9 @@ export function CaseFigure({
   width,
   height,
   ratio,
+  crop,
+  figureClassName,
+  captionClassName,
 }: CaseFigureProps) {
   const [hasMounted, setHasMounted] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -52,14 +65,31 @@ export function CaseFigure({
   const dialogRef = useRef<HTMLDivElement>(null);
   const isSvg = isSvgSource(src);
   const frameStyle = {
-    ...(ratio ? { aspectRatio: ratio } : {}),
+    ...(crop
+      ? { aspectRatio: `${crop.width} / ${crop.height}` }
+      : ratio
+        ? { aspectRatio: ratio }
+        : {}),
     borderWidth: "var(--border-width-hairline)",
     borderStyle: "solid",
     borderColor: "var(--color-text-muted)",
   } satisfies CSSProperties;
-  const imageClassName = ratio
-    ? "block h-full w-full object-contain"
-    : "block h-auto w-full";
+  const cropImageStyle: CSSProperties | undefined = crop
+    ? {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: `${(width / crop.width) * 100}%`,
+        maxWidth: "none",
+        height: "auto",
+        transform: `translate(${(-crop.x / width) * 100}%, ${(-crop.y / height) * 100}%)`,
+      }
+    : undefined;
+  const imageClassName = crop
+    ? "block h-auto max-w-none"
+    : ratio
+      ? "block h-full w-full object-contain"
+      : "block h-auto w-full";
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -138,7 +168,37 @@ export function CaseFigure({
               onClick={closeLightbox}
               type="button"
             >
-              {isSvg ? (
+              {crop ? (
+                <span
+                  className="relative block overflow-hidden"
+                  style={{
+                    aspectRatio: `${crop.width} / ${crop.height}`,
+                    width: `min(90vw, calc(90vh * ${crop.width} / ${crop.height}))`,
+                  }}
+                >
+                  {isSvg ? (
+                    <img
+                      alt={alt}
+                      className={imageClassName}
+                      height={height}
+                      loading="lazy"
+                      src={src}
+                      style={cropImageStyle}
+                      width={width}
+                    />
+                  ) : (
+                    <Image
+                      alt={alt}
+                      className={imageClassName}
+                      height={height}
+                      sizes={LIGHTBOX_SIZES}
+                      src={src}
+                      style={cropImageStyle}
+                      width={width}
+                    />
+                  )}
+                </span>
+              ) : isSvg ? (
                 <img
                   alt={alt}
                   className="block h-auto max-h-[90vh] max-w-[90vw] w-auto"
@@ -164,7 +224,7 @@ export function CaseFigure({
       : null;
 
   return (
-    <figure className="flex flex-col gap-2">
+    <figure className={figureClassName ?? "flex flex-col gap-2"}>
       <button
         aria-label={`Open image preview: ${caption ?? alt}`}
         className="relative block w-full cursor-zoom-in overflow-hidden bg-fold-fill p-0 text-left"
@@ -180,6 +240,7 @@ export function CaseFigure({
             height={height}
             loading="lazy"
             src={src}
+            style={cropImageStyle}
             width={width}
           />
         ) : (
@@ -189,13 +250,16 @@ export function CaseFigure({
             height={height}
             sizes={CASE_FIGURE_SIZES}
             src={src}
+            style={cropImageStyle}
             width={width}
           />
         )}
       </button>
 
       {caption ? (
-        <figcaption className="text-body-3 text-left text-text-muted">
+        <figcaption
+          className={captionClassName ?? "text-body-3 text-left text-text-muted"}
+        >
           {caption}
         </figcaption>
       ) : null}

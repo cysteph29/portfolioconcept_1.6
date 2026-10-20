@@ -4,11 +4,13 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 import { ContactFooter } from "@/components/home/contact-footer";
+import {
+  notifyPagePixelScrollSettled,
+  readInternalPageTransitionHref,
+  requestPagePixelTransition,
+  usePagePixelTransition,
+} from "@/components/navigation/page-pixel-transition";
 import { TopNav } from "@/components/navigation/top-nav";
-
-function isFooterRevealRoute(pathname: string) {
-  return pathname === "/" || pathname === "/dive";
-}
 
 function scrollToLocationHash() {
   const { hash } = window.location;
@@ -34,6 +36,7 @@ function scrollToLocationHash() {
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const pixelTransition = usePagePixelTransition();
 
   useEffect(() => {
     const lastPathname = window.sessionStorage.getItem("portfolio-last-pathname");
@@ -56,13 +59,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
-      if (scrollToLocationHash()) {
-        return;
+      if (!scrollToLocationHash()) {
+        // The shell persists between App Router navigations, so explicitly reset
+        // the document scroll position when the route changes.
+        window.scrollTo({ left: 0, top: 0, behavior: "instant" });
       }
 
-      // The shell persists between App Router navigations, so explicitly reset
-      // the document scroll position when the route changes.
-      window.scrollTo({ left: 0, top: 0, behavior: "instant" });
+      notifyPagePixelScrollSettled();
     });
 
     const onHashChange = () => {
@@ -79,6 +82,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         event.altKey
       ) {
         return;
+      }
+
+      const transitionHref = readInternalPageTransitionHref(event);
+
+      if (transitionHref) {
+        const result = requestPagePixelTransition({ type: "push", href: transitionHref });
+
+        if (result !== "bypass") {
+          event.preventDefault();
+          return;
+        }
       }
 
       const link = (event.target as Element | null)?.closest?.("a");
@@ -119,12 +133,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <TopNav />
-      <main className="bg-canvas">{children}</main>
-      <ContactFooter
-        reveal={isFooterRevealRoute(pathname)}
-        variant={isFooterRevealRoute(pathname) ? "editorial" : "legacy"}
-      />
+      <div inert={pixelTransition.active ? true : undefined}>
+        <TopNav />
+        <main className="bg-canvas">{children}</main>
+        <ContactFooter reveal variant="editorial" />
+      </div>
+      {pixelTransition.overlay}
     </>
   );
 }

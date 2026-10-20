@@ -1,4 +1,7 @@
+export const PLAYGROUND_COMING_SOON_LABEL = "Coming soon!";
+
 export type PlaygroundProject = {
+  comingSoon?: boolean;
   href?: string;
   image?: string;
   poster?: string;
@@ -24,7 +27,7 @@ export const PLAYGROUND_PROJECTS: PlaygroundProject[] = [
     title: "Coding Terms, Explained",
     video: "/work/playground/game video.mp4",
     poster: "/work/playground/game-video-poster.webp",
-    href: "https://techterms.vercel.app/",
+    comingSoon: true,
   },
   {
     title: "Automated Email Summaries with n8n",
@@ -41,6 +44,6 @@ export const PLAYGROUND_PROJECTS: PlaygroundProject[] = [
   {
     title: "Who Made This Song?",
     image: "/work/playground/musictool.png",
-    href: "https://produced4.vercel.app/",
+    comingSoon: true,
   },
 ];

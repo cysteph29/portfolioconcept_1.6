@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 
+import { requestPagePixelTransition } from "@/components/navigation/page-pixel-transition";
 import { isDiveReviewPath, toReviewHref } from "@/lib/review-path";
 
 export function BackToWorkLink() {
@@ -14,12 +15,19 @@ export function BackToWorkLink() {
       10,
     );
 
+    const review = isDiveReviewPath(pathname);
+
     if (visitCount > 1) {
-      router.back();
+      if (requestPagePixelTransition({ type: "back" }) === "bypass") {
+        router.back();
+      }
       return;
     }
 
-    router.push(toReviewHref("/#work", isDiveReviewPath(pathname)));
+    const href = toReviewHref("/#work", review);
+    if (requestPagePixelTransition({ type: "push", href }) === "bypass") {
+      router.push(href);
+    }
   }
 
   return (

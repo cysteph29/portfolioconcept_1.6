@@ -7,7 +7,29 @@ import {
   usePointerFollowHover,
 } from "@/components/ui/pointer-follow-label";
 import { VideoThumbnail } from "@/components/ui/video-thumbnail";
-import { PLAYGROUND_PROJECTS, type PlaygroundProject } from "@/config/playground";
+import {
+  PLAYGROUND_COMING_SOON_LABEL,
+  PLAYGROUND_PROJECTS,
+  type PlaygroundProject,
+} from "@/config/playground";
+
+const OPEN_LABEL = "TAKE ME THERE";
+
+function cardKey(card: PlaygroundProject) {
+  return card.video ?? card.image ?? card.title;
+}
+
+function cardHoverLabel(card: PlaygroundProject) {
+  if (card.comingSoon) {
+    return PLAYGROUND_COMING_SOON_LABEL;
+  }
+
+  if (card.href) {
+    return OPEN_LABEL;
+  }
+
+  return null;
+}
 
 function PlaygroundCardContent({ card }: { card: PlaygroundProject }) {
   return (
@@ -39,32 +61,48 @@ function PlaygroundCardContent({ card }: { card: PlaygroundProject }) {
 
 export function PlaygroundCardGrid() {
   const { hover, getHoverHandlers } = usePointerFollowHover();
+  const hoverLabel = hover
+    ? PLAYGROUND_PROJECTS.map((card) => ({
+        key: cardKey(card),
+        label: cardHoverLabel(card),
+      })).find((card) => card.key === hover.id)?.label
+    : null;
 
   return (
     <section aria-label="Playground projects" className="playground-gallery">
       <div className="playground-gallery__grid">
         {PLAYGROUND_PROJECTS.map((card) => {
-          const key = card.video ?? card.image ?? card.title;
+          const key = cardKey(card);
+          const label = cardHoverLabel(card);
+          const content = <PlaygroundCardContent card={card} />;
 
-          return card.href ? (
-            <a
+          if (card.href && !card.comingSoon) {
+            return (
+              <a
+                className="playground-card"
+                href={card.href}
+                key={key}
+                rel="noopener noreferrer"
+                target="_blank"
+                {...getHoverHandlers(key)}
+              >
+                {content}
+              </a>
+            );
+          }
+
+          return (
+            <article
               className="playground-card"
-              href={card.href}
               key={key}
-              rel="noopener noreferrer"
-              target="_blank"
-              {...getHoverHandlers(key)}
+              {...(label ? getHoverHandlers(key) : {})}
             >
-              <PlaygroundCardContent card={card} />
-            </a>
-          ) : (
-            <article className="playground-card" key={key}>
-              <PlaygroundCardContent card={card} />
+              {content}
             </article>
           );
         })}
       </div>
-      <PointerFollowLabel hover={hover} label="TAKE ME THERE" />
+      <PointerFollowLabel hover={hoverLabel ? hover : null} label={hoverLabel ?? ""} />
     </section>
   );
 }

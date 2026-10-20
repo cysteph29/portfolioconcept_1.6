@@ -8,6 +8,20 @@ export type CaseStudySection = {
   label: string;
 };
 
+export type CaseStudyOpeningPanel =
+  | {
+      type: "video";
+    }
+  | {
+      type: "placeholder";
+      label: string;
+    }
+  | {
+      type: "image";
+      src: string;
+      alt: string;
+    };
+
 export type CaseStudyFrontmatter = {
   cover: string;
   slug: string;
@@ -20,11 +34,17 @@ export type CaseStudyFrontmatter = {
   solutionEmblem?: string;
   outcome: string;
   outcomeEmblem?: string;
+  overview?: string;
   liveUrl?: string;
-  heroMosaic: string;
   summaryPattern?: string;
   heroVideo?: string;
   heroPoster?: string;
+  /**
+   * Custom opening panels. Index 0 is the large panel; 1 and 2 stack beside it.
+   * When set, the title stays in the article column and the summary hero is omitted.
+   * When omitted, the opening is the title, then Problem / Solution / Outcome beside the single hero video.
+   */
+  openingGallery?: CaseStudyOpeningPanel[];
   timeline: string;
   role: string;
   team: string;

@@ -1,6 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import type { ReactNode } from "react";
 
+import { AxwayFindWorkaround } from "@/components/work/axway-find-workaround";
 import { CaseFigure } from "@/components/work/case-figure";
 import { CaseMetrics, CasePercentageCards } from "@/components/work/case-metrics";
 import { CaseVideo } from "@/components/work/case-video";
@@ -10,9 +11,10 @@ type SectionProps = {
   children: ReactNode;
   id: string;
   sections: CaseStudySection[];
+  divided?: boolean;
 };
 
-function Section({ children, id, sections }: SectionProps) {
+function Section({ children, id, sections, divided = false }: SectionProps) {
   const section = sections.find((candidate) => candidate.id === id);
 
   if (!section) {
@@ -20,7 +22,10 @@ function Section({ children, id, sections }: SectionProps) {
   }
 
   return (
-    <section className="case-study-section" id={id}>
+    <section
+      className={divided ? "case-study-section case-study-section--divided" : "case-study-section"}
+      id={id}
+    >
       <p className="case-study-section__eyebrow text-heading-5 text-text-muted">
         {section.label}
       </p>
@@ -45,7 +50,7 @@ function ImagePlaceholder({ label, ratio = "16/9" }: ImagePlaceholderProps) {
         borderColor: "var(--color-text-muted)",
       }}
     >
-      <span className="font-pixel text-button text-text-muted text-center px-4">
+      <span className="max-w-[36rem] px-6 text-center text-body-2 text-text-muted">
         {label}
       </span>
     </div>
@@ -55,6 +60,7 @@ function ImagePlaceholder({ label, ratio = "16/9" }: ImagePlaceholderProps) {
 const components: MDXComponents = {
   Section,
   ImagePlaceholder,
+  AxwayFindWorkaround,
   CaseFigure,
   CaseMetrics,
   CasePercentageCards,

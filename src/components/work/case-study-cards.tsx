@@ -9,7 +9,10 @@ import {
 } from "@/components/ui/pointer-follow-label";
 import { VideoThumbnail } from "@/components/ui/video-thumbnail";
 import { CASE_STUDIES } from "@/config/case-studies";
-import { PLAYGROUND_PROJECTS } from "@/config/playground";
+import {
+  PLAYGROUND_COMING_SOON_LABEL,
+  PLAYGROUND_PROJECTS,
+} from "@/config/playground";
 
 const FEATURED_CASE_STUDIES = CASE_STUDIES.slice(0, 3);
 const CASE_STUDY_HOVER_LABEL = "VIEW CASE STUDY";
@@ -53,9 +56,16 @@ const WORK_GRID_CARDS: WorkGridCard[] = [
     video: project.video,
     poster: project.poster,
     image: project.image,
-    href: project.href,
-    external: project.href ? isExternalHref(project.href) : false,
-    hoverLabel: project.href ? PLAYGROUND_HOVER_LABEL : undefined,
+    href: project.comingSoon ? undefined : project.href,
+    external:
+      project.href !== undefined && !project.comingSoon
+        ? isExternalHref(project.href)
+        : false,
+    hoverLabel: project.comingSoon
+      ? PLAYGROUND_COMING_SOON_LABEL
+      : project.href
+        ? PLAYGROUND_HOVER_LABEL
+        : undefined,
     typeLabel: project.typeLabel ?? WEB_TYPE_LABEL,
   })),
 ];
@@ -120,7 +130,11 @@ function WorkProjectCard({
   );
 
   if (!card.href) {
-    return <div className="work-case-study-card">{body}</div>;
+    return (
+      <div className="work-case-study-card" {...handlers}>
+        {body}
+      </div>
+    );
   }
 
   if (card.external) {
