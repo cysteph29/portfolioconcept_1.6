@@ -27,7 +27,8 @@ const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
 export type PagePixelTransitionAction =
   | { type: "push"; href: string }
-  | { type: "back" };
+  | { type: "back" }
+  | { type: "traverse"; pathname: string };
 
 type StartResult = "started" | "ignored" | "bypass";
 
@@ -37,7 +38,69 @@ type PendingTransition = {
   pathname: string | null;
   fromPathname: string;
   fromHash: string;
+  /** Browser history reveals only after native scroll restoration. */
+  scrollReady: boolean;
+  token: number;
 };
+
+type TraverseGate = {
+  promise: Promise<void>;
+  finish: () => void;
+};
+
+type TraverseNavigateEvent = Event & {
+  navigationType: string;
+  canIntercept: boolean;
+  hashChange: boolean;
+  hasUAVisualTransition: boolean;
+  destination: { url: string; sameDocument: boolean; key?: string };
+  signal: AbortSignal;
+  intercept: (options: {
+    precommitHandler?: () => Promise<void> | void;
+    handler?: () => Promise<void> | void;
+    focusReset?: "manual";
+    scroll?: "manual";
+  }) => void;
+  scroll: () => void;
+};
+
+/**
+ * Set when a trusted popstate commits. The shell must not force scroll-to-top
+ * for that pathname, or it overwrites native scroll restoration.
+ */
+let historyScrollPathname: string | null = null;
+const historyScrollPoints = new Map<string, { x: number; y: number }>();
+
+function historyEntryKey() {
+  const navigation = (
+    window as Window & { navigation?: { currentEntry?: { key?: string } | null } }
+  ).navigation;
+
+  return navigation?.currentEntry?.key ?? null;
+}
+
+function rememberHistoryScroll() {
+  const key = historyEntryKey();
+
+  if (!key) {
+    return;
+  }
+
+  historyScrollPoints.set(key, { x: window.scrollX, y: window.scrollY });
+}
+
+export function isBrowserHistoryScroll(pathname: string) {
+  if (historyScrollPathname === null) {
+    return false;
+  }
+
+  if (historyScrollPathname === pathname) {
+    return true;
+  }
+
+  historyScrollPathname = null;
+  return false;
+}
 
 type Playback = {
   id: number;
@@ -46,6 +109,7 @@ type Playback = {
   revealDelays: number[];
   cover: gsap.core.Timeline | null;
   reveal: gsap.core.Timeline | null;
+  pump: number;
   timeout: number;
   holdTimeout: number;
   coveredAt: number;
@@ -143,6 +207,27 @@ function playPixelWave(
   );
 }
 
+/**
+ * Step a paused timeline from timers. Browser history precommit suppresses
+ * animation frames, which stalls GSAP's own ticker.
+ */
+function runOnTimer(timeline: gsap.core.Timeline, storeTimer: (timer: number) => void) {
+  timeline.pause();
+  const started = performance.now();
+  const duration = timeline.duration();
+
+  const step = () => {
+    const elapsed = (performance.now() - started) / 1000;
+    timeline.time(Math.min(elapsed, duration));
+
+    if (elapsed < duration) {
+      storeTimer(window.setTimeout(step, 16));
+    }
+  };
+
+  storeTimer(window.setTimeout(step, 16));
+}
+
 function createPixelGrid(host: HTMLElement) {
   const width = host.clientWidth || window.innerWidth;
   const height = host.clientHeight || window.innerHeight;
@@ -197,6 +282,8 @@ export function usePagePixelTransition() {
   const playbackRef = useRef<Playback | null>(null);
   const armedHistoryRef = useRef(false);
   const idRef = useRef(0);
+  const traverseTokenRef = useRef(0);
+  const traverseGateRef = useRef<TraverseGate | null>(null);
 
   pathnameRef.current = pathname;
   routerRef.current = router;
@@ -218,6 +305,8 @@ export function usePagePixelTransition() {
       window.clearTimeout(playbackRef.current.holdTimeout);
     }
 
+    traverseGateRef.current?.finish();
+    traverseGateRef.current = null;
     phaseRef.current = "idle";
     pendingRef.current = null;
     armedHistoryRef.current = false;
@@ -236,7 +325,14 @@ export function usePagePixelTransition() {
       return;
     }
 
-    if (pending.action.type === "push" && pathnameRef.current !== pending.pathname) {
+    if (pending.action.type === "traverse" && !pending.scrollReady) {
+      return;
+    }
+
+    if (
+      (pending.action.type === "push" || pending.action.type === "traverse") &&
+      pathnameRef.current !== pending.pathname
+    ) {
       return;
     }
 
@@ -285,6 +381,14 @@ export function usePagePixelTransition() {
       PAGE_PIXEL_TRANSITION.revealMs,
     );
     playback.reveal = reveal;
+    runOnTimer(reveal, (timer) => {
+      if (playback.cancelled || playback.reveal !== reveal) {
+        window.clearTimeout(timer);
+        return;
+      }
+
+      playback.pump = timer;
+    });
     reveal.eventCallback("onComplete", () => {
       if (playback.cancelled || phaseRef.current !== "revealing") {
         return;
@@ -319,6 +423,7 @@ export function usePagePixelTransition() {
       revealDelays,
       cover: null,
       reveal: null,
+      pump: 0,
       timeout: 0,
       holdTimeout: 0,
       coveredAt: 0,
@@ -327,6 +432,14 @@ export function usePagePixelTransition() {
 
     const cover = playPixelWave(cells, coverDelays, 1, PAGE_PIXEL_TRANSITION.coverMs);
     playback.cover = cover;
+    runOnTimer(cover, (timer) => {
+      if (playback.cancelled || playback.cover !== cover) {
+        window.clearTimeout(timer);
+        return;
+      }
+
+      playback.pump = timer;
+    });
     cover.eventCallback("onComplete", () => {
       if (
         playback.cancelled ||
@@ -350,7 +463,10 @@ export function usePagePixelTransition() {
       }
 
       try {
-        if (current.action.type === "back") {
+        if (current.action.type === "traverse") {
+          // The browser commits this history entry when the precommit handler returns.
+          traverseGateRef.current?.finish();
+        } else if (current.action.type === "back") {
           armedHistoryRef.current = true;
           routerRef.current.back();
         } else {
@@ -366,6 +482,7 @@ export function usePagePixelTransition() {
       playback.cancelled = true;
       playback.cover?.kill();
       playback.reveal?.kill();
+      window.clearTimeout(playback.pump);
       window.clearTimeout(playback.timeout);
       window.clearTimeout(playback.holdTimeout);
       if (playbackRef.current === playback) {
@@ -380,6 +497,8 @@ export function usePagePixelTransition() {
       if (prefersReducedMotion()) {
         return "bypass";
       }
+
+      rememberHistoryScroll();
 
       if (phaseRef.current !== "idle") {
         return "ignored";
@@ -403,6 +522,26 @@ export function usePagePixelTransition() {
         } catch {
           // Navigation still proceeds if prefetch is unavailable.
         }
+      } else if (action.type === "traverse") {
+        destinationPathname = action.pathname;
+
+        if (destinationPathname === fromPathname) {
+          return "bypass";
+        }
+
+        let settled = false;
+        let finishGate = () => {};
+        const promise = new Promise<void>((resolve) => {
+          finishGate = () => {
+            if (settled) {
+              return;
+            }
+
+            settled = true;
+            resolve();
+          };
+        });
+        traverseGateRef.current = { promise, finish: finishGate };
       }
 
       phaseRef.current = "covering";
@@ -412,6 +551,8 @@ export function usePagePixelTransition() {
         pathname: destinationPathname,
         fromPathname,
         fromHash: window.location.hash,
+        scrollReady: false,
+        token: traverseTokenRef.current,
       };
       setRunId(id);
       return "started";
@@ -426,7 +567,11 @@ export function usePagePixelTransition() {
       beginRevealRef.current(pending.id);
     };
 
-    const onPopState = () => {
+    const onPopState = (event: PopStateEvent) => {
+      if (event.isTrusted) {
+        historyScrollPathname = window.location.pathname;
+      }
+
       if (armedHistoryRef.current) {
         armedHistoryRef.current = false;
         const pending = pendingRef.current;
@@ -445,6 +590,10 @@ export function usePagePixelTransition() {
         return;
       }
 
+      if (pendingRef.current?.action.type === "traverse") {
+        return;
+      }
+
       if (phaseRef.current === "idle") {
         return;
       }
@@ -452,9 +601,242 @@ export function usePagePixelTransition() {
       finishRef.current(idRef.current);
     };
 
+    const ensureTraverseCover = (pathname: string, token: number) => {
+      const pending = pendingRef.current;
+
+      if (pending?.action.type === "traverse") {
+        pending.pathname = pathname;
+        pending.token = token;
+        pending.scrollReady = false;
+
+        const playback = playbackRef.current;
+        if (phaseRef.current === "revealing" && playback) {
+          playback.reveal?.kill();
+          playback.reveal = null;
+          window.clearTimeout(playback.timeout);
+          if (playback.cells.length > 0) {
+            gsap.set(playback.cells, { opacity: 1 });
+          }
+          phaseRef.current = "holding";
+          playback.timeout = window.setTimeout(() => {
+            if (phaseRef.current === "holding" && pendingRef.current?.id === playback.id) {
+              finishRef.current(playback.id);
+            }
+          }, PAGE_PIXEL_TRANSITION.navigationTimeoutMs);
+        }
+
+        return;
+      }
+
+      if (phaseRef.current !== "idle") {
+        return;
+      }
+
+      const started = request({ type: "traverse", pathname });
+      if (started === "started" && pendingRef.current) {
+        pendingRef.current.token = token;
+      }
+    };
+
+    const onNavigate = (event: TraverseNavigateEvent) => {
+      if (event.navigationType !== "traverse" || !event.canIntercept || !event.cancelable) {
+        return;
+      }
+
+      if (
+        event.hashChange ||
+        event.hasUAVisualTransition ||
+        !event.destination.sameDocument ||
+        armedHistoryRef.current ||
+        prefersReducedMotion()
+      ) {
+        return;
+      }
+
+      const ownNavigation = pendingRef.current;
+      if (
+        ownNavigation &&
+        (ownNavigation.action.type === "push" || ownNavigation.action.type === "back")
+      ) {
+        return;
+      }
+
+      let destination: URL;
+      try {
+        destination = new URL(event.destination.url, window.location.href);
+      } catch {
+        return;
+      }
+
+      if (
+        destination.origin !== window.location.origin ||
+        destination.pathname === window.location.pathname
+      ) {
+        return;
+      }
+
+      const token = traverseTokenRef.current + 1;
+      traverseTokenRef.current = token;
+      rememberHistoryScroll();
+      historyScrollPathname = destination.pathname;
+
+      try {
+        event.intercept({
+          focusReset: "manual",
+          scroll: "manual",
+          precommitHandler: async () => {
+            const superseded = async () => {
+              if (event.signal.aborted) {
+                return;
+              }
+
+              await new Promise<void>((resolve) => {
+                const timeout = window.setTimeout(resolve, PAGE_PIXEL_TRANSITION.navigationTimeoutMs);
+                event.signal.addEventListener(
+                  "abort",
+                  () => {
+                    window.clearTimeout(timeout);
+                    resolve();
+                  },
+                  { once: true },
+                );
+              });
+            };
+
+            if (event.signal.aborted || traverseTokenRef.current !== token) {
+              await superseded();
+              return;
+            }
+
+            ensureTraverseCover(destination.pathname, token);
+            if (event.signal.aborted || pendingRef.current?.token !== token) {
+              await superseded();
+              return;
+            }
+
+            const gate = traverseGateRef.current;
+            if (gate) {
+              await gate.promise;
+            }
+
+            if (event.signal.aborted || pendingRef.current?.token !== token) {
+              await superseded();
+            }
+          },
+          handler() {
+            // Return immediately. Waiting here for React blocks the traversal
+            // that Next.js needs before it can render the destination.
+            const saved = event.destination.key
+              ? historyScrollPoints.get(event.destination.key)
+              : undefined;
+
+            if (!saved) {
+              try {
+                event.scroll();
+              } catch {
+                // A superseded traversal can no longer restore scroll.
+              }
+            }
+
+            const started = performance.now();
+
+            const watch = () => {
+              const pending = pendingRef.current;
+              if (!pending || pending.token !== token || pending.action.type !== "traverse") {
+                return;
+              }
+
+              if (pathnameRef.current !== pending.pathname) {
+                if (performance.now() - started < PAGE_PIXEL_TRANSITION.navigationTimeoutMs) {
+                  window.setTimeout(watch, 16);
+                } else {
+                  finishRef.current(pending.id);
+                }
+                return;
+              }
+
+              if (saved) {
+                window.scrollTo(saved.x, saved.y);
+              }
+
+              pending.scrollReady = true;
+              beginRevealRef.current(pending.id);
+
+              if (!saved) {
+                return;
+              }
+
+              window.setTimeout(() => {
+                if (window.location.pathname !== pending.pathname) {
+                  return;
+                }
+
+                if (Math.abs(window.scrollY - saved.y) > 1 || Math.abs(window.scrollX - saved.x) > 1) {
+                  window.scrollTo(saved.x, saved.y);
+                }
+              }, 200);
+            };
+
+            window.setTimeout(watch, 0);
+          },
+        });
+      } catch {
+        if (traverseTokenRef.current === token) {
+          traverseTokenRef.current = token - 1;
+          historyScrollPathname = null;
+        }
+        return;
+      }
+
+      event.signal.addEventListener(
+        "abort",
+        () => {
+          window.queueMicrotask(() => {
+            if (traverseTokenRef.current !== token) {
+              return;
+            }
+
+            const pending = pendingRef.current;
+            if (pending?.action.type !== "traverse" || pending.token !== token) {
+              return;
+            }
+
+            // Next.js follows a traverse with its own replace. That can abort the
+            // intercepted signal after the destination is already committed.
+            if (window.location.pathname === pending.pathname) {
+              return;
+            }
+
+            finishRef.current(pending.id);
+          });
+        },
+        { once: true },
+      );
+    };
+
+    const navigation = (
+      window as Window & {
+        navigation?: {
+          addEventListener(type: "navigate", listener: (event: TraverseNavigateEvent) => void): void;
+          removeEventListener(type: "navigate", listener: (event: TraverseNavigateEvent) => void): void;
+        };
+      }
+    ).navigation;
+
+    const onScroll = () => {
+      if (phaseRef.current !== "idle") {
+        return;
+      }
+
+      rememberHistoryScroll();
+    };
+
     requestImpl = request;
     notifyScrollSettledImpl = notifyScrollSettled;
+    rememberHistoryScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("popstate", onPopState);
+    navigation?.addEventListener("navigate", onNavigate);
 
     return () => {
       if (requestImpl === request) {
@@ -465,7 +847,9 @@ export function usePagePixelTransition() {
         notifyScrollSettledImpl = null;
       }
 
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("popstate", onPopState);
+      navigation?.removeEventListener("navigate", onNavigate);
     };
   }, []);
 

@@ -102,6 +102,8 @@ export function CaseStudyPageLayout({
     caseStudy.openingGallery && caseStudy.openingGallery.length >= 3
       ? caseStudy.openingGallery
       : null;
+  const singleVideoOpening = !customOpening && Boolean(caseStudy.heroVideo);
+  const visibleTitle = caseStudy.cardTitle ?? caseStudy.title;
 
   const summaryPatternStyle = caseStudy.summaryPattern
     ? ({
@@ -114,12 +116,34 @@ export function CaseStudyPageLayout({
 
   return (
     <section className="fold-panel case-study-fold">
-      <header
-        className={["case-study-hero", customOpening ? "case-study-hero--opening-gallery" : ""]
-          .filter(Boolean)
-          .join(" ")}
-        data-smart-navbar-hero
-      >
+      {singleVideoOpening ? (
+        <header className="case-study-opening" data-smart-navbar-hero>
+          <div className="case-study-opening__frame">
+            <video
+              aria-label={`${visibleTitle} media`}
+              autoPlay
+              className="case-study-opening-video"
+              height={1080}
+              loop
+              muted
+              playsInline
+              poster={caseStudy.heroPoster || undefined}
+              width={1920}
+            >
+              <source src={caseStudy.heroVideo} />
+            </video>
+          </div>
+        </header>
+      ) : (
+        <header
+          className={[
+            "case-study-hero",
+            customOpening ? "case-study-hero--opening-gallery" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          data-smart-navbar-hero
+        >
         {customOpening ? (
           <CaseStudyOpeningGallery
             panels={customOpening}
@@ -175,7 +199,8 @@ export function CaseStudyPageLayout({
             </div>
           </div>
         )}
-      </header>
+        </header>
+      )}
 
       <div
         className={[
@@ -192,11 +217,9 @@ export function CaseStudyPageLayout({
             </div>
           </aside>
           <article className="case-study-layout__content" ref={contentRef}>
-            {customOpening ? (
+            {customOpening || singleVideoOpening ? (
               <div className="case-study-article-heading">
-                <h1 className="case-study-article-title text-heading-1">
-                  {caseStudy.cardTitle ?? caseStudy.title}
-                </h1>
+                <h1 className="case-study-article-title text-heading-1">{visibleTitle}</h1>
                 <hr className="case-study-article-title__rule" />
               </div>
             ) : null}

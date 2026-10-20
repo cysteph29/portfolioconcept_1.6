@@ -4,13 +4,20 @@ import type { ComponentType } from "react";
 
 import { CaseStudyPageLayout } from "@/components/work/case-study-page-layout";
 import Axway from "@/content/case-studies/axway.mdx";
+import AxwayPreview from "@/content/case-studies/axway-preview.mdx";
 import TheKen from "@/content/case-studies/the-ken.mdx";
 import SalesforceTrailhead from "@/content/case-studies/salesforce-trailhead.mdx";
 import DummyCaseStudyThree from "@/content/case-studies/dummy-case-study-3.mdx";
-import { CASE_STUDIES, getCaseStudyBySlug } from "@/config/case-studies";
+import {
+  CASE_STUDIES,
+  UNLISTED_CASE_STUDIES,
+  getCaseStudyBySlug,
+  isUnlistedCaseStudy,
+} from "@/config/case-studies";
 
 const CASE_STUDY_CONTENT_BY_SLUG: Record<string, ComponentType> = {
   "axway": Axway,
+  "axway-preview": AxwayPreview,
   "the-ken": TheKen,
   "salesforce-trailhead": SalesforceTrailhead,
   "dummy-case-study-3": DummyCaseStudyThree,
@@ -19,7 +26,7 @@ const CASE_STUDY_CONTENT_BY_SLUG: Record<string, ComponentType> = {
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return CASE_STUDIES.map((caseStudy) => ({
+  return [...CASE_STUDIES, ...UNLISTED_CASE_STUDIES].map((caseStudy) => ({
     slug: caseStudy.slug,
   }));
 }
@@ -39,6 +46,9 @@ export async function generateMetadata({
   return {
     title: `${caseStudy.title} Case Study`,
     description: caseStudy.description,
+    ...(isUnlistedCaseStudy(slug)
+      ? { robots: { index: false, follow: false } }
+      : {}),
   };
 }
 

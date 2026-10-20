@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { ContactFooter } from "@/components/home/contact-footer";
 import {
+  isBrowserHistoryScroll,
   notifyPagePixelScrollSettled,
   readInternalPageTransitionHref,
   requestPagePixelTransition,
@@ -59,10 +60,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
-      if (!scrollToLocationHash()) {
-        // The shell persists between App Router navigations, so explicitly reset
-        // the document scroll position when the route changes.
-        window.scrollTo({ left: 0, top: 0, behavior: "instant" });
+      if (!isBrowserHistoryScroll(pathname)) {
+        if (!scrollToLocationHash()) {
+          // The shell persists between App Router navigations, so explicitly reset
+          // the document scroll position when the route changes.
+          window.scrollTo({ left: 0, top: 0, behavior: "instant" });
+        }
       }
 
       notifyPagePixelScrollSettled();

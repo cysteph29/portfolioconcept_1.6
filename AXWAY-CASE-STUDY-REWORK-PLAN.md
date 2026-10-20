@@ -1,5 +1,20 @@
 # Axway case study rework plan
 
+Two local versions exist. Publishing the rework is a separate task. Do not replace `/work/axway` with the draft until that task is explicit.
+
+| URL | Content file | What it is |
+| --- | --- | --- |
+| http://localhost:3000/work/axway | `src/content/case-studies/axway.mdx` | Complete original case study, restored for sharing. Same MDX on `/dive/work/axway`. |
+| http://localhost:3000/work/axway-preview | `src/content/case-studies/axway-preview.mdx` | Current unfinished rework. Same MDX on `/dive/work/axway-preview`. Unlisted and `noindex`. |
+
+The original content is the file at commit `d2b7babfde38b747e82e236f3ec8323f36f301ee` (`d2b7bab`, parent of the restructuring commit `09f549d`). That file still has the process sections from The Product through Feedback. It was copied from that commit without an editorial pass. The public opening presentation has since changed; the body has not.
+
+Public `/work/axway`, `/work/salesforce-trailhead`, and `/work/the-ken` now share one opening: the existing promo video, then the homepage card title in the article column, then the hairline divider, then the current body. The video uses the case-study container, not the homepage grid. Its outer box matches `.case-study-layout__inner`: horizontal padding `--spacing-home-edge-x`, maximum width `--spacing-placeholder-max` (72rem), centered. That span is the TOC column, the column gap, and the article column. The video fills that box at its own aspect ratio. Title and divider stay in the article column. The Problem / Solution / Outcome summary block is not shown on those pages. Its frontmatter stays, because other pages can still render it. `/work/axway-preview` is unchanged: multi-panel gallery, animation, draft content, and `noindex`.
+
+The rework checkpoint, taken before that restore, is `checkpoints/axway-rework-09f549de2eb7/`. `MANIFEST.md` there lists the original paths, SHA-256 hashes, and Git commit `09f549de2eb73078286832e388efce158202a76b`. The working tree matched that commit, so there was no uncommitted Axway diff; the ignored `public/work/axway/Redesign Proposal/` folder contained only `.DS_Store` and is included. To recover the rework files, copy them from the checkpoint back onto the same paths. Do not use `git reset`, `git checkout`, or `git restore`.
+
+Future rework edits belong in `src/content/case-studies/axway-preview.mdx`. Keep its media paths under `/work/axway/`. The gallery, email/Ctrl+F illustration, and draft-only components stay on the preview because that file sets `openingGallery` and uses `AxwayFindWorkaround`. The public file does not. Shared layout and styles still serve both pages; do not point homepage cards, listings, or a sitemap at the preview. `UNLISTED_CASE_STUDIES` in `src/config/case-studies.ts` is the only registration for the draft.
+
 The page explains the diagnosis-flow change once, then shows the interface changes that make that shorter flow possible. Those interface changes are parts of the same solution. Their screen reductions are not added together. The product-overview motion is still a placeholder. Do not build that animation until it is explicitly requested.
 
 This structure supersedes the earlier four-chapter order (Overview, Finding the failed invoice, Understanding the failure, Results), the Diagnosis / Fixing scope block, the repeated workflow strips above interface visuals, and the duplicate old/new comparison that closed the drawer section.
@@ -7,24 +22,24 @@ This structure supersedes the earlier four-chapter order (Overview, Finding the 
 ## Gallery pass
 
 - Decorative gallery containers removed. Panels no longer use the summary pattern, borders, or inset padding. Images and videos render directly. Placeholders stay plain rectangles with a neutral fill and their label.
-- Gallery-first stays Axway-only for now. Salesforce Trailhead and The Ken use the earlier opening again: title first, then Problem / Solution / Outcome beside the existing project video. Their copy, media, titles, and body sections are unchanged. Finish Axway before applying the gallery to other case studies.
+- The multi-panel gallery stays on `/work/axway-preview` only. The three public case studies use the single promo video at the combined case-study grid width, with the article-column title and divider described above. Their body copy, media, section order, and contents are unchanged.
 - Axway’s gallery is unchanged: full-width, one large panel and two stacked panels, a single column below 800px, the existing promo, and the more specific placeholder labels. Panels still render media directly, without the summary pattern, borders, or inset padding.
-- Other content and typography changes deferred. Axway still uses the article-column title, omits the summary block, and caps prose at 42rem. Other case studies keep their current title treatment, summary blocks, body, section order, contents, and type.
+- Other content and typography changes deferred. The preview still uses the article-column title, omits the summary block, and caps prose at 42rem. The public pages use the same title and divider placement without that prose cap, and they no longer show the opening summary block.
 
 ## Direction
 
 Restructure `/work/axway` around an overview, one overall flow change, three interface chapters, and results. Headings should carry the story. Keep this portfolio’s type, color, borders, and navigation.
 
-`/dive/work/axway` uses the same MDX and layout. It is not a separate page.
+`/dive/work/axway` uses the public original MDX and layout. `/dive/work/axway-preview` uses the rework MDX. Neither dive URL is a separate page.
 
 Protected and unchanged:
 
 - Homepage card title, which is also the visible Axway H1: **Reducing Invoice Resolution Time by 67% for Axway E-Invoicing**
 - Frontmatter `title` stays `Axway`, so the document title remains “Axway Case Study”
 - Homepage thumbnail, which is still `videonew-axway-promo-web.mp4`
-- Other case studies’ titles, summaries, body, contents, and type. Gallery-first remains Axway-only until those studies are updated
+- Other case studies’ body, contents, and type. The preview gallery stays on the draft only
 - Nav, footer, deployment, and original asset files
-- Problem, Solution, and Outcome frontmatter, which other pages can still render. Axway no longer shows that summary block.
+- Problem, Solution, and Outcome frontmatter. The three public pages no longer show that summary block. The data remains for any page that still renders it.
 
 ## Chapter mapping
 
@@ -108,11 +123,11 @@ Reviewed `http://localhost:3000/work/axway#investigation` on the already running
 
 ## Next step
 
-Stop for visual review at `http://localhost:3000/work/axway`. Remaining visuals are still the placeholders listed above, including the product-flow motion. Do not build that animation until it is explicitly requested.
+Stop for visual review at `http://localhost:3000/work/axway-preview`. Remaining visuals are still the placeholders listed above, including the product-flow motion. Do not build that animation until it is explicitly requested. Publishing this rework over `/work/axway` is a separate task.
 
 ## Files changed
 
-- `src/content/case-studies/axway.mdx`
+- `src/content/case-studies/axway-preview.mdx` (the rework; edit this, not the public file)
 - `src/components/work/axway-find-workaround.tsx` (new)
 - `src/components/work/axway-find-workaround.module.css` (new)
 - `src/components/work/case-figure.tsx`

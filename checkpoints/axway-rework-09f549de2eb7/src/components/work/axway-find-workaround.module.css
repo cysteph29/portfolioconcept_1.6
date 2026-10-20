@@ -1,0 +1,701 @@
+/*
+ * 10s loop. Email timestamp, then the task window, then Ctrl+F,
+ * then the browser Find box types 10:42:18 and highlights that row.
+ */
+
+.root {
+  --cycle: 10s;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  container-type: inline-size;
+  font-family: var(--font-sans), sans-serif;
+  color: var(--color-text-primary);
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+.column {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-3);
+  line-height: var(--text-body-3--line-height);
+}
+
+.panel {
+  min-width: 0;
+  border: var(--border-width-hairline) solid
+    color-mix(in srgb, var(--color-text-primary) 28%, transparent);
+  background: color-mix(in srgb, var(--color-text-primary) 5%, var(--color-canvas));
+}
+
+.email {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.1rem 1.15rem 1.2rem;
+}
+
+.emailHead {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  flex: none;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-text-primary) 55%, transparent);
+}
+
+.kicker,
+.subject {
+  margin: 0;
+}
+
+.kicker {
+  color: var(--color-text-muted);
+  font-size: var(--text-body-3);
+  line-height: var(--text-body-3--line-height);
+}
+
+.subject {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.line,
+.bar {
+  display: block;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-text-primary) 16%, transparent);
+}
+
+.line {
+  width: 100%;
+}
+
+.lineShort {
+  width: 68%;
+}
+
+.stamp {
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--color-text-primary);
+}
+
+.emailTime {
+  width: fit-content;
+  margin-left: -0.4rem;
+  padding: 0.12rem 0.4rem;
+  background: transparent;
+}
+
+.task {
+  opacity: 0.55;
+}
+
+.chrome {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-bottom: var(--border-width-hairline) solid
+    color-mix(in srgb, var(--color-text-primary) 18%, transparent);
+  background: color-mix(in srgb, var(--color-text-primary) 8%, var(--color-canvas));
+}
+
+.controls {
+  display: flex;
+  flex: none;
+  gap: 0.35rem;
+}
+
+.control {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-text-primary) 38%, transparent);
+}
+
+.findSlot {
+  position: relative;
+  width: min(100%, 15.75rem);
+  min-width: min(100%, 15.75rem);
+  min-height: 2.5rem;
+  margin-left: auto;
+}
+
+.find,
+.keys {
+  min-height: 2.5rem;
+}
+
+.find {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.55rem;
+  border: var(--border-width-hairline) solid
+    color-mix(in srgb, var(--color-text-primary) 42%, transparent);
+  background: var(--color-pixel-fill);
+  opacity: 0;
+}
+
+.findLabel,
+.count {
+  flex: none;
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.count {
+  min-width: 1.9rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  opacity: 0;
+}
+
+.query {
+  display: flex;
+  flex: none;
+  align-items: center;
+  min-width: 8.4ch;
+  overflow: hidden;
+}
+
+.char {
+  display: block;
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.caret {
+  width: 1px;
+  height: 1.05rem;
+  flex: none;
+  margin-left: 1px;
+  background: var(--color-text-primary);
+  opacity: 0;
+}
+
+.keys {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  opacity: 0;
+}
+
+.key,
+.plus {
+  color: var(--color-text-primary);
+  font-family: var(--font-sans), sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.key {
+  display: inline-flex;
+  min-width: 1.75rem;
+  min-height: 1.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.45rem;
+  border: var(--border-width-hairline) solid
+    color-mix(in srgb, var(--color-text-primary) 42%, transparent);
+  background: var(--color-pixel-fill);
+}
+
+.keyCtrl {
+  min-width: 2.9rem;
+}
+
+.plus {
+  color: var(--color-text-muted);
+}
+
+.product {
+  min-width: 0;
+  padding: 0.85rem 1rem 0.55rem;
+}
+
+.table {
+  display: grid;
+}
+
+.head,
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.9fr) max-content;
+  align-items: center;
+  column-gap: 0.85rem;
+  min-height: 2.4rem;
+}
+
+.head {
+  min-height: 2rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-3);
+  line-height: var(--text-body-3--line-height);
+  border-bottom: var(--border-width-hairline) solid
+    color-mix(in srgb, var(--color-text-primary) 18%, transparent);
+}
+
+.row {
+  border-bottom: var(--border-width-hairline) solid
+    color-mix(in srgb, var(--color-text-primary) 10%, transparent);
+}
+
+.row:last-child {
+  border-bottom: 0;
+}
+
+.cell {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.timeCol {
+  padding: 0.12rem 0.4rem;
+  background: transparent;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.25rem;
+  margin-top: 1rem;
+}
+
+.caption {
+  margin: 0;
+  max-width: 42rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-body-3);
+  font-weight: 300;
+  line-height: var(--text-body-3--line-height);
+}
+
+.playback {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+  padding: 0.25rem 0.15rem;
+  border: 0;
+  background: none;
+  color: var(--color-text-muted);
+  font-family: var(--font-neuebit), sans-serif;
+  font-size: var(--text-body-3);
+  font-weight: 700;
+  line-height: var(--text-body-3--line-height);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.playback:hover {
+  color: var(--color-text-primary);
+}
+
+.playback:focus-visible {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 2px;
+}
+
+.playbackIcon {
+  width: 0.55rem;
+  height: 0.55rem;
+  flex: none;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  transform: translateX(0.04rem);
+}
+
+.playback[data-playing] .playbackIcon {
+  height: 0.6rem;
+  border-inline: 0.125rem solid currentColor;
+  background: none;
+  clip-path: none;
+  transform: none;
+}
+
+@container (min-width: 36rem) {
+  .stage {
+    grid-template-columns: minmax(13.5rem, 16.5rem) minmax(0, 1fr);
+    align-items: start;
+    column-gap: 1.5rem;
+  }
+}
+
+.isAnimated .emailTime {
+  animation: emailMark var(--cycle) linear infinite;
+}
+
+.isAnimated .task {
+  animation: taskFocus var(--cycle) linear infinite;
+}
+
+.isAnimated .keys {
+  animation: keys var(--cycle) linear infinite;
+}
+
+.isAnimated .find {
+  animation: findBox var(--cycle) linear infinite;
+}
+
+.isAnimated .count {
+  animation: countIn var(--cycle) linear infinite;
+}
+
+.isAnimated .match {
+  animation: matchIn var(--cycle) linear infinite;
+}
+
+.isAnimated .caret {
+  animation: caretIn var(--cycle) linear infinite;
+}
+
+.isAnimated .char {
+  animation-duration: var(--cycle);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.isAnimated .char:nth-child(1) {
+  animation-name: char1;
+}
+
+.isAnimated .char:nth-child(2) {
+  animation-name: char2;
+}
+
+.isAnimated .char:nth-child(3) {
+  animation-name: char3;
+}
+
+.isAnimated .char:nth-child(4) {
+  animation-name: char4;
+}
+
+.isAnimated .char:nth-child(5) {
+  animation-name: char5;
+}
+
+.isAnimated .char:nth-child(6) {
+  animation-name: char6;
+}
+
+.isAnimated .char:nth-child(7) {
+  animation-name: char7;
+}
+
+.isAnimated .char:nth-child(8) {
+  animation-name: char8;
+}
+
+.isAnimated .stage * {
+  animation-play-state: paused;
+}
+
+.isAnimated.isRunning .stage * {
+  animation-play-state: running;
+}
+
+@keyframes emailMark {
+  0%,
+  4%,
+  18%,
+  100% {
+    background-color: transparent;
+    color: var(--color-text-primary);
+  }
+
+  8%,
+  14% {
+    background-color: var(--color-accent-gold);
+    color: var(--color-pixel-fill);
+  }
+}
+
+@keyframes taskFocus {
+  0%,
+  16%,
+  100% {
+    opacity: 0.55;
+    border-color: color-mix(in srgb, var(--color-text-primary) 28%, transparent);
+  }
+
+  26%,
+  90% {
+    opacity: 1;
+    border-color: color-mix(in srgb, var(--color-text-primary) 50%, transparent);
+  }
+}
+
+@keyframes keys {
+  0%,
+  27%,
+  41%,
+  100% {
+    opacity: 0;
+  }
+
+  31%,
+  36% {
+    opacity: 1;
+  }
+}
+
+@keyframes findBox {
+  0%,
+  36%,
+  96%,
+  100% {
+    opacity: 0;
+  }
+
+  42%,
+  90% {
+    opacity: 1;
+  }
+}
+
+@keyframes caretIn {
+  0%,
+  42%,
+  96%,
+  100% {
+    opacity: 0;
+  }
+
+  43%,
+  90% {
+    opacity: 1;
+  }
+}
+
+@keyframes countIn {
+  0%,
+  57%,
+  96%,
+  100% {
+    opacity: 0;
+  }
+
+  62%,
+  90% {
+    opacity: 1;
+  }
+}
+
+@keyframes matchIn {
+  0%,
+  57%,
+  96%,
+  100% {
+    background-color: transparent;
+    color: var(--color-text-primary);
+  }
+
+  62%,
+  90% {
+    background-color: var(--color-accent-gold);
+    color: var(--color-pixel-fill);
+  }
+}
+
+@keyframes char1 {
+  0%,
+  43.99%,
+  100% {
+    max-width: 0;
+    opacity: 0;
+  }
+
+  44%,
+  96% {
+    max-width: 1.5rem;
+    opacity: 1;
+  }
+}
+
+@keyframes char2 {
+  0%,
+  45.49%,
+  100% {
+    max-width: 0;
+    opacity: 0;
+  }
+
+  45.5%,
+  96% {
+    max-width: 1.5rem;
+    opacity: 1;
+  }
+}
+
+@keyframes char3 {
+  0%,
+  46.99%,
+  100% {
+    max-width: 0;
+    opacity: 0;
+  }
+
+  47%,
+  96% {
+    max-width: 1.5rem;
+    opacity: 1;
+  }
+}
+
+@keyframes char4 {
+  0%,
+  48.49%,
+  100% {
+    max-width: 0;
+    opacity: 0;
+  }
+
+  48.5%,
+  96% {
+    max-width: 1.5rem;
+    opacity: 1;
+  }
+}
+
+@keyframes char5 {
+  0%,
+  49.99%,
+  100% {
+    max-width: 0;
+    opacity: 0;
+  }
+
+  50%,
+  96% {
+    max-width: 1.5rem;
+    opacity: 1;
+  }
+}
+
+@keyframes char6 {
+  0%,
+  51.49%,
+  100% {
+    max-width: 0;
+    opacity: 0;
+  }
+
+  51.5%,
+  96% {
+    max-width: 1.5rem;
+    opacity: 1;
+  }
+}
+
+@keyframes char7 {
+  0%,
+  52.99%,
+  100% {
+    max-width: 0;
+    opacity: 0;
+  }
+
+  53%,
+  96% {
+    max-width: 1.5rem;
+    opacity: 1;
+  }
+}
+
+@keyframes char8 {
+  0%,
+  54.49%,
+  100% {
+    max-width: 0;
+    opacity: 0;
+  }
+
+  54.5%,
+  96% {
+    max-width: 1.5rem;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root:not(.isAnimated) .task {
+    opacity: 1;
+    border-color: color-mix(in srgb, var(--color-text-primary) 50%, transparent);
+  }
+
+  .root:not(.isAnimated) .find,
+  .root:not(.isAnimated) .count,
+  .root:not(.isAnimated) .char {
+    opacity: 1;
+  }
+
+  .root:not(.isAnimated) .char {
+    max-width: 1.5rem;
+  }
+
+  .root:not(.isAnimated) .keys,
+  .root:not(.isAnimated) .caret {
+    opacity: 0;
+  }
+
+  .root:not(.isAnimated) .match {
+    background-color: var(--color-accent-gold);
+    color: var(--color-pixel-fill);
+  }
+}
+
+@media (forced-colors: active) {
+  .playback:focus-visible {
+    outline-color: Highlight;
+  }
+}

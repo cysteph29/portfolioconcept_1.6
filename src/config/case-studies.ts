@@ -1,4 +1,5 @@
 import { frontmatter as axway } from "@/content/case-studies/axway.mdx";
+import { frontmatter as axwayPreview } from "@/content/case-studies/axway-preview.mdx";
 import { frontmatter as theKen } from "@/content/case-studies/the-ken.mdx";
 import { frontmatter as salesforceTrailhead } from "@/content/case-studies/salesforce-trailhead.mdx";
 import { frontmatter as dummyCaseStudyThree } from "@/content/case-studies/dummy-case-study-3.mdx";
@@ -64,6 +65,7 @@ function defineCaseStudy(frontmatter: CaseStudyFrontmatter): CaseStudy {
   };
 }
 
+/** Public case studies. Homepage cards, project listings, and sitemaps use this list only. */
 export const CASE_STUDIES: CaseStudy[] = [
   defineCaseStudy(salesforceTrailhead),
   defineCaseStudy(axway),
@@ -71,6 +73,16 @@ export const CASE_STUDIES: CaseStudy[] = [
   defineCaseStudy(dummyCaseStudyThree),
 ];
 
+/**
+ * Direct-URL drafts. They are routable, omitted from listings and the sitemap,
+ * and served with noindex. Asset paths stay inside each content file.
+ */
+export const UNLISTED_CASE_STUDIES: CaseStudy[] = [defineCaseStudy(axwayPreview)];
+
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
-  return CASE_STUDIES.find((caseStudy) => caseStudy.slug === slug);
+  return [...CASE_STUDIES, ...UNLISTED_CASE_STUDIES].find((caseStudy) => caseStudy.slug === slug);
+}
+
+export function isUnlistedCaseStudy(slug: string): boolean {
+  return UNLISTED_CASE_STUDIES.some((caseStudy) => caseStudy.slug === slug);
 }

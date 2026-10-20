@@ -1,0 +1,192 @@
+---
+cover: ""
+title: "Axway"
+cardTitle: "Reducing Invoice Resolution Time by 67% for Axway E-Invoicing"
+description: "Axway's legacy e-Invoicing platform suffered from usability gaps due to engineering-led development. As the first designer, I advocated for user research, studied how power users actually worked, and redesigned a core error-finding workflow. The redesign reduced invoice resolution time by 67% in testing."
+problem: "Diagnosing why a single invoice failed meant navigating seven separate screens."
+problemEmblem: ""
+solution: "A streamlined diagnosis flow that surfaced invoice status earlier and linked Documents straight to the invoice details."
+solutionEmblem: ""
+outcome: "User testing showed a 67% drop in invoice resolution time."
+outcomeEmblem: ""
+summaryPattern: "/assets/summary-pattern.svg"
+heroVideo: "/work/axway/videonew-axway-promo-web.mp4"
+heroPoster: "/work/axway/videonew-axway-promo-web-poster.webp"
+openingGallery:
+  - type: video
+  - type: placeholder
+    label: "Product detail — invoice status and Details action"
+  - type: placeholder
+    label: "Product detail — search and filters"
+timeline: "4 weeks"
+role: "User Research, Design, User Testing"
+team: "Product Designer (me), Product Manager, SWE"
+slug: "axway"
+sections:
+  - id: "overview"
+    label: "Overview"
+  - id: "shortening"
+    label: "Shortening the diagnosis flow"
+  - id: "identifying"
+    label: "Identifying failed invoices"
+  - id: "understanding"
+    label: "Understanding the error"
+  - id: "investigation"
+    label: "Supporting the investigation"
+  - id: "results"
+    label: "Results"
+---
+
+<Section id="overview" sections={frontmatter.sections}>
+
+<div className="case-study-block">
+
+## Axway E-Invoicing helps businesses exchange invoices that meet local regulatory requirements.
+
+The product automates invoice exchange between businesses, transforming invoices to meet local regulatory requirements before sending them to the recipient.
+
+<ImagePlaceholder label="Product flow — Company A sends an invoice → Axway E-Invoicing transforms it to meet local regulatory requirements → Company B receives it" ratio="2/1" />
+
+</div>
+
+<div className="case-study-block">
+
+## When an invoice failed during processing, Operations had to find out why before fixing it.
+
+</div>
+
+</Section>
+
+<Section id="shortening" divided sections={frontmatter.sections}>
+
+<div className="case-study-block">
+
+## The existing Diagnosis flow was tedious, requiring users to navigate through seven screens to find why an invoice failed
+
+<CaseFigure
+  src="/work/axway/case-study-axway-4.webp"
+  alt="Diagram of the existing diagnosis path. A failure notification does not name the invoice. The path then runs through Welcome, Documents, Task Overview, Sub-Tasks, Invoice List, and Invoice Detail."
+  width={1920}
+  height={1080}
+/>
+
+Interviews and observations with Operations showed why diagnosis was worth tackling: fixes varied, but finding the failure was a repeated first step.
+
+## Finding the failed invoice and understanding the error now happen in Documents.
+
+<CaseFigure
+  src="/work/axway/use this.png"
+  alt="Before and updated diagnosis flows. The existing path runs from ServiceNow, Email, or Dashboard through Welcome, Documents, Task Overview, Sub-Tasks, and Invoice List to Invoice Detail. The updated flow goes from those entry points to Documents, then Invoice Detail."
+  width={1920}
+  height={1080}
+  figureClassName="axway-flow"
+  captionClassName="axway-flow__caption"
+  caption="Task Overview, Sub-Tasks, and Invoice List remain available. This diagnosis path no longer passes through them."
+/>
+
+</div>
+
+</Section>
+
+<Section id="identifying" divided sections={frontmatter.sections}>
+
+<div className="case-study-pair">
+
+## The Documents list didn’t show which invoices had failed.
+
+<CaseFigure
+  src="/work/axway/old-ui-2.png"
+  alt="Old flow with Documents highlighted, above the original invoices list. Columns include account, barcode, date, reference, issuer, and buyer, with no status showing which invoices failed."
+  width={1920}
+  height={1231}
+/>
+
+## A Status column made failed invoices visible directly in the list.
+
+Each row also shows a last-update timestamp.
+
+<CaseFigure
+  src="/work/axway/case-study-axway-7.webp"
+  alt="Documents list with a Status column and Last Update timestamps. Failed invoices are visible in the list, and each row has a Details action."
+  width={1920}
+  height={1364}
+/>
+
+</div>
+
+</Section>
+
+<Section id="understanding" divided sections={frontmatter.sections}>
+
+<div className="case-study-pair">
+
+## Finding the invoice still left its error details on another screen.
+
+<CaseFigure
+  src="/work/axway/old-ui-3.png"
+  alt="Old flow with Invoice Detail highlighted, above a Task Details window. The task is completed with errors, and the messages include a file that was not found."
+  width={1920}
+  height={1231}
+/>
+
+## A Details drawer brought the error information into Documents.
+
+Selecting Details in an invoice row opens a drawer from the right. Operations can inspect the error information while keeping the Documents list in view.
+
+<ImagePlaceholder label="After — select Details in an invoice row → right-hand drawer shows error information beside the Documents table" ratio="16/9" />
+
+</div>
+
+</Section>
+
+<Section id="investigation" divided sections={frontmatter.sections}>
+
+<div className="case-study-pair">
+
+## Users relied on an email timestamp and Ctrl+F in the task screen.
+
+Documents had no search bar. Operations took the timestamp from a failure-notification email and used the browser’s Find function in the task screen to locate matching information.
+
+<AxwayFindWorkaround />
+
+## A new search bar let them use that timestamp directly in Documents.
+
+I introduced search in Documents that supports timestamps and invoice references, bringing that investigation into the invoice list.
+
+<ImagePlaceholder label="After — use the notification timestamp in the new Documents search bar" ratio="16/9" />
+
+</div>
+
+<div className="case-study-block">
+
+I also redesigned the filters to make the available criteria visible and make combining them easier to understand.
+
+<ImagePlaceholder label="Filter comparison — previous query controls versus explicit filter criteria" ratio="16/9" />
+
+</div>
+
+</Section>
+
+<Section id="results" divided sections={frontmatter.sections}>
+
+## Diagnosis time dropped by 67% in user testing.
+
+My PM was concerned about changing navigation in a legacy product. I tested the prototype with three Operations team members first. Their positive response helped bring him into a second round with seven more.
+
+<CaseFigure
+  src="/work/axway/case-study-axway-8.webp"
+  alt="67% reduction in time for invoice diagnosis, beside a quote from Amardeep Tyagi, an Operations team member."
+  width={1920}
+  height={1080}
+/>
+
+## Feedback from my manager, who has overseen this product for over a decade
+
+<CaseFigure
+  src="/work/axway/case-study-axway-9.webp"
+  alt="Manager feedback quote about the Axway e-Invoicing work"
+  width={1920}
+  height={1080}
+/>
+
+</Section>
