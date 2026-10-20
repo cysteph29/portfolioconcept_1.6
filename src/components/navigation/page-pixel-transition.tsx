@@ -4,6 +4,15 @@ import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { usePathname, useRouter } from "next/navigation";
 
+import {
+  applyNativeScroll,
+  lockPageScroll,
+  PAGE_TRANSITION_LOCK,
+  reconcilePageScroll,
+  scrollToPosition,
+  unlockPageScroll,
+} from "@/components/navigation/smooth-scroll";
+
 /**
  * Viewport pixel transition. Durations are the full wave, including stagger.
  * `cellFadeMs` is taken from that total; it is not added on top.
@@ -310,6 +319,7 @@ export function usePagePixelTransition() {
     phaseRef.current = "idle";
     pendingRef.current = null;
     armedHistoryRef.current = false;
+    unlockPageScroll(PAGE_TRANSITION_LOCK);
     setRunId((current) => (current === id ? null : current));
   };
 
@@ -555,6 +565,7 @@ export function usePagePixelTransition() {
         token: traverseTokenRef.current,
       };
       setRunId(id);
+      lockPageScroll(PAGE_TRANSITION_LOCK);
       return "started";
     };
 
@@ -731,11 +742,13 @@ export function usePagePixelTransition() {
               : undefined;
 
             if (!saved) {
-              try {
-                event.scroll();
-              } catch {
-                // A superseded traversal can no longer restore scroll.
-              }
+              applyNativeScroll(() => {
+                try {
+                  event.scroll();
+                } catch {
+                  // A superseded traversal can no longer restore scroll.
+                }
+              });
             }
 
             const started = performance.now();
@@ -756,7 +769,7 @@ export function usePagePixelTransition() {
               }
 
               if (saved) {
-                window.scrollTo(saved.x, saved.y);
+                scrollToPosition(saved.x, saved.y);
               }
 
               pending.scrollReady = true;
@@ -772,7 +785,9 @@ export function usePagePixelTransition() {
                 }
 
                 if (Math.abs(window.scrollY - saved.y) > 1 || Math.abs(window.scrollX - saved.x) > 1) {
-                  window.scrollTo(saved.x, saved.y);
+                  scrollToPosition(saved.x, saved.y);
+                } else {
+                  reconcilePageScroll();
                 }
               }, 200);
             };
@@ -850,6 +865,7 @@ export function usePagePixelTransition() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("popstate", onPopState);
       navigation?.removeEventListener("navigate", onNavigate);
+      unlockPageScroll(PAGE_TRANSITION_LOCK);
     };
   }, []);
 

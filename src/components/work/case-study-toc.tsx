@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 
+import { scrollToElement } from "@/components/navigation/smooth-scroll";
 import type { CaseStudySection } from "@/config/case-studies";
 
 type Props = {
@@ -103,7 +104,8 @@ export function CaseStudyToc({ sections }: Props) {
     event.preventDefault();
     const target = document.getElementById(id);
     if (!target) return;
-    target.scrollIntoView({
+    scrollToElement(target, {
+      block: "start",
       behavior: prefersReducedMotion ? "instant" : "smooth",
     });
   }

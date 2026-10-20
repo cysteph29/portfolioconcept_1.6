@@ -3,6 +3,8 @@
 /* eslint-disable @next/next/no-img-element -- SVG case study assets must bypass the Next image optimizer. */
 
 import Image from "next/image";
+
+import { IMAGE_PREVIEW_LOCK, lockPageScroll, unlockPageScroll } from "@/components/navigation/smooth-scroll";
 import { createPortal } from "react-dom";
 import {
   type CSSProperties,
@@ -110,6 +112,7 @@ export function CaseFigure({
     });
 
     document.body.style.overflow = "hidden";
+    lockPageScroll(IMAGE_PREVIEW_LOCK);
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -124,6 +127,7 @@ export function CaseFigure({
       window.cancelAnimationFrame(focusFrame);
       setIsLightboxVisible(false);
       document.body.style.overflow = previousBodyOverflow;
+      unlockPageScroll(IMAGE_PREVIEW_LOCK);
       document.removeEventListener("keydown", handleKeyDown);
       window.requestAnimationFrame(() => {
         triggerElement?.focus();

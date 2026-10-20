@@ -7,6 +7,8 @@ import type { MotionValue } from "motion/react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { type CSSProperties, type ReactNode, type Ref, useEffect, useLayoutEffect, useRef, useState } from "react";
 
+import { resizePageScroll, scrollToElement, scrollToPosition } from "@/components/navigation/smooth-scroll";
+
 import { FooterGridCanvas } from "./footer-grid-canvas";
 import { PianoKeyboard } from "./piano-keyboard";
 import { textReveal05 } from "./text-reveal-05";
@@ -87,9 +89,14 @@ function scrollContactTarget(reveal: boolean) {
     return;
   }
 
-  document.getElementById("contact")?.scrollIntoView({
+  const target = document.getElementById("contact");
+
+  if (!target) {
+    return;
+  }
+
+  scrollToElement(target, {
     block: reveal ? "end" : "start",
-    inline: "nearest",
     behavior: "instant",
   });
 }
@@ -166,6 +173,7 @@ function useFooterRevealLayout(reveal: boolean) {
 
   useEffect(() => {
     ScrollTrigger.refresh();
+    resizePageScroll();
   }, [revealActive, layout.height]);
 
   useEffect(() => {
@@ -191,7 +199,7 @@ function useFooterRevealLayout(reveal: boolean) {
       const overlap = main.getBoundingClientRect().bottom - focused.getBoundingClientRect().top;
 
       if (overlap > 1) {
-        window.scrollTo({ top: window.scrollY + overlap, behavior: "instant" });
+        scrollToPosition(window.scrollX, window.scrollY + overlap);
       }
     };
 

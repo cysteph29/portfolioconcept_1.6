@@ -11,6 +11,8 @@ import {
   requestPagePixelTransition,
   usePagePixelTransition,
 } from "@/components/navigation/page-pixel-transition";
+import { PageSmoothScroll } from "@/components/navigation/page-smooth-scroll";
+import { scrollToElement, scrollToPosition } from "@/components/navigation/smooth-scroll";
 import { TopNav } from "@/components/navigation/top-nav";
 
 function scrollToLocationHash() {
@@ -26,9 +28,8 @@ function scrollToLocationHash() {
     return false;
   }
 
-  target.scrollIntoView({
+  scrollToElement(target, {
     block: target.dataset.reveal === "active" ? "end" : "start",
-    inline: "nearest",
     behavior: "instant",
   });
 
@@ -64,7 +65,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         if (!scrollToLocationHash()) {
           // The shell persists between App Router navigations, so explicitly reset
           // the document scroll position when the route changes.
-          window.scrollTo({ left: 0, top: 0, behavior: "instant" });
+          scrollToPosition(0, 0);
         }
       }
 
@@ -142,6 +143,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <ContactFooter reveal variant="editorial" />
       </div>
       {pixelTransition.overlay}
+      <PageSmoothScroll />
     </>
   );
 }
