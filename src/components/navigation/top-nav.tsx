@@ -56,7 +56,7 @@ export function TopNav() {
   return (
     <>
       <header className="top-nav-surface">
-        <nav className="flex items-center justify-between pt-[var(--nav-padding-top)] pb-[var(--nav-padding-bottom)]">
+        <nav className="flex items-center justify-between px-[var(--spacing-home-edge-x)] pt-[var(--nav-padding-top)] pb-[var(--nav-padding-bottom)]">
           <Link
             aria-current={publicPathname === "/" ? "page" : undefined}
             className={`text-heading-5 text-text-primary transition-opacity hover:opacity-100 ${

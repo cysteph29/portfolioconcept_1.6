@@ -2412,14 +2412,18 @@ body:has(.editorial-stage) .top-nav-surface {
   margin-bottom: 0;
 }
 
-.top-nav-surface > nav {
-  padding-inline: 1rem;
+body {
+  --nav-gutter: 1rem;
 }
 
 @media (min-width: 768px) {
-  .top-nav-surface > nav {
-    padding-inline: 1.25rem;
+  body {
+    --nav-gutter: 1.25rem;
   }
+}
+
+.top-nav-surface > nav {
+  padding-inline: var(--nav-gutter);
 }
 
 body:has(.editorial-stage) #work {
