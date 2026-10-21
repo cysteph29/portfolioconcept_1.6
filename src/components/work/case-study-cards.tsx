@@ -22,6 +22,7 @@ const WEB_TYPE_LABEL = "Web";
 
 type WorkGridCard = {
   external: boolean;
+  featured: boolean;
   hoverLabel?: string;
   href?: string;
   id: string;
@@ -48,8 +49,9 @@ const WORK_GRID_CARDS: WorkGridCard[] = [
     external: false,
     hoverLabel: CASE_STUDY_HOVER_LABEL,
     typeLabel: CASE_STUDY_TYPE_LABEL,
+    featured: true,
   })),
-  ...PLAYGROUND_PROJECTS.map((project) => ({
+  ...PLAYGROUND_PROJECTS.filter((project) => !project.hiddenFromHome).map((project) => ({
     id: project.video ?? project.image ?? project.title,
     title: project.title,
     mediaLabel: `${project.title} hero visual`,
@@ -67,8 +69,12 @@ const WORK_GRID_CARDS: WorkGridCard[] = [
         ? PLAYGROUND_HOVER_LABEL
         : undefined,
     typeLabel: project.typeLabel ?? WEB_TYPE_LABEL,
+    featured: project.featured === true,
   })),
 ];
+
+const FEATURED_WORK_CARDS = WORK_GRID_CARDS.filter((card) => card.featured);
+const COMPACT_WORK_CARDS = WORK_GRID_CARDS.filter((card) => !card.featured);
 
 function WorkCardMedia({ card, eager = false }: { card: WorkGridCard; eager?: boolean }) {
   if (card.video) {
@@ -164,13 +170,10 @@ export function CaseStudyCards() {
     ? WORK_GRID_CARDS.find((card) => card.id === hover.id)?.hoverLabel
     : undefined;
 
-  const featuredCards = WORK_GRID_CARDS.slice(0, FEATURED_CASE_STUDIES.length);
-  const playCards = WORK_GRID_CARDS.slice(FEATURED_CASE_STUDIES.length);
-
   return (
     <div className="editorial-work__projects">
       <div className="editorial-work__featured" role="list">
-        {featuredCards.map((card, index) => (
+        {FEATURED_WORK_CARDS.map((card, index) => (
           <div key={card.id} role="listitem">
             <WorkProjectCard
               card={card}
@@ -181,17 +184,19 @@ export function CaseStudyCards() {
           </div>
         ))}
       </div>
-      <div className="editorial-work__play" role="list">
-        {playCards.map((card) => (
-          <div key={card.id} role="listitem">
-            <WorkProjectCard
-              card={card}
-              getHoverHandlers={getHoverHandlers}
-              titleClassName="editorial-play-title"
-            />
-          </div>
-        ))}
-      </div>
+      {COMPACT_WORK_CARDS.length > 0 ? (
+        <div className="editorial-work__play" role="list">
+          {COMPACT_WORK_CARDS.map((card) => (
+            <div key={card.id} role="listitem">
+              <WorkProjectCard
+                card={card}
+                getHoverHandlers={getHoverHandlers}
+                titleClassName="editorial-play-title"
+              />
+            </div>
+          ))}
+        </div>
+      ) : null}
       <PointerFollowLabel hover={hoverLabel ? hover : null} label={hoverLabel ?? ""} />
     </div>
   );
