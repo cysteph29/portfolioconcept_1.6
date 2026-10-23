@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
+
 import { AboutGrid } from "@/components/about/about-grid";
+
+export const metadata: Metadata = {
+  title: "About Cyril Stephen — Product Designer",
+  description: "Meet Cyril Stephen, a product designer with a background in music and audio engineering. Explore his approach to design, values, and experience.",
+};
 
 export default function AboutPage() {
   return (
