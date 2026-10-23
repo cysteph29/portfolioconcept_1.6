@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 
 import { AppShell } from "@/components/navigation/app-shell";
 
@@ -37,6 +38,64 @@ export const metadata: Metadata = {
     creator: "@cyril_design",
   },
 };
+
+// GA4 enhanced measurement handles page views (including history navigation),
+// outbound links and downloads. Custom events describe portfolio intent only.
+const portfolioAnalyticsScript = `
+(() => {
+  if (!['cyrilstephen.com', 'www.cyrilstephen.com'].includes(location.hostname)) return;
+  if (navigator.globalPrivacyControl || navigator.doNotTrack === '1') return;
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ window.dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-17RZ1N4TZN', {
+    allow_google_signals: false,
+    allow_ad_personalization_signals: false
+  });
+  const tag = document.createElement('script');
+  tag.async = true;
+  tag.src = 'https://www.googletagmanager.com/gtag/js?id=G-17RZ1N4TZN';
+  document.head.appendChild(tag);
+
+  document.addEventListener('click', (event) => {
+    const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+    if (!link) return;
+    const url = new URL(link.href, location.href);
+    const label = (link.textContent || link.getAttribute('aria-label') || '').trim();
+    const params = { page_path: location.pathname, link_path: url.pathname };
+    if (/^resume$/i.test(label)) {
+      gtag('event', 'resume_click', params);
+    } else if (url.protocol === 'mailto:' || (url.origin === location.origin && url.hash === '#contact')) {
+      gtag('event', 'contact_click', { page_path: location.pathname });
+    } else if (url.origin === location.origin && /^\\/(dive\\/)?work\\/[^/]+/.test(url.pathname)) {
+      gtag('event', 'case_study_click', params);
+    } else if (url.hostname === 'www.linkedin.com' || url.hostname === 'linkedin.com') {
+      gtag('event', 'linkedin_click', { page_path: location.pathname });
+    }
+  }, true);
+
+  let path = location.pathname;
+  let depths = new Set();
+  let scheduled = false;
+  window.addEventListener('scroll', () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      if (path !== location.pathname) { path = location.pathname; depths = new Set(); }
+      const available = document.documentElement.scrollHeight - window.innerHeight;
+      if (available <= 0) return;
+      const percent = Math.round(window.scrollY / available * 100);
+      [25, 50, 75, 90].forEach((depth) => {
+        if (percent >= depth && !depths.has(depth)) {
+          depths.add(depth);
+          gtag('event', 'scroll_depth', { page_path: path, percent_scrolled: depth });
+        }
+      });
+    });
+  }, { passive: true });
+})();
+`;
 
 const stripCursorRefsScript = `
 (() => {
@@ -135,6 +194,9 @@ export default function RootLayout({
       ) : null}
       <body className="min-h-full bg-canvas font-sans text-text-primary">
         <AppShell>{children}</AppShell>
+        <Script id="portfolio-analytics" strategy="afterInteractive">
+          {portfolioAnalyticsScript}
+        </Script>
       </body>
     </html>
   );
