@@ -8,18 +8,18 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   verification: { google: "2cGTFmFf4gkUFsqBULytzJT36xZ-BLCcCvWWVpIUS2M" },
-  title: "Cyril's Portfolio",
-  description: "Product designer specializing in compliance-driven, data-heavy products across fintech and regulated industries.",
+  title: "Cyril Stephen — Product Designer",
+  description: "Product designer working across AI, enterprise software, and consumer experiences. Explore my work with Salesforce, Axway, and The Ken.",
   metadataBase: new URL("https://cyrilstephen.com"),
   icons: {
     icon: [{ url: "/assets/profilepic.png", type: "image/png" }],
     apple: [{ url: "/assets/profilepic.png", type: "image/png" }],
   },
   openGraph: {
-    title: "Cyril's Portfolio",
-    description: "Product designer specializing in compliance-driven, data-heavy products across fintech and regulated industries.",
+    title: "Cyril Stephen — Product Designer",
+    description: "Product designer working across AI, enterprise software, and consumer experiences. Explore my work with Salesforce, Axway, and The Ken.",
     url: "https://cyrilstephen.com",
-    siteName: "Cyril's Portfolio",
+    siteName: "Cyril Stephen — Product Designer",
     type: "website",
     locale: "en_US",
     images: [
@@ -27,14 +27,14 @@ export const metadata: Metadata = {
         url: "/assets/social-preview.png",
         width: 1200,
         height: 630,
-        alt: "Cyril Stephen — Product Designer specializing in fintech and regulated industries",
+        alt: "Cyril Stephen — Product Designer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cyril's Portfolio",
-    description: "Product designer specializing in compliance-driven, data-heavy products across fintech and regulated industries.",
+    title: "Cyril Stephen — Product Designer",
+    description: "Product designer working across AI, enterprise software, and consumer experiences. Explore my work with Salesforce, Axway, and The Ken.",
     images: ["/assets/social-preview.png"],
     creator: "@cyril_design",
   },
