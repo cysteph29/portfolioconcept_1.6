@@ -7,6 +7,7 @@ import { AppShell } from "@/components/navigation/app-shell";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  verification: { google: "2cGTFmFf4gkUFsqBULytzJT36xZ-BLCcCvWWVpIUS2M" },
   title: "Cyril's Portfolio",
   description: "Product designer specializing in compliance-driven, data-heavy products across fintech and regulated industries.",
   metadataBase: new URL("https://cyrilstephen.com"),
