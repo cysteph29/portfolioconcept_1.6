@@ -43,9 +43,24 @@ export async function generateMetadata({
     return {};
   }
 
+  const searchMetadata: Record<string, { title: string; description: string }> = {
+    "salesforce-trailhead": {
+      title: "Salesforce Trailhead — AI UX Case Study · Cyril Stephen",
+      description: "How Cyril Stephen designed an AI-powered learning experience for Salesforce Trailhead, combining user research, interaction design, and coded prototypes.",
+    },
+    axway: {
+      title: "Axway E-Invoicing — UX Case Study · Cyril Stephen",
+      description: "How Cyril Stephen redesigned error finding and troubleshooting in Axway E-Invoicing to reduce failed-invoice resolution time by 67%.",
+    },
+    "the-ken": {
+      title: "The Ken — Checkout Redesign · Cyril Stephen",
+      description: "How Cyril Stephen redesigned The Ken's subscription checkout to reduce friction and increase conversion by 5.6 percentage points.",
+    },
+  };
+
   return {
-    title: `${caseStudy.title} Case Study`,
-    description: caseStudy.description,
+    title: searchMetadata[slug]?.title ?? `${caseStudy.title} Case Study`,
+    description: searchMetadata[slug]?.description ?? caseStudy.description,
     ...(isUnlistedCaseStudy(slug)
       ? { robots: { index: false, follow: false } }
       : {}),
