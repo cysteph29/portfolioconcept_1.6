@@ -4,8 +4,8 @@ import { HeroSection } from "@/components/home/hero-section";
 import { PlaygroundCardGrid } from "@/components/playground/playground-card-grid";
 
 export const metadata: Metadata = {
-  title: "AI & Play | Cyril's Portfolio",
-  description: "Experiments and explorations by Cyril Stephen.",
+  title: "Playground — Cyril Stephen",
+  description: "Explore experiments in design, code, AI, and music by product designer Cyril Stephen.",
 };
 
 export default function PlaygroundPage() {
