@@ -1,0 +1,177 @@
+---
+cover: ""
+title: "Salesforce Trailhead"
+cardTitle: "An AI-Powered Re-Engagement Strategy Trailhead's Power Users Preferred Over ChatGPT"
+description: "Salesforce Trailhead's expert users quietly stopped returning once they got certified, taking real work problems to ChatGPT and Slack instead. Over a 10-month capstone, our team researched why power users disengage and designed two connected AI features to bring them back. In testing, 6 of 8 preferred our solution over ChatGPT for Salesforce questions."
+problem: "Salesforce's most experienced users were taking their questions to ChatGPT and Slack instead of Trailhead's own community, and between milestones, nothing gave them a reason to come back."
+problemEmblem: ""
+solution: "Plain-language answers to real Salesforce problems inside Trailhead, paired with proactive prompts that surface what's relevant next without being asked."
+solutionEmblem: ""
+outcome: "Given the same Salesforce question, 6 of 8 power users preferred Solve over ChatGPT."
+outcomeEmblem: ""
+summaryPattern: "/assets/summary-pattern.svg"
+heroVideo: "/work/salesforce-trailhead/video-trailhead-promo-web.mp4"
+heroPoster: "/work/salesforce-trailhead/video-trailhead-promo-web-poster.webp"
+productGallery: true
+timeline: "10 months"
+role: "ResearchOps, Strategy, AI Prototyping"
+team: "Product Designers (team & I), Product Manager"
+slug: "salesforce-trailhead-preview"
+sections:
+  - id: "problem"
+    label: "PROBLEM & RESEARCH"
+  - id: "solution"
+    label: "SOLUTION"
+  - id: "ideation"
+    label: "DESIGN DECISIONS"
+  - id: "testing"
+    label: "VALIDATION & REFLECTION"
+---
+
+import { TrailheadLearnerJourney } from "@/components/work/trailhead-learner-journey";
+
+<header className="case-study-article-heading">
+  <h1 className="case-study-article-title text-heading-1">Salesforce Trailhead</h1>
+  <hr className="case-study-article-title__rule" />
+</header>
+
+## Project overview
+
+Salesforce Trailhead is Salesforce's learning platform. This 10-month capstone explored how to re-engage experienced users after certification. I led ResearchOps and contributed to strategy and AI prototyping on a five-person team.
+
+<Section id="problem" sections={frontmatter.sections}>
+
+## Trailhead helped professionals learn Salesforce and get certified. But once they were on the job, they looked elsewhere for answers.
+
+<TrailheadLearnerJourney />
+
+We reached 650+ Salesforce professionals, qualified 72, and interviewed 12 across two rounds. Our first questions focused on what would make Trailhead more inspiring and produced agreeable opinions. Looking at behavior revealed experienced professionals turning to ChatGPT, Slack, and YouTube for practical problems instead.
+
+<CasePercentageCards
+  label="Research findings from Trailhead power users; percentage bases need confirmation"
+  items={[
+    {
+      label: "Disengaged after major milestones like certifications",
+      valueLabel: "64%",
+    },
+    {
+      label: "Supplemented Trailhead with ChatGPT, YouTube, and Slack",
+      valueLabel: "45%",
+    },
+  ]}
+/>
+
+**Research note:** The respondent base for each percentage still needs confirmation.
+
+</Section>
+
+<Section id="solution" sections={frontmatter.sections}>
+
+## Solve the work question, then bring learning back into the flow.
+
+Experienced users were leaving Trailhead for practical Salesforce answers, while much of its learning felt too basic for where they were. We addressed both moments: Solve returned sourced answers to Trailhead, and personalized Trailmixes connected their experience to what would help next.
+
+Agentforce and Salesforce's proprietary data were unavailable. We built the prototype with OpenAI and curated Salesforce documentation to test that experience.
+
+### When real-world questions left Trailhead, Solve brought sourced answers back in.
+
+Solve connected a plain-language Salesforce question to a sourced answer and relevant Trailhead learning.
+
+<CaseVideo
+  src="/work/salesforce-trailhead/video-trailhead-chatbot.mp4"
+  poster="/work/salesforce-trailhead/video-trailhead-chatbot-poster.webp"
+  alt="Solve prototype answering a Salesforce question with sources and recommended modules"
+  caption="Solve prototype; Agentforce branding appears on screen, but the build used OpenAI. The recording ends on Salesforce developer documentation."
+  width={1660}
+  height={1080}
+/>
+
+Users could adjust answer depth to their expertise. When Solve fell short, it drafted a question for the Trailblazer Community.
+
+### When learning felt too basic, personalized Trailmixes made the next step relevant.
+
+Personalized Trailmixes used skill-gap insights, experience, career needs, and previous activity to recommend learning without waiting for another question.
+
+<CaseFigure
+  src="/work/salesforce-trailhead/case-study-trailhead-4.webp"
+  alt="Dashboard concept showing certification renewal, skill gaps, and recommended learning"
+  caption="Proactive recommendations in the dashboard concept. Agentforce branding reflects the design, not an Agentforce integration."
+  width={1920}
+  height={3012}
+/>
+
+The dashboard also surfaced certification-renewal reminders—a supporting usability improvement that helped users keep required credentials current.
+
+Using Figma MCP, we turned design-system components into a working prototype people could question. Twelve research-based AI agents helped catch usability issues before human sessions; they weren't a substitute for user evidence.
+
+</Section>
+
+<Section id="ideation" sections={frontmatter.sections}>
+
+## Two promising ideas we explored—and rejected.
+
+### An AI community proxy risked trust without solving engagement.
+
+We explored an assistant trained on community leaders' posts to answer questions on their behalf. But impersonation risked authenticity, disclosure changed the expectation, and approval overhead erased the time savings—without meaningfully solving the engagement problem.
+
+### A public skill profile depended on factors outside our control.
+
+We explored a shareable profile of certifications, badges, and current skills to motivate return. But its value depended on employer adoption, and maintaining a public score could reward activity rather than meaningful learning, so it did not provide a compelling reason to learn.
+
+<CaseFigure
+  src="/work/salesforce-trailhead/case-study-trailhead-7.webp"
+  alt="Rejected public skill profile concept showing certifications, badges, and skill currency"
+  caption="The rejected skill profile: a reason to maintain a score, without a clear reason to learn."
+  width={2400}
+  height={4165}
+/>
+
+</Section>
+
+<Section id="testing" sections={frontmatter.sections}>
+
+## Six of eight preferred Solve for their own Salesforce question.
+
+Each participant asked Solve and ChatGPT the same question from their work. The prototype comparison showed a preference for Solve and confidence in its answers.
+
+<CaseMetrics
+  label="Solve prototype comparison results"
+  variant="scores"
+  items={[
+    {
+      label: "Preferred Solve over ChatGPT",
+      value: 6,
+      valueLabel: "6/8",
+      max: 8,
+    },
+    {
+      label: "Confidence in Solve's answers",
+      value: 4.5,
+      valueLabel: "4.5/5",
+      max: 5,
+    },
+  ]}
+/>
+
+**Engagement results — clarification needed:** The draft also reports +35% session duration and −22% drop-off. Confirm who was measured, the comparison baseline, and whether these came from prototype testing before treating them as evidence of sustained engagement. These are not production-launch outcomes.
+
+<CaseMetrics
+  label="Reported engagement results; measurement context unconfirmed"
+  variant="deltas"
+  items={[
+    {
+      label: "Session duration · context unconfirmed",
+      value: 35,
+      valueLabel: "+35%",
+    },
+    {
+      label: "Drop-off · context unconfirmed",
+      value: -22,
+      valueLabel: "−22%",
+    },
+  ]}
+/>
+
+Behavior gave us a better brief than opinions. Rejecting plausible engagement ideas kept the work focused on useful learning. Learning to build in code let me turn that decision into something people could actually test.
+
+</Section>

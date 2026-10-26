@@ -2,6 +2,7 @@ import { frontmatter as axway } from "@/content/case-studies/axway.mdx";
 import { frontmatter as axwayPreview } from "@/content/case-studies/axway-preview.mdx";
 import { frontmatter as theKen } from "@/content/case-studies/the-ken.mdx";
 import { frontmatter as salesforceTrailhead } from "@/content/case-studies/salesforce-trailhead.mdx";
+import { frontmatter as salesforceTrailheadPreview } from "@/content/case-studies/salesforce-trailhead-preview.mdx";
 import { frontmatter as dummyCaseStudyThree } from "@/content/case-studies/dummy-case-study-3.mdx";
 
 export type CaseStudySection = {
@@ -41,6 +42,11 @@ export type CaseStudyFrontmatter = {
   heroVideo?: string;
   heroPoster?: string;
   /**
+   * Trailhead preview only. Shows the product gallery in place of the single
+   * promo video. The preview article places the title and introduction after it.
+   */
+  productGallery?: boolean;
+  /**
    * Custom opening panels. Index 0 is the large panel; 1 and 2 stack beside it.
    * When set, the title stays in the article column and the summary hero is omitted.
    * When omitted, the opening is the title, then Problem / Solution / Outcome beside the single hero video.
@@ -77,7 +83,10 @@ export const CASE_STUDIES: CaseStudy[] = [
  * Direct-URL drafts. They are routable, omitted from listings and the sitemap,
  * and served with noindex. Asset paths stay inside each content file.
  */
-export const UNLISTED_CASE_STUDIES: CaseStudy[] = [defineCaseStudy(axwayPreview)];
+export const UNLISTED_CASE_STUDIES: CaseStudy[] = [
+  defineCaseStudy(axwayPreview),
+  defineCaseStudy(salesforceTrailheadPreview),
+];
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
   return [...CASE_STUDIES, ...UNLISTED_CASE_STUDIES].find((caseStudy) => caseStudy.slug === slug);

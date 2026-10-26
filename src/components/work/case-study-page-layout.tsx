@@ -5,6 +5,7 @@ import { type CSSProperties, type ReactNode, useEffect, useRef } from "react";
 
 import { CaseStudyOpeningGallery } from "@/components/work/case-study-opening-gallery";
 import { CaseStudyToc } from "@/components/work/case-study-toc";
+import { TrailheadProductOpening } from "@/components/work/trailhead-product-opening";
 import { getCaseStudyBySlug } from "@/config/case-studies";
 
 type CaseStudyHeroSummaryItemProps = {
@@ -98,11 +99,12 @@ export function CaseStudyPageLayout({
     return null;
   }
 
+  const productGallery = Boolean(caseStudy.productGallery);
   const customOpening =
-    caseStudy.openingGallery && caseStudy.openingGallery.length >= 3
+    !productGallery && caseStudy.openingGallery && caseStudy.openingGallery.length >= 3
       ? caseStudy.openingGallery
       : null;
-  const singleVideoOpening = !customOpening && Boolean(caseStudy.heroVideo);
+  const singleVideoOpening = !productGallery && !customOpening && Boolean(caseStudy.heroVideo);
   const visibleTitle = caseStudy.cardTitle ?? caseStudy.title;
 
   const summaryPatternStyle = caseStudy.summaryPattern
@@ -116,7 +118,9 @@ export function CaseStudyPageLayout({
 
   return (
     <section className="fold-panel case-study-fold">
-      {singleVideoOpening ? (
+      {productGallery ? (
+        <TrailheadProductOpening />
+      ) : singleVideoOpening ? (
         <header className="case-study-opening" data-smart-navbar-hero>
           <div className="case-study-opening__frame">
             <video
@@ -216,7 +220,17 @@ export function CaseStudyPageLayout({
               <CaseStudyToc sections={caseStudy.sections} />
             </div>
           </aside>
-          <article className="case-study-layout__content" ref={contentRef}>
+          <article
+            className={[
+              "case-study-layout__content",
+              slug === "salesforce-trailhead-preview"
+                ? "case-study-layout__content--trailhead-preview"
+                : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+            ref={contentRef}
+          >
             {customOpening || singleVideoOpening ? (
               <div className="case-study-article-heading">
                 <h1 className="case-study-article-title text-heading-1">{visibleTitle}</h1>
