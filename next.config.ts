@@ -12,6 +12,15 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
   },
   pageExtensions: ["ts", "tsx", "md", "mdx"],
+  async redirects() {
+    return [
+      {
+        source: "/play",
+        destination: "/playground",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withMDX(nextConfig);
