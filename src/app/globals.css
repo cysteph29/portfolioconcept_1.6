@@ -2009,8 +2009,8 @@ a {
   .trailhead-opening {
     --trailhead-opening-space: clamp(0.75rem, 1.1vw, 1rem);
     padding-top: calc(var(--nav-height) + var(--trailhead-opening-space));
-    padding-inline: max(var(--trailhead-opening-space), env(safe-area-inset-left, 0px))
-      max(var(--trailhead-opening-space), env(safe-area-inset-right, 0px));
+    padding-inline: max(var(--spacing-home-edge-x), env(safe-area-inset-left, 0px))
+      max(var(--spacing-home-edge-x), env(safe-area-inset-right, 0px));
   }
 
   .trailhead-opening + .case-study-layout {
@@ -2023,48 +2023,23 @@ a {
     color: var(--color-text-muted);
   }
 
-  .trailhead-opening__gallery {
-    display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
-    gap: var(--trailhead-opening-space);
-    align-items: start;
-  }
-
-  .trailhead-opening__row {
-    display: grid;
-    grid-column: 1 / -1;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
-    gap: var(--trailhead-opening-space);
-    align-items: start;
-  }
-
-  .trailhead-opening__video-frame {
+  .trailhead-opening__frame {
     position: relative;
-    min-width: 0;
-    overflow: hidden;
+    width: min(100%, calc(min(42svh, 28rem) * 16 / 9));
+    max-width: 100%;
+    margin-inline: auto;
     background: #e7eef5;
     outline: 1px solid oklch(1 0 0 / 0.1);
     outline-offset: -1px;
-    aspect-ratio: 16 / 9;
   }
 
   .trailhead-opening__video {
     display: block;
     width: 100%;
-    height: 100%;
-    overflow: visible;
-    object-fit: cover;
-  }
-
-  .trailhead-opening__still {
-    display: block;
-    width: 100%;
     height: auto;
-    min-width: 0;
-    overflow: visible;
-    background: #e7eef5;
-    outline: 1px solid oklch(1 0 0 / 0.1);
-    outline-offset: -1px;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
   }
 
   .trailhead-opening__playback {
@@ -2253,11 +2228,6 @@ a {
   }
 
   @media (max-width: 1099px) {
-    .trailhead-opening__gallery,
-    .trailhead-opening__row {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
     .trailhead-opening__playback {
       justify-content: center;
       width: 2.75rem;

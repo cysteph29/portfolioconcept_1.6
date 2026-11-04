@@ -9,6 +9,8 @@ import { frontmatter as dummyCaseStudyThree } from "@/content/case-studies/dummy
 export type CaseStudySection = {
   id: string;
   label: string;
+  /** Contents link text when it should be shorter than the section label. */
+  navLabel?: string;
 };
 
 export type CaseStudyOpeningPanel =
@@ -43,8 +45,8 @@ export type CaseStudyFrontmatter = {
   heroVideo?: string;
   heroPoster?: string;
   /**
-   * Trailhead preview only. Shows the product gallery in place of the single
-   * promo video. The preview article places the title and introduction after it.
+   * Trailhead preview only. Shows one motion hero in place of the shared
+   * case-study opening. The preview article places the title and introduction after it.
    */
   productGallery?: boolean;
   /**

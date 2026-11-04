@@ -132,7 +132,7 @@ export function CaseStudyToc({ sections }: Props) {
                 href={`#${section.id}`}
                 onClick={(e) => handleClick(e, section.id)}
               >
-                {section.label}
+                {section.navLabel ?? section.label}
               </a>
             </li>
           );
