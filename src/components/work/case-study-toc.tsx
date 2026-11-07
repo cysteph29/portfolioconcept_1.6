@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import { scrollToElement } from "@/components/navigation/smooth-scroll";
 import type { CaseStudySection } from "@/config/case-studies";
@@ -25,7 +25,19 @@ function usePrefersReducedMotion() {
   );
 }
 
+function hasNestedContents(sections: CaseStudySection[]) {
+  return sections.some((section) => (section.navChildren?.length ?? 0) > 0);
+}
+
 export function CaseStudyToc({ sections }: Props) {
+  if (hasNestedContents(sections)) {
+    return <CaseStudyNestedToc sections={sections} />;
+  }
+
+  return <CaseStudyFlatToc sections={sections} />;
+}
+
+function CaseStudyFlatToc({ sections }: Props) {
   const [activeId, setActiveId] = useState<string | null>(
     sections.length > 0 ? sections[0].id : null,
   );
@@ -134,6 +146,159 @@ export function CaseStudyToc({ sections }: Props) {
               >
                 {section.navLabel ?? section.label}
               </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+}
+
+const NESTED_HYSTERESIS_PX = 16;
+
+function CaseStudyNestedToc({ sections }: Props) {
+  const ordered = useMemo(() => {
+    const items: { id: string; parentId: string | null }[] = [];
+    for (const section of sections) {
+      items.push({ id: section.id, parentId: null });
+      for (const child of section.navChildren ?? []) {
+        items.push({ id: child.id, parentId: section.id });
+      }
+    }
+    return items;
+  }, [sections]);
+  const [activeId, setActiveId] = useState<string | null>(ordered[0]?.id ?? null);
+  const activeIdRef = useRef(activeId);
+  const navRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    activeIdRef.current = activeId;
+  }, [activeId]);
+
+  useEffect(() => {
+    if (ordered.length === 0) return;
+
+    const line = STICKY_OFFSET_PX + 1;
+    const parentOf = new Map(ordered.map((item) => [item.id, item.parentId]));
+
+    const idAt = (threshold: number) => {
+      let current = ordered[0].id;
+      for (const item of ordered) {
+        const element = document.getElementById(item.id);
+        if (!element) continue;
+        if (element.getBoundingClientRect().top <= threshold) current = item.id;
+      }
+      return current;
+    };
+
+    const updateActive = () => {
+      const nearBottom =
+        window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+      const next = nearBottom ? ordered[ordered.length - 1].id : idAt(line);
+      const previous = activeIdRef.current;
+
+      if (
+        previous &&
+        previous !== next &&
+        parentOf.get(previous) === next &&
+        idAt(line + NESTED_HYSTERESIS_PX) === previous
+      ) {
+        return;
+      }
+
+      if (previous === next) return;
+      activeIdRef.current = next;
+      setActiveId(next);
+    };
+
+    updateActive();
+    window.addEventListener("scroll", updateActive, { passive: true });
+    window.addEventListener("resize", updateActive);
+    return () => {
+      window.removeEventListener("scroll", updateActive);
+      window.removeEventListener("resize", updateActive);
+    };
+  }, [ordered]);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const link = nav.querySelector<HTMLElement>('[aria-current="location"]');
+    if (!link) return;
+    const navRect = nav.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+    if (linkRect.top < navRect.top) {
+      nav.scrollTop -= navRect.top - linkRect.top;
+    } else if (linkRect.bottom > navRect.bottom) {
+      nav.scrollTop += linkRect.bottom - navRect.bottom;
+    }
+  }, [activeId]);
+
+  function handleClick(event: React.MouseEvent<HTMLAnchorElement>, id: string) {
+    event.preventDefault();
+    const target = document.getElementById(id);
+    if (!target) return;
+    activeIdRef.current = id;
+    setActiveId(id);
+    scrollToElement(target, {
+      block: "start",
+      behavior: prefersReducedMotion ? "instant" : "smooth",
+    });
+  }
+
+  if (sections.length === 0) return null;
+
+  return (
+    <nav aria-label="Contents" className="case-study-sidebar__toc case-study-sidebar__toc--nested" ref={navRef}>
+      <ul className="case-study-sidebar__toc-list">
+        {sections.map((section) => {
+          const children = section.navChildren ?? [];
+          const childActive = children.some((child) => child.id === activeId);
+          const parentActive = activeId === section.id;
+          return (
+            <li key={section.id}>
+              <a
+                aria-current={parentActive ? "location" : undefined}
+                className={[
+                  "case-study-sidebar__toc-link text-heading-5",
+                  parentActive ? "case-study-sidebar__toc-link--active" : "",
+                  childActive ? "case-study-sidebar__toc-link--group" : "",
+                  parentActive || childActive ? "" : "text-text-muted",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                href={`#${section.id}`}
+                onClick={(event) => handleClick(event, section.id)}
+              >
+                {section.navLabel ?? section.label}
+              </a>
+              {children.length > 0 ? (
+                <ul className="case-study-sidebar__toc-sublist">
+                  {children.map((child) => {
+                    const isActive = activeId === child.id;
+                    return (
+                      <li key={child.id}>
+                        <a
+                          aria-current={isActive ? "location" : undefined}
+                          className={[
+                            "case-study-sidebar__toc-link text-heading-5",
+                            isActive
+                              ? "case-study-sidebar__toc-link--active"
+                              : "text-text-muted",
+                          ]
+                            .filter(Boolean)
+                            .join(" ")}
+                          href={`#${child.id}`}
+                          onClick={(event) => handleClick(event, child.id)}
+                        >
+                          {child.label}
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : null}
             </li>
           );
         })}

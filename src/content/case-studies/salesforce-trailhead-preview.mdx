@@ -18,10 +18,24 @@ role: "ResearchOps, Strategy, AI Prototyping"
 team: "Product Designers (team & I), Product Manager"
 slug: "salesforce-trailhead-preview"
 sections:
+  - id: "overview"
+    label: "Overview"
   - id: "solve"
     label: "Solve"
+    navLabel: "Answers at work"
+    navChildren:
+      - id: "solve-problem"
+        label: "The problem"
+      - id: "solve-solution"
+        label: "Solve"
   - id: "trailmixes"
     label: "Personalized Trailmixes"
+    navLabel: "Relevant learning"
+    navChildren:
+      - id: "trailmixes-problem"
+        label: "The problem"
+      - id: "trailmixes-solution"
+        label: "Personalized Trailmixes"
   - id: "testing"
     label: "Validation"
   - id: "research"
@@ -46,7 +60,7 @@ import openingStyles from "@/components/work/trailhead-opening-context.module.cs
 
 <Section id="solve" sections={frontmatter.sections}>
 
-## Despite Trailhead’s own community, experienced users turned to ChatGPT and Slack for faster answers.
+<h2 id="solve-problem">Despite Trailhead’s own community, experienced users turned to ChatGPT and Slack for faster answers.</h2>
 
 Users described getting instant answers from ChatGPT and quicker replies on Slack than in the Trailblazer Community.
 
@@ -56,18 +70,18 @@ Users described getting instant answers from ChatGPT and quicker replies on Slac
   </p>
 </div>
 
-### Solve brought immediate answers into Trailhead, grounded in Salesforce documentation with sources users could check.
+<h3 id="solve-solution">Solve brought immediate answers into Trailhead, grounded in Salesforce documentation with sources users could check.</h3>
 
 Our hypothesis: grounding answers in Salesforce documentation could make Solve more useful for Salesforce work than a general-purpose chatbot.
 
 Users could ask a question, check linked sources, and adjust the answer’s depth to their expertise. For questions needing human input, Solve offered an escalation path: drafting a ready-to-post question for the Trailblazer Community.
 
 <CaseVideo
-  src="/work/salesforce-trailhead/video-trailhead-chatbot.mp4"
+  src="/work/salesforce-trailhead/video-trailhead-chatdemo.mp4"
   poster="/work/salesforce-trailhead/video-trailhead-chatbot-poster.webp"
   alt="Solve prototype answering a Salesforce question with sources and recommended modules"
   caption="Working Solve prototype built with OpenAI; on-screen Agentforce branding represents the design only."
-  width={1660}
+  width={1920}
   height={1080}
 />
 
@@ -75,7 +89,7 @@ Users could ask a question, check linked sources, and adjust the answer’s dept
 
 <Section id="trailmixes" sections={frontmatter.sections}>
 
-## Experienced users stopped learning on Trailhead when recommendations felt too basic or irrelevant to their work.
+<h2 id="trailmixes-problem">Experienced users stopped learning on Trailhead when recommendations felt too basic or irrelevant to their work.</h2>
 
 <div className={openingStyles.placeholder}>
   <p className={openingStyles.placeholderLabel}>
@@ -83,16 +97,17 @@ Users could ask a question, check linked sources, and adjust the answer’s dept
   </p>
 </div>
 
-### Personalized Trailmixes proposed learning matched to users’ existing skills, skill gaps, and career needs.
+<h3 id="trailmixes-solution">Personalized Trailmixes proposed learning matched to users’ existing skills, skill gaps, and career needs.</h3>
 
 Trailmixes are collections of learning content on Trailhead. Our concept would tailor these collections to users’ experience, skill gaps, career needs, and previous activity—giving them a relevant next step without waiting for a question.
 
-<CaseFigure
-  src="/work/salesforce-trailhead/case-study-trailhead-4.webp"
-  alt="Dashboard concept showing certification renewal, skill gaps, and recommended learning"
+<CaseVideo
+  src="/work/salesforce-trailhead/video-trailhead-customtrailmix.mp4"
+  poster="/work/salesforce-trailhead/video-trailhead-customtrailmix-poster.webp"
+  alt="Personalized Trailmix walkthrough, from a skill-gap prompt to a generated trail of badges and modules"
   caption="Personalized Trailmixes concept showing skill gaps and relevant learning recommendations."
   width={1920}
-  height={3012}
+  height={1080}
 />
 
 </Section>

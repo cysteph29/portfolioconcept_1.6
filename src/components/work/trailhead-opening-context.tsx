@@ -1,3 +1,5 @@
+import { CaseFigure } from "@/components/work/case-figure";
+
 import styles from "./trailhead-opening-context.module.css";
 
 const roles = ["ResearchOps lead", "Product strategy", "Chatbot prototyping"] as const;
@@ -24,7 +26,11 @@ export function TrailheadOpeningContext() {
         </div>
       </dl>
 
-      <section className={styles.overview} aria-labelledby="trailhead-preview-overview">
+      <section
+        className={styles.overview}
+        id="overview"
+        aria-labelledby="trailhead-preview-overview"
+      >
         <p className={styles.sectionLabel} id="trailhead-preview-overview">
           Overview
         </p>
@@ -37,11 +43,13 @@ export function TrailheadOpeningContext() {
               Salesforce’s learning platform offers guided learning paths, hands-on practice, and
               certifications to help people prepare for roles in its ecosystem.
             </p>
-            <div className={styles.placeholder}>
-              <p className={styles.placeholderLabel}>
-                Trailhead learning paths, badges, and certifications
-              </p>
-            </div>
+            <CaseFigure
+              alt="Trailhead home showing Learn, Practice and earn, and Community beside a learner dashboard with modules, badges, and points"
+              figureClassName={styles.figure}
+              height={900}
+              src="/work/salesforce-trailhead/v2_trailhead-1.webp"
+              width={1600}
+            />
           </div>
 
           <div className={styles.story}>

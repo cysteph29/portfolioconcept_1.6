@@ -67,6 +67,7 @@
 
 .overview {
   gap: var(--spacing-placeholder-stack-gap);
+  scroll-margin-top: calc(var(--nav-height) + var(--spacing-home-stack-gap));
 }
 
 .stories {

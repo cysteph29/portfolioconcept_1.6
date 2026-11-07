@@ -6,11 +6,21 @@ import { frontmatter as salesforceTrailheadPreview } from "@/content/case-studie
 import { frontmatter as paymanPreview } from "@/content/case-studies/payman-preview.mdx";
 import { frontmatter as dummyCaseStudyThree } from "@/content/case-studies/dummy-case-study-3.mdx";
 
+export type CaseStudyNavChild = {
+  id: string;
+  label: string;
+};
+
 export type CaseStudySection = {
   id: string;
   label: string;
   /** Contents link text when it should be shorter than the section label. */
   navLabel?: string;
+  /**
+   * Nested contents links. Present only on the Trailhead preview.
+   * Case studies that omit this keep the flat contents list.
+   */
+  navChildren?: CaseStudyNavChild[];
 };
 
 export type CaseStudyOpeningPanel =
