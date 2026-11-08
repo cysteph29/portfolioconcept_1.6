@@ -113,6 +113,32 @@
   stroke-linejoin: miter;
 }
 
+@container (max-width: 34rem) {
+  .rig {
+    --icon-slot: 1.5rem;
+
+    width: 84cqi;
+    padding-block: var(--lift) 0;
+  }
+
+  .fulcrum {
+    width: 9cqi;
+    height: 7.5cqi;
+  }
+
+  .pairs {
+    padding-bottom: 0.75rem;
+  }
+
+  .pairInner {
+    gap: 0.5rem;
+  }
+
+  .label {
+    font-size: 1rem;
+  }
+}
+
 .isAnimated .rig,
 .isAnimated .pair,
 .isAnimated .pairInner,

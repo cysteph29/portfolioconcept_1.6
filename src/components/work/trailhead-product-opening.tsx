@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { MediaPlayback } from "@/components/work/media-playback";
 import { getCaseStudyBySlug } from "@/config/case-studies";
 
 const MOTION_QUERY = "(prefers-reduced-motion: reduce)";
@@ -98,7 +99,7 @@ export function TrailheadProductOpening({ fullSize = false }: { fullSize?: boole
       className={fullSize ? "trailhead-opening trailhead-opening--full" : "trailhead-opening"}
       data-smart-navbar-hero
     >
-      <div className="trailhead-opening__frame" ref={frameRef}>
+      <div className="trailhead-opening__frame media-playback-host" ref={frameRef}>
         <video
           aria-label="Salesforce Trailhead hero visual"
           className="trailhead-opening__video"
@@ -113,12 +114,10 @@ export function TrailheadProductOpening({ fullSize = false }: { fullSize?: boole
         >
           {allowSource ? <source src={VIDEO_SRC} type="video/mp4" /> : null}
         </video>
-        <button
-          type="button"
-          className="trailhead-opening__playback"
-          data-playing={playing ? "" : undefined}
-          aria-label={playing ? "Pause product video" : "Play product video"}
-          onClick={() => {
+        <MediaPlayback
+          label="product video"
+          playing={playing}
+          onToggle={() => {
             if (playing) {
               setUserOverride("pause");
               return;
@@ -126,10 +125,7 @@ export function TrailheadProductOpening({ fullSize = false }: { fullSize?: boole
             setPlaybackBlocked(false);
             setUserOverride("play");
           }}
-        >
-          <span className="trailhead-opening__playback-icon" aria-hidden="true" />
-          <span className="trailhead-opening__playback-label">{playing ? "Pause" : "Play"}</span>
-        </button>
+        />
       </div>
     </section>
   );

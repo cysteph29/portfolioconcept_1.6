@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { MediaPlayback, usePlaybackOverride } from "@/components/work/media-playback";
+
 import journey from "./trailhead-certification-journey.module.css";
 
 import styles from "./trailhead-answer-concepts.module.css";
@@ -103,9 +105,15 @@ export function TrailheadAnswerConcepts() {
     };
   }, []);
 
-  const animated = !reduced;
-  const running = animated && inView && pageVisible && sectionSettled;
-  const sceneClassName = [journey.scene, animated ? styles.isAnimated : "", running ? styles.isRunning : ""]
+  const playback = usePlaybackOverride();
+  const motionAllowed = playback.motionAllowed(reduced);
+  const running = playback.running(motionAllowed && inView && pageVisible && sectionSettled);
+  const sceneClassName = [
+    journey.scene,
+    "media-playback-host",
+    motionAllowed ? styles.isAnimated : "",
+    running ? styles.isRunning : "",
+  ]
     .filter(Boolean)
     .join(" ");
 
@@ -153,6 +161,11 @@ export function TrailheadAnswerConcepts() {
               </svg>
             </div>
           </div>
+          <MediaPlayback
+            label="question paths"
+            playing={running}
+            onToggle={() => playback.toggle(running)}
+          />
         </div>
       </figure>
     </div>

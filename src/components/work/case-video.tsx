@@ -18,6 +18,7 @@ export type CaseVideoProps = CaseVideoAccessibleLabel & {
   caption?: string;
   width: number;
   height: number;
+  playbackLabel?: string;
 };
 
 export function CaseVideo({
@@ -28,6 +29,7 @@ export function CaseVideo({
   caption,
   width,
   height,
+  playbackLabel,
 }: CaseVideoProps) {
   const label = ariaLabel ?? alt;
 
@@ -42,12 +44,13 @@ export function CaseVideo({
   return (
     <figure className="flex flex-col gap-2">
       <div
-        className="relative block w-full overflow-hidden bg-fold-fill"
+        className={`relative block w-full overflow-hidden bg-fold-fill${playbackLabel ? " media-playback-host" : ""}`}
         style={frameStyle}
       >
         <CaseVideoPlayer
           height={height}
           label={label}
+          playbackLabel={playbackLabel}
           poster={poster}
           src={src}
           width={width}

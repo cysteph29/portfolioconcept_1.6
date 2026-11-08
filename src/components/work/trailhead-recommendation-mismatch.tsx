@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { MediaPlayback, usePlaybackOverride } from "@/components/work/media-playback";
+
 import styles from "./trailhead-recommendation-mismatch.module.css";
 
 export function TrailheadRecommendationMismatch() {
@@ -42,11 +44,13 @@ export function TrailheadRecommendationMismatch() {
     return () => document.removeEventListener("visibilitychange", onChange);
   }, []);
 
-  const animated = !reduced;
-  const running = animated && inView && pageVisible;
+  const playback = usePlaybackOverride();
+  const motionAllowed = playback.motionAllowed(reduced);
+  const running = playback.running(motionAllowed && inView && pageVisible);
   const className = [
     styles.scene,
-    animated ? styles.isAnimated : "",
+    "media-playback-host",
+    motionAllowed ? styles.isAnimated : "",
     running ? styles.isRunning : "",
   ]
     .filter(Boolean)
@@ -78,6 +82,11 @@ export function TrailheadRecommendationMismatch() {
           </svg>
         </div>
       </div>
+      <MediaPlayback
+        label="recommendation comparison"
+        playing={running}
+        onToggle={() => playback.toggle(running)}
+      />
     </div>
   );
 }
