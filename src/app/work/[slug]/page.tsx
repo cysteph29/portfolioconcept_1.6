@@ -8,6 +8,7 @@ import AxwayPreview from "@/content/case-studies/axway-preview.mdx";
 import TheKen from "@/content/case-studies/the-ken.mdx";
 import SalesforceTrailhead from "@/content/case-studies/salesforce-trailhead.mdx";
 import SalesforceTrailheadPreview from "@/content/case-studies/salesforce-trailhead-preview.mdx";
+import SalesforceTrailheadArchive from "@/content/case-studies/salesforce-trailhead-archive.mdx";
 import PaymanPreview from "@/content/case-studies/payman-preview.mdx";
 import DummyCaseStudyThree from "@/content/case-studies/dummy-case-study-3.mdx";
 import {
@@ -23,6 +24,7 @@ const CASE_STUDY_CONTENT_BY_SLUG: Record<string, ComponentType> = {
   "the-ken": TheKen,
   "salesforce-trailhead": SalesforceTrailhead,
   "salesforce-trailhead-preview": SalesforceTrailheadPreview,
+  "salesforce-trailhead-archive": SalesforceTrailheadArchive,
   "payman-preview": PaymanPreview,
   "dummy-case-study-3": DummyCaseStudyThree,
 };
@@ -67,6 +69,9 @@ export async function generateMetadata({
     description: searchMetadata[slug]?.description ?? caseStudy.description,
     ...(isUnlistedCaseStudy(slug)
       ? { robots: { index: false, follow: false } }
+      : {}),
+    ...(slug === "salesforce-trailhead-archive"
+      ? { alternates: { canonical: "/work/salesforce-trailhead-archive" } }
       : {}),
   };
 }

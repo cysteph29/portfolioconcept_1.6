@@ -14,7 +14,7 @@ const thumbnail = getCaseStudyBySlug("salesforce-trailhead");
 const VIDEO_SRC = thumbnail?.heroVideo ?? "";
 const POSTER_SRC = thumbnail?.heroPoster ?? "";
 
-export function TrailheadProductOpening() {
+export function TrailheadProductOpening({ fullSize = false }: { fullSize?: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const [reduceMotion, setReduceMotion] = useState(true);
@@ -94,7 +94,10 @@ export function TrailheadProductOpening() {
   }, [allowSource, playing]);
 
   return (
-    <section className="trailhead-opening" data-smart-navbar-hero>
+    <section
+      className={fullSize ? "trailhead-opening trailhead-opening--full" : "trailhead-opening"}
+      data-smart-navbar-hero
+    >
       <div className="trailhead-opening__frame" ref={frameRef}>
         <video
           aria-label="Salesforce Trailhead hero visual"

@@ -2069,6 +2069,16 @@ a {
     object-fit: contain;
   }
 
+  .trailhead-opening--full {
+    padding-top: var(--nav-height);
+    padding-inline: var(--spacing-home-edge-x);
+  }
+
+  .trailhead-opening--full .trailhead-opening__frame {
+    width: 100%;
+    max-width: var(--spacing-placeholder-max);
+  }
+
   .trailhead-opening__playback {
     position: absolute;
     z-index: 1;
@@ -2217,6 +2227,10 @@ a {
     .case-study-opening {
       padding-top: calc(var(--nav-height) + var(--spacing-home-stack-gap));
       padding-inline: var(--spacing-home-edge-x);
+    }
+
+    .trailhead-opening--full {
+      padding-top: calc(var(--nav-height) + var(--spacing-home-stack-gap));
     }
 
     .case-study-opening-gallery {

@@ -119,7 +119,7 @@ export function CaseStudyPageLayout({
   return (
     <section className="fold-panel case-study-fold">
       {productGallery ? (
-        <TrailheadProductOpening />
+        <TrailheadProductOpening fullSize={slug === "salesforce-trailhead"} />
       ) : singleVideoOpening ? (
         <header className="case-study-opening" data-smart-navbar-hero>
           <div className="case-study-opening__frame">
@@ -223,7 +223,7 @@ export function CaseStudyPageLayout({
           <article
             className={[
               "case-study-layout__content",
-              slug === "salesforce-trailhead-preview"
+              slug === "salesforce-trailhead-preview" || slug === "salesforce-trailhead"
                 ? "case-study-layout__content--trailhead-preview"
                 : "",
             ]

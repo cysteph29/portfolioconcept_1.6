@@ -1,0 +1,325 @@
+.concepts {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--spacing-placeholder-gap);
+}
+
+.concept {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.fork {
+  --fork-gap: clamp(1rem, 2.5cqi, 1.75rem);
+  --row-step: calc((100% + var(--fork-gap)) / 3);
+
+  position: relative;
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  row-gap: var(--fork-gap);
+}
+
+.question,
+.community,
+.chatgpt,
+.slack {
+  width: 100%;
+  min-width: 0;
+}
+
+.question {
+  grid-column: 1;
+  grid-row: 1 / 4;
+  align-self: center;
+}
+
+.community {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.chatgpt {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.slack {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.arrow {
+  position: absolute;
+  top: calc(var(--row-step) + var(--icon-slot) / 2);
+  left: calc(25% + var(--icon-slot) / 2 + var(--line-gap));
+  width: calc(50% - var(--icon-slot) - 2 * var(--line-gap));
+  pointer-events: none;
+}
+
+.arrow svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.arrow path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--border-width-hairline);
+  vector-effect: non-scaling-stroke;
+}
+
+.arrow::after {
+  position: absolute;
+  right: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-top: var(--border-width-hairline) solid currentColor;
+  border-right: var(--border-width-hairline) solid currentColor;
+  content: "";
+  transform: translate(-0.1rem, -50%) rotate(45deg);
+}
+
+.questionIcon {
+  mask-image: url("/assets/pixel_speechbubble.svg");
+  -webkit-mask-image: url("/assets/pixel_speechbubble.svg");
+}
+
+.logo {
+  display: grid;
+  width: var(--icon-slot);
+  height: var(--icon-slot);
+  place-items: center;
+}
+
+.logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.arrowChatgpt {
+  height: 0;
+}
+
+.arrowChatgpt svg {
+  top: 0;
+  bottom: auto;
+  height: 1rem;
+  transform-origin: left center;
+  translate: 0 -50%;
+}
+
+.arrowSlack svg {
+  transform-origin: left top;
+}
+
+.arrowChatgpt::after {
+  top: 0;
+}
+
+.arrowSlack {
+  height: var(--row-step);
+  container-type: size;
+}
+
+.arrowSlack::after {
+  --angle: atan2(100cqb, 100cqw);
+
+  top: calc(100% - 0.25rem - 0.25rem * sqrt(2) * sin(var(--angle)));
+  right: auto;
+  left: calc(100% - 0.25rem - 0.25rem * sqrt(2) * cos(var(--angle)));
+  transform: rotate(calc(45deg + var(--angle)));
+}
+
+.isAnimated .fork,
+.isAnimated .questionPair,
+.isAnimated .destination,
+.isAnimated .arrowChatgpt svg,
+.isAnimated .arrowSlack svg,
+.isAnimated .arrow::after {
+  animation-duration: var(--loop);
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+  animation-play-state: paused;
+}
+
+.isAnimated.isRunning .fork,
+.isAnimated.isRunning .questionPair,
+.isAnimated.isRunning .destination,
+.isAnimated.isRunning .arrowChatgpt svg,
+.isAnimated.isRunning .arrowSlack svg,
+.isAnimated.isRunning .arrow::after {
+  animation-play-state: running;
+}
+
+.isAnimated .fork {
+  animation-name: sceneFade;
+}
+
+.isAnimated .questionPair {
+  animation-name: questionIn;
+}
+
+.isAnimated .destination {
+  animation-name: destinationsIn;
+}
+
+.isAnimated .chatgpt .destination {
+  animation-name: chatgptIn;
+}
+
+.isAnimated .slack .destination {
+  animation-name: slackIn;
+}
+
+.isAnimated .arrowChatgpt svg {
+  animation-name: arrowDraw;
+}
+
+.isAnimated .arrowSlack svg {
+  animation-name: arrowDrawDiagonal;
+}
+
+.isAnimated .arrow::after {
+  animation-name: arrowHead;
+}
+
+.isAnimated .arrowSlack::after {
+  animation-name: arrowHeadSlack;
+}
+
+@keyframes sceneFade {
+  0%,
+  92% {
+    opacity: 1;
+  }
+
+  98%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes questionIn {
+  0%,
+  2% {
+    opacity: 0;
+    scale: 0.94;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  10%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes destinationsIn {
+  0%,
+  12% {
+    opacity: 0;
+    scale: 0.94;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  20%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes chatgptIn {
+  0%,
+  14.272727% {
+    opacity: 0;
+    scale: 0.94;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  22.272727%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes slackIn {
+  0%,
+  16.545455% {
+    opacity: 0;
+    scale: 0.94;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  24.545455%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes arrowDraw {
+  0%,
+  26.545455% {
+    clip-path: inset(-2px 100% -2px -2px);
+    animation-timing-function: cubic-bezier(0.65, 0, 0.2, 1);
+  }
+
+  34.545455%,
+  100% {
+    clip-path: inset(-2px -2px -2px -2px);
+  }
+}
+
+@keyframes arrowDrawDiagonal {
+  0%,
+  27.757576% {
+    clip-path: inset(-2px 100% 100% -2px);
+    animation-timing-function: cubic-bezier(0.65, 0, 0.2, 1);
+  }
+
+  35.757576%,
+  100% {
+    clip-path: inset(-2px -2px -2px -2px);
+  }
+}
+
+@keyframes arrowHead {
+  0%,
+  32.545455% {
+    opacity: 0;
+    animation-timing-function: ease-out;
+  }
+
+  36.545455%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes arrowHeadSlack {
+  0%,
+  33.757576% {
+    opacity: 0;
+    animation-timing-function: ease-out;
+  }
+
+  37.757576%,
+  100% {
+    opacity: 1;
+  }
+}

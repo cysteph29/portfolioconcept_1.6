@@ -3,6 +3,7 @@ import { frontmatter as axwayPreview } from "@/content/case-studies/axway-previe
 import { frontmatter as theKen } from "@/content/case-studies/the-ken.mdx";
 import { frontmatter as salesforceTrailhead } from "@/content/case-studies/salesforce-trailhead.mdx";
 import { frontmatter as salesforceTrailheadPreview } from "@/content/case-studies/salesforce-trailhead-preview.mdx";
+import { frontmatter as salesforceTrailheadArchive } from "@/content/case-studies/salesforce-trailhead-archive.mdx";
 import { frontmatter as paymanPreview } from "@/content/case-studies/payman-preview.mdx";
 import { frontmatter as dummyCaseStudyThree } from "@/content/case-studies/dummy-case-study-3.mdx";
 
@@ -99,6 +100,7 @@ export const CASE_STUDIES: CaseStudy[] = [
 export const UNLISTED_CASE_STUDIES: CaseStudy[] = [
   defineCaseStudy(axwayPreview),
   defineCaseStudy(salesforceTrailheadPreview),
+  defineCaseStudy(salesforceTrailheadArchive),
   defineCaseStudy(paymanPreview),
 ];
 

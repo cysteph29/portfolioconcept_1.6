@@ -1,0 +1,257 @@
+.scene {
+  --icon-slot: 4rem;
+  --loop: 6.6s;
+  --tilt: -11deg;
+  --arm: 22cqi;
+  --lift: calc(var(--arm) * 0.1908);
+  --beam-thickness: 2px;
+
+  box-sizing: border-box;
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 16 / 9;
+  place-items: center;
+  padding: clamp(2rem, 6cqi, 3.5rem) clamp(1.5rem, 4cqi, 3rem);
+  background: var(--color-text-primary);
+  color: var(--color-canvas);
+  container-type: inline-size;
+  overflow: hidden;
+}
+
+.rig {
+  display: grid;
+  width: 72cqi;
+  padding-block: 4.5cqi 2.5cqi;
+}
+
+.pairs {
+  display: grid;
+  grid-template-columns: 26cqi 1fr 26cqi;
+  padding-inline: 1cqi;
+  padding-bottom: 1.5rem;
+}
+
+.pairLeft {
+  grid-column: 1;
+  translate: 0 var(--lift);
+}
+
+.pairRight {
+  grid-column: 3;
+  translate: 0 calc(var(--lift) * -1);
+}
+
+.pairInner {
+  display: grid;
+  grid-template-rows: var(--icon-slot) auto;
+  justify-items: center;
+  align-content: end;
+  height: 100%;
+  gap: 1.25rem;
+}
+
+.icon {
+  width: var(--icon-slot);
+  height: var(--icon-slot);
+  background-color: var(--color-canvas);
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: contain;
+}
+
+.iconBook {
+  mask-image: url("/assets/pixel_book.svg");
+  -webkit-mask-image: url("/assets/pixel_book.svg");
+}
+
+.iconUsers {
+  mask-image: url("/assets/pixel_users.svg");
+  -webkit-mask-image: url("/assets/pixel_users.svg");
+}
+
+.label {
+  font-family: var(--font-neuebit), sans-serif;
+  font-size: clamp(1.75rem, 4.5cqi, 2.75rem);
+  font-weight: 700;
+  line-height: 1.05;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.seesaw {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+
+.beam {
+  width: 100%;
+  height: var(--beam-thickness);
+  rotate: var(--tilt);
+  transform-origin: center;
+}
+
+.beamLine {
+  display: block;
+  height: 100%;
+  background: var(--color-canvas);
+  transform-origin: center;
+}
+
+.fulcrum {
+  width: 6cqi;
+  height: 5cqi;
+  margin-top: 4px;
+  overflow: visible;
+  fill: none;
+  stroke: var(--color-canvas);
+  stroke-width: 2px;
+  stroke-linejoin: miter;
+}
+
+.isAnimated .rig,
+.isAnimated .pair,
+.isAnimated .pairInner,
+.isAnimated .fulcrum,
+.isAnimated .beam,
+.isAnimated .beamLine {
+  animation-duration: var(--loop);
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+  animation-play-state: paused;
+}
+
+.isAnimated.isRunning .rig,
+.isAnimated.isRunning .pair,
+.isAnimated.isRunning .pairInner,
+.isAnimated.isRunning .fulcrum,
+.isAnimated.isRunning .beam,
+.isAnimated.isRunning .beamLine {
+  animation-play-state: running;
+}
+
+.isAnimated .rig {
+  animation-name: sceneFade;
+}
+
+.isAnimated .pairInner {
+  animation-name: pairEnter;
+}
+
+.isAnimated .fulcrum {
+  animation-name: fulcrumFade;
+}
+
+.isAnimated .beamLine {
+  animation-name: beamGrow;
+}
+
+.isAnimated .beam {
+  animation-name: beamTilt;
+}
+
+.isAnimated .pairLeft {
+  animation-name: pairDown;
+}
+
+.isAnimated .pairRight {
+  animation-name: pairUp;
+}
+
+@keyframes sceneFade {
+  0%,
+  92% {
+    opacity: 1;
+  }
+
+  98%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes pairEnter {
+  0%,
+  2% {
+    opacity: 0;
+    scale: 0.94;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  10%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes fulcrumFade {
+  0%,
+  10% {
+    opacity: 0;
+    animation-timing-function: ease-out;
+  }
+
+  16%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes beamGrow {
+  0%,
+  12% {
+    scale: 0 1;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.2, 1);
+  }
+
+  20%,
+  100% {
+    scale: 1 1;
+  }
+}
+
+/* 650ms tip: 24% → 33.85% of 6.6s */
+@keyframes beamTilt {
+  0%,
+  24% {
+    rotate: 0deg;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  33.85%,
+  100% {
+    rotate: var(--tilt);
+  }
+}
+
+@keyframes pairDown {
+  0%,
+  24% {
+    translate: 0 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  33.85%,
+  100% {
+    translate: 0 var(--lift);
+  }
+}
+
+@keyframes pairUp {
+  0%,
+  24% {
+    translate: 0 0;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  33.85%,
+  100% {
+    translate: 0 calc(var(--lift) * -1);
+  }
+}

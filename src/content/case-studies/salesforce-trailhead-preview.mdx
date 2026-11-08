@@ -49,7 +49,9 @@ sections:
     label: "Reflection"
 ---
 
+import { TrailheadAnswerConcepts } from "@/components/work/trailhead-answer-concepts";
 import { TrailheadOpeningContext } from "@/components/work/trailhead-opening-context";
+import { TrailheadRecommendationMismatch } from "@/components/work/trailhead-recommendation-mismatch";
 import openingStyles from "@/components/work/trailhead-opening-context.module.css";
 
 <header className="case-study-article-heading">
@@ -60,21 +62,17 @@ import openingStyles from "@/components/work/trailhead-opening-context.module.cs
 
 <Section id="solve" sections={frontmatter.sections}>
 
-<h2 id="solve-problem">Despite Trailhead’s own community, experienced users turned to ChatGPT and Slack for faster answers.</h2>
+<h2 className={openingStyles.statement} id="solve-problem">Despite Trailhead’s own community, experienced users turned to ChatGPT and Slack for faster answers.</h2>
 
-Users described getting instant answers from ChatGPT and quicker replies on Slack than in the Trailblazer Community.
+<p className={openingStyles.support}>Users described getting instant answers from ChatGPT and quicker replies on Slack than in the Trailblazer Community.</p>
 
-<div className={openingStyles.placeholder}>
-  <p className={openingStyles.placeholderLabel}>
-    {"Explainer placeholder: users bypass Trailhead’s community for faster answers on ChatGPT and Slack."}
-  </p>
-</div>
+<TrailheadAnswerConcepts />
 
-<h3 id="solve-solution">Solve brought immediate answers into Trailhead, grounded in Salesforce documentation with sources users could check.</h3>
+<h3 className={openingStyles.statement} id="solve-solution">Solve brought immediate answers into Trailhead, grounded in Salesforce documentation with sources users could check.</h3>
 
-Our hypothesis: grounding answers in Salesforce documentation could make Solve more useful for Salesforce work than a general-purpose chatbot.
+<p className={openingStyles.support}>Our hypothesis: grounding answers in Salesforce documentation could make Solve more useful for Salesforce work than a general-purpose chatbot.</p>
 
-Users could ask a question, check linked sources, and adjust the answer’s depth to their expertise. For questions needing human input, Solve offered an escalation path: drafting a ready-to-post question for the Trailblazer Community.
+<p className={openingStyles.support}>Users could ask a question, check linked sources, and adjust the answer’s depth to their expertise. For questions needing human input, Solve offered an escalation path: drafting a ready-to-post question for the Trailblazer Community.</p>
 
 <CaseVideo
   src="/work/salesforce-trailhead/video-trailhead-chatdemo.mp4"
@@ -89,17 +87,13 @@ Users could ask a question, check linked sources, and adjust the answer’s dept
 
 <Section id="trailmixes" sections={frontmatter.sections}>
 
-<h2 id="trailmixes-problem">Experienced users stopped learning on Trailhead when recommendations felt too basic or irrelevant to their work.</h2>
+<h2 className={openingStyles.statement} id="trailmixes-problem">Experienced users stopped learning on Trailhead when recommendations felt too basic or irrelevant to their work.</h2>
 
-<div className={openingStyles.placeholder}>
-  <p className={openingStyles.placeholderLabel}>
-    {"Explainer placeholder: experienced users disengage when learning recommendations are too basic or irrelevant."}
-  </p>
-</div>
+<TrailheadRecommendationMismatch />
 
-<h3 id="trailmixes-solution">Personalized Trailmixes proposed learning matched to users’ existing skills, skill gaps, and career needs.</h3>
+<h3 className={openingStyles.statement} id="trailmixes-solution">Personalized Trailmixes proposed learning matched to users’ existing skills, skill gaps, and career needs.</h3>
 
-Trailmixes are collections of learning content on Trailhead. Our concept would tailor these collections to users’ experience, skill gaps, career needs, and previous activity—giving them a relevant next step without waiting for a question.
+<p className={openingStyles.support}>Trailmixes are collections of learning content on Trailhead. Our concept would tailor these collections to users’ experience, skill gaps, career needs, and previous activity—giving them a relevant next step without waiting for a question.</p>
 
 <CaseVideo
   src="/work/salesforce-trailhead/video-trailhead-customtrailmix.mp4"
@@ -112,11 +106,11 @@ Trailmixes are collections of learning content on Trailhead. Our concept would t
 
 </Section>
 
-<Section id="testing" sections={frontmatter.sections}>
+<Section id="testing" divided sections={frontmatter.sections}>
 
 ## Six of eight preferred Solve over ChatGPT for their own work question.
 
-Each participant asked Solve and ChatGPT the same question from their work. Six of eight preferred Solve. In their feedback, participants highlighted response quality and citations that linked to sources they could check.
+<p className={openingStyles.support}>Each participant asked Solve and ChatGPT the same question from their work. Six of eight preferred Solve. In their feedback, participants highlighted response quality and citations that linked to sources they could check.</p>
 
 <CaseMetrics
   label="Solve prototype comparison results"
@@ -127,6 +121,12 @@ Each participant asked Solve and ChatGPT the same question from their work. Six 
       value: 6,
       valueLabel: "6/8",
       max: 8,
+    },
+    {
+      label: "Confidence in Solve's answers",
+      value: 4.5,
+      valueLabel: "4.5/5",
+      max: 5,
     },
   ]}
 />

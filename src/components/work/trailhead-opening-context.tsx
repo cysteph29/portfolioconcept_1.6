@@ -1,8 +1,9 @@
 import { CaseFigure } from "@/components/work/case-figure";
+import { TrailheadCertificationJourney } from "@/components/work/trailhead-certification-journey";
 
 import styles from "./trailhead-opening-context.module.css";
 
-const roles = ["ResearchOps lead", "Product strategy", "Chatbot prototyping"] as const;
+const roles = ["ResearchOps", "Strategy", "Prototyping"] as const;
 
 export function TrailheadOpeningContext() {
   return (
@@ -18,13 +19,11 @@ export function TrailheadOpeningContext() {
         </div>
         <div className={styles.group}>
           <dt className={styles.label}>Timeline</dt>
-          <dd className={styles.value}>10 months</dd>
-        </div>
-        <div className={styles.group}>
-          <dt className={styles.label}>Team</dt>
-          <dd className={styles.value}>Five-person capstone team</dd>
+          <dd className={styles.value}>2 months</dd>
         </div>
       </dl>
+
+      <hr className={styles.divider} />
 
       <section
         className={styles.overview}
@@ -61,14 +60,7 @@ export function TrailheadOpeningContext() {
               beyond their next certification.
             </p>
             <figure className={styles.figure}>
-              <div className={`${styles.placeholder} ${styles.placeholderJourney}`}>
-                <p className={styles.placeholderLabel}>
-                  Learner journey: learning → certification → disengagement
-                </p>
-              </div>
-              <figcaption className={styles.caption}>
-                Illustrative journey showing the challenge after certification.
-              </figcaption>
+              <TrailheadCertificationJourney />
             </figure>
           </div>
         </div>

@@ -12,222 +12,99 @@ outcomeEmblem: ""
 summaryPattern: "/assets/summary-pattern.svg"
 heroVideo: "/work/salesforce-trailhead/video-trailhead-promo-web.mp4"
 heroPoster: "/work/salesforce-trailhead/video-trailhead-promo-web-poster.webp"
+productGallery: true
 timeline: "10 months"
 role: "ResearchOps, Strategy, AI Prototyping"
 team: "Product Designers (team & I), Product Manager"
 slug: "salesforce-trailhead"
 sections:
   - id: "overview"
-    label: "OVERVIEW"
-  - id: "problem"
-    label: "PROBLEM"
-  - id: "research"
-    label: "RESEARCH"
-  - id: "converge"
-    label: "FINDINGS"
-  - id: "converge-2"
-    label: "IDEATION"
-  - id: "ideation"
-    label: "Exploration 1"
-  - id: "ideation-2"
-    label: "Exploration 2"
-  - id: "solution"
-    label: "THE BET"
-  - id: "solution-3"
-    label: "SOLUTION 01 / SOLVE"
-  - id: "solution-4"
-    label: "SOLUTION 02 / PROACTIVE PROMPTS"
-  - id: "context"
-    label: "THE BUILD"
-  - id: "context-2"
-    label: "Agentic Testing"
+    label: "Overview"
+  - id: "solve"
+    label: "Solve"
+    navLabel: "Answers at work"
+    navChildren:
+      - id: "solve-problem"
+        label: "The problem"
+      - id: "solve-solution"
+        label: "Solve"
+  - id: "trailmixes"
+    label: "Personalized Trailmixes"
+    navLabel: "Relevant learning"
+    navChildren:
+      - id: "trailmixes-problem"
+        label: "The problem"
+      - id: "trailmixes-solution"
+        label: "Personalized Trailmixes"
   - id: "testing"
-    label: "Impact pt.I"
-  - id: "testing-2"
-    label: "Impact pt.II"
-  - id: "reflection"
-    label: "MY LEARNING"
+    label: "Validation"
 ---
 
-<Section id="overview" sections={frontmatter.sections}>
+import { TrailheadAnswerConcepts } from "@/components/work/trailhead-answer-concepts";
+import { TrailheadOpeningContext } from "@/components/work/trailhead-opening-context";
+import { TrailheadRecommendationMismatch } from "@/components/work/trailhead-recommendation-mismatch";
+import openingStyles from "@/components/work/trailhead-opening-context.module.css";
 
-## Trailhead is Salesforce's free online learning platform, taking millions of professionals from beginner to certified expert. It was built for the climb, and it loses the experts the moment they reach the top.
+<header className="case-study-article-heading">
+  <h1 className="case-study-article-title text-heading-1">Salesforce Trailhead</h1>
+</header>
 
-Over 10 months, our team of five partnered with the Salesforce Trailhead product team to research, design, and build for the platform's most experienced users: the power users who built their careers on Trailhead and then quietly stopped coming back.
+<TrailheadOpeningContext />
 
-</Section>
+<Section id="solve" sections={frontmatter.sections}>
 
-<Section id="problem" sections={frontmatter.sections}>
+<h2 className={openingStyles.statement} id="solve-problem">Despite Trailhead’s own community, experienced users turned to ChatGPT and Slack for faster answers.</h2>
 
-## Salesforce's most valuable power users were disengaging, and for a company built on community and advocacy, that is an expensive thing to lose
+<p className={openingStyles.support}>Users described getting instant answers from ChatGPT and quicker replies on Slack than in the Trailblazer Community.</p>
 
-Salesforce's ecosystem runs on its community: experienced users who answer questions, mentor newcomers, and champion the platform. Those power users were the engine of it, and they were showing up less and contributing less.
+<TrailheadAnswerConcepts />
 
-They weren't unhappy users churning, they were quietly drifting. So the problem we set out to solve was re-engagement, not retention: winning back the attention of the platform's most valuable advocates.
+<h3 className={openingStyles.statement} id="solve-solution">Solve brought immediate answers into Trailhead, grounded in Salesforce documentation with sources users could check.</h3>
 
-</Section>
+<p className={openingStyles.support}>Our hypothesis: grounding answers in Salesforce documentation could make Solve more useful for Salesforce work than a general-purpose chatbot.</p>
 
-<Section id="research" sections={frontmatter.sections}>
-
-## I ran research operations end to end, reaching 650+ Salesforce professionals across the US, India, Canada, Europe, and the Middle East, qualifying 72 as power users, and interviewing 12 across two rounds
-
-Round one focused on opinion: how people felt about Trailhead and what would make it more inspiring. It gave us warm, agreeable answers and no real direction.
-
-Round two focused on behavior: what people actually do, where they drop off, whether they use the community and why not, whether certifications even matter to their goals. That is where the real pattern surfaced.
-
-</Section>
-
-<Section id="converge" sections={frontmatter.sections}>
-
-## Power users dropped off right after milestones like certification. And between those moments, they took their questions to ChatGPT and YouTube for a faster answer, despite a community on the platform built for exactly those questions.
-
-<CaseFigure
-  src="/work/salesforce-trailhead/case-study-trailhead-5.webp"
-  alt="Graph comparing Trailhead engagement against the learner journey from certification to real-world problem solving"
-  caption="Engagement drops off exactly where the certification path ends."
-  width={1920}
-  height={1080}
-/>
-
-<CasePercentageCards
-  label="Research findings from Trailhead power users"
-  items={[
-    {
-      label: "Disengaged after major milestones like certifications",
-      valueLabel: "64%",
-    },
-    {
-      label: "Supplemented Trailhead with ChatGPT, YouTube, and Slack",
-      valueLabel: "45%",
-    },
-    {
-      label: "Found the content too shallow for their experience",
-      valueLabel: "45%",
-    },
-    {
-      label: "Were unhappy with the existing personalization",
-      valueLabel: "36%",
-    },
-  ]}
-/>
-
-</Section>
-
-<Section id="converge-2" sections={frontmatter.sections}>
-
-## Of everything we explored, two ideas stood out, so we skipped wireframes and vibe-coded them into working proofs of concept
-
-We explored a wide range of directions for bringing power users back: community engagement, status, skill visibility. The two strongest earned a quick build, enough to try each idea for ourselves. Neither held up, and killing them shaped the two features we shipped.
-
-</Section>
-
-<Section id="ideation" sections={frontmatter.sections}>
-
-## We almost gave power users an AI version of themselves to run their community presence. We killed it to protect Trailhead's trust.
-
-The idea was status plus leverage: power users become group leaders, and an AI trained on their posts answers community questions on their behalf.
-
-We took it down two paths, and both broke. Fully automated meant undisclosed AI speaking as a real person, which damages trust. Disclosed or approve-first clashed with Trailhead's warm, human brand and the real anti-AI anxiety among users, and the approval version stopped saving anyone time, which was the entire point. Underneath all of it, our research was clear that these users didn't want to engage with the community anyway.
-
-</Section>
-
-<Section id="ideation-2" sections={frontmatter.sections}>
-
-## We designed a public skill profile meant to pressure power users into staying current, then killed it because it only worked if employers bought in
-
-The idea borrowed from GitHub's contribution graph. Make someone's skill currency public, and the visibility itself pressures them to keep it up. A shareable Trailhead profile would show certifications, badges, and skill levels tied to how current your learning is, replacing the scattered cert posts people drop on LinkedIn. Keep it public, and people come back to keep it current.
-
-We killed it for two reasons. First, it only works if the outside world treats the profile as a credential, and that adoption was entirely outside our control. Second, even if it caught on, it would drive engagement for the sake of engagement, not the meaningful, lasting reason to return we were after.
-
-<CaseFigure
-  src="/work/salesforce-trailhead/case-study-trailhead-7.webp"
-  alt="Public skill profile concept UI"
-  caption="The shareable Trailhead profile showing certifications, badges, and skill currency, the idea we killed."
-  width={2400}
-  height={4165}
-/>
-
-</Section>
-
-<Section id="solution" sections={frontmatter.sections}>
-
-## We bet that plain-language answers drawn from Salesforce's own data would beat any general AI tool, and shipped two connected experiences to prove it
-
-ChatGPT runs on public data. Slack answers depend on whoever happens to reply. We bet Salesforce's proprietary knowledge could beat both. Access to that data, and to Agentforce, was never on the table, so we built on OpenAI with curated Salesforce documentation and focused on proving the experience.
-
-That bet became two features: Solve catches power users at the moment they would otherwise open ChatGPT, and a proactive system that resurfaces what's relevant next so returning is worth it. Neither works alone.
-
-</Section>
-
-<Section id="solution-3" sections={frontmatter.sections}>
-
-## Solve answers a real Salesforce problem in plain language, on the spot, calibrated to your expertise and backed by sources you can check
+<p className={openingStyles.support}>Users could ask a question, check linked sources, and adjust the answer’s depth to their expertise. For questions needing human input, Solve offered an escalation path: drafting a ready-to-post question for the Trailblazer Community.</p>
 
 <CaseVideo
-  src="/work/salesforce-trailhead/video-trailhead-chatbot.mp4"
+  src="/work/salesforce-trailhead/video-trailhead-chatdemo.mp4"
   poster="/work/salesforce-trailhead/video-trailhead-chatbot-poster.webp"
-  alt="Salesforce Trailhead AI chatbot walkthrough"
-  caption="Solve answering"
-  width={1660}
+  alt="Solve prototype answering a Salesforce question with sources and recommended modules"
+  caption="Working Solve prototype built with OpenAI; on-screen Agentforce branding represents the design only."
+  width={1920}
   height={1080}
 />
 
-**How it works:**
-* Ask a problem in plain language and get a specific, actionable answer that cites Salesforce documentation.
-* Set the depth to Beginner, Intermediate, or Advanced, so you are never over-explained or underserved.
-* When Solve can't fully help, it drafts a ready-to-post Trailblazer Community question from your conversation, so you get an answer either way.
-
-That last one mattered to us. We designed for the moment the AI can't help, not just the moment it can.
-
 </Section>
 
-<Section id="solution-4" sections={frontmatter.sections}>
+<Section id="trailmixes" sections={frontmatter.sections}>
 
-## Without being asked, the system surfaces what's relevant to each expert: skill gaps against the market, follow-ups from their questions, and renewals before they lapse
+<h2 className={openingStyles.statement} id="trailmixes-problem">Experienced users stopped learning on Trailhead when recommendations felt too basic or irrelevant to their work.</h2>
 
-<CaseFigure
-  src="/work/salesforce-trailhead/case-study-trailhead-4.webp"
-  alt="Personalised Dashboard full view showing trending skills and personalized trail recommendations"
-  caption="Dashboard full view"
+<TrailheadRecommendationMismatch />
+
+<h3 className={openingStyles.statement} id="trailmixes-solution">Personalized Trailmixes proposed learning matched to users’ existing skills, skill gaps, and career needs.</h3>
+
+<p className={openingStyles.support}>Trailmixes are collections of learning content on Trailhead. Our concept would tailor these collections to users’ experience, skill gaps, career needs, and previous activity—giving them a relevant next step without waiting for a question.</p>
+
+<CaseVideo
+  src="/work/salesforce-trailhead/video-trailhead-customtrailmix.mp4"
+  poster="/work/salesforce-trailhead/video-trailhead-customtrailmix-poster.webp"
+  alt="Personalized Trailmix walkthrough, from a skill-gap prompt to a generated trail of badges and modules"
+  caption="Personalized Trailmixes concept showing skill gaps and relevant learning recommendations."
   width={1920}
-  height={3012}
+  height={1080}
 />
 
-**How it works:**
-* Before a certification lapses, it flags the renewal on its own, closing a notification gap users complained about.
-* Unprompted, it measures a user's skill profile against what the market is hiring for and builds a path to close the gap it finds.
-* It reads the questions they asked Solve and recommends what to learn next, so the follow-up finds them.
-
-None of this waits for a request. The platform does the noticing and brings the next step to the user.
-
 </Section>
 
-<Section id="context" sections={frontmatter.sections}>
+<Section id="testing" divided sections={frontmatter.sections}>
 
-## Figma MCP took each component straight into Cursor and Claude Code, where we wired it to the OpenAI API and shipped Solve as a working app, not a mockup
+## Six of eight preferred Solve over ChatGPT for their own work question.
 
-After designing each component in Figma against Trailhead's design system, we built it one piece at a time, no handoff, no rebuild from a spec. The result was a functional product: a React front end, an Express and SQLite back end, OpenAI for responses, voice input, expertise calibration, and community-post drafting, all running.
-
-Taking a concept from design to working software ourselves is what let us test it like a real product instead of a slideshow.
-
-</Section>
-
-<Section id="context-2" sections={frontmatter.sections}>
-
-## Real power users were hard to get hold of, so we built 12 AI agents from our research data to catch the obvious problems before spending anyone's real time
-
-We turned our research into 12 AI agents and ran them through the flows to surface usability problems first. By the time real users arrived, the rough edges were already smoothed, and their time went to what actually needed a person.
-
-</Section>
-
-<Section id="testing" sections={frontmatter.sections}>
-
-## We tested whether Solve could replace the reflex to open ChatGPT. Given the same Salesforce question, 6 of 8 power users preferred Solve.
-
-Each participant took a question about the Salesforce product they work with, asked it to both ChatGPT and Solve, and compared.
+<p className={openingStyles.support}>Each participant asked Solve and ChatGPT the same question from their work. Six of eight preferred Solve. In their feedback, participants highlighted response quality and citations that linked to sources they could check.</p>
 
 <CaseMetrics
-  label="Solve comparison test results"
+  label="Solve prototype comparison results"
   variant="scores"
   items={[
     {
@@ -244,38 +121,5 @@ Each participant took a question about the Salesforce product they work with, as
     },
   ]}
 />
-
-</Section>
-
-<Section id="testing-2" sections={frontmatter.sections}>
-
-## The prototype pulled power users back into the content, lifting session duration 35% and cutting drop-off 22%
-
-This was the half of the problem we most needed to prove: that experts who used to leave after a milestone would stay.
-
-<CaseMetrics
-  label="Prototype engagement impact"
-  variant="deltas"
-  items={[
-    {
-      label: "Session duration",
-      value: 35,
-      valueLabel: "+35%",
-    },
-    {
-      label: "Drop-off",
-      value: -22,
-      valueLabel: "−22%",
-    },
-  ]}
-/>
-
-</Section>
-
-<Section id="reflection" sections={frontmatter.sections}>
-
-## I had never been comfortable in code, and had never prototyped with it, so teaching myself to ship this as working software is the barrier I'm proudest of clearing
-
-For most of my career, code was something I designed around. I had never prototyped with it and never felt at home in it. This project left me no room to avoid it, and using AI coding agents to build and ship a working product turned that limitation into something I can now do.
 
 </Section>
