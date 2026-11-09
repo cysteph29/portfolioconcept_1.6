@@ -1,0 +1,13 @@
+.iconBuilding {
+  mask-image: url("/assets/pixel_building.svg");
+  -webkit-mask-image: url("/assets/pixel_building.svg");
+}
+
+/* The logo artwork fills 47.7273 of its 70-unit viewBox; enlarge the mask so its optical size matches the full-bleed building icons. */
+.iconAxway {
+  background-color: #e82c2a;
+  mask-image: url("/assets/logo-axway.svg");
+  mask-size: calc(100% * 70 / 47.7273);
+  -webkit-mask-image: url("/assets/logo-axway.svg");
+  -webkit-mask-size: calc(100% * 70 / 47.7273);
+}

@@ -20,18 +20,20 @@ sections:
   - id: "problem"
     label: "Problem"
   - id: "invoice-list"
-    label: "Solution — Invoice list"
+    label: "Invoice list"
     navLabel: "Invoice list"
   - id: "search"
-    label: "Solution — Search and filters"
+    label: "Search and filters"
     navLabel: "Search and filters"
   - id: "details"
-    label: "Solution — Details drawer"
+    label: "Details drawer"
     navLabel: "Details drawer"
   - id: "outcome"
     label: "Outcome"
 ---
 
+import { AxwayDiagnosisFlow } from "@/components/work/axway-diagnosis-flow";
+import { AxwayInvoiceFlow } from "@/components/work/axway-invoice-flow";
 import openingStyles from "@/components/work/trailhead-opening-context.module.css";
 
 <header className="case-study-article-heading">
@@ -60,10 +62,11 @@ import openingStyles from "@/components/work/trailhead-opening-context.module.cs
     <p className={openingStyles.sectionLabel} id="axway-preview-overview">Overview</p>
     <div className={openingStyles.story}>
       <h2 className={openingStyles.statement}>Axway transforms invoices to meet local regulations before sending them between businesses.</h2>
-      <p className={openingStyles.support}>When an invoice fails processing, Axway’s Operations team identifies the cause and resolves it. I redesigned how they find failed invoices and understand what went wrong.</p>
-      <ImagePlaceholder label="How Axway processes invoices." />
+      <figure className={openingStyles.figure}>
+        <AxwayInvoiceFlow />
+      </figure>
       <h2 className={openingStyles.statement}>When invoices fail, Axway’s Operations team finds the cause and fixes them.</h2>
-      <ImagePlaceholder label="Error>Diagnose>Troubleshoot" />
+      <p className={openingStyles.support}>I redesigned how they find failed invoices and understand what went wrong.</p>
     </div>
   </section>
 
@@ -72,19 +75,22 @@ import openingStyles from "@/components/work/trailhead-opening-context.module.cs
 
 <Section id="problem" sections={frontmatter.sections}>
 
-<h2 className={openingStyles.statement}>Finding why an invoice failed took eight steps.</h2>
+<h2 className={openingStyles.statement}>Operations had to diagnose invoice failures through a workflow built for developers.</h2>
 
-<p className={openingStyles.support}>Operations handled roughly 150 failed invoices a day, with a 24-hour resolution window. To diagnose a failure, users matched an email notification’s timestamp to a task run, then navigated through subtasks and invoices to reach the error details.</p>
+<p className={openingStyles.support}>Finding why an invoice failed took eight steps. Operations repeated this process across roughly 150 failed invoices a day, with a 24-hour resolution window.</p>
 
-<ImagePlaceholder label="Original eight-step diagnosis flow" />
+<figure className={openingStyles.figure}>
+  <AxwayDiagnosisFlow />
+  <figcaption className="text-body-3 text-left text-text-muted">Fixing the invoice came afterward.</figcaption>
+</figure>
 
 </Section>
 
 <Section id="invoice-list" divided sections={frontmatter.sections}>
 
-<h2 className={openingStyles.statement}>Failed invoices became visible directly in the list.</h2>
+<h2 className={openingStyles.statement}>The invoice list didn’t show which invoices had failed.</h2>
 
-<p className={openingStyles.support}>The original invoice list showed neither status nor timestamps. I surfaced both in the redesigned list so users could identify failed invoices without tracing the underlying task runs.</p>
+<p className={openingStyles.support}>I added status and timestamps directly to the list, so Operations could identify failed invoices without tracing the underlying task runs.</p>
 
 <ImagePlaceholder label="Invoice list — status and timestamps" />
 
@@ -92,9 +98,9 @@ import openingStyles from "@/components/work/trailhead-opening-context.module.cs
 
 <Section id="search" divided sections={frontmatter.sections}>
 
-<h2 className={openingStyles.statement}>The invoice list could be searched by the notification’s timestamp.</h2>
+<h2 className={openingStyles.statement}>Finding an invoice meant matching email times to task runs, then digging through subtasks.</h2>
 
-<p className={openingStyles.support}>Instead of remembering an email’s time and searching through task runs, users could search invoices directly by timestamp. Reference-number search supported customer enquiries, while clearer filters helped narrow the results.</p>
+<p className={openingStyles.support}>I added timestamp and reference-number search directly to the invoice list, with clearer filters to narrow the results. Operations could use information from notifications or customer enquiries to find invoices without tracing task runs.</p>
 
 <ImagePlaceholder label="Search and filters" />
 
@@ -102,9 +108,9 @@ import openingStyles from "@/components/work/trailhead-opening-context.module.cs
 
 <Section id="details" divided sections={frontmatter.sections}>
 
-<h2 className={openingStyles.statement}>Error details were one click away.</h2>
+<h2 className={openingStyles.statement}>Error details were buried behind intermediate technical screens.</h2>
 
-<p className={openingStyles.support}>A Details action opened the invoice’s status and error information in a drawer directly from the list, bypassing the intermediate technical screens.</p>
+<p className={openingStyles.support}>A Details action opened the invoice’s status and error information in a drawer, one click from the invoice list.</p>
 
 <ImagePlaceholder label="Invoice details drawer" />
 
