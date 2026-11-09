@@ -7,6 +7,7 @@ import { CaseStudyOpeningGallery } from "@/components/work/case-study-opening-ga
 import { CaseStudyPlaceholder } from "@/components/work/case-study-placeholder";
 import { CaseStudyToc } from "@/components/work/case-study-toc";
 import { TrailheadProductOpening } from "@/components/work/trailhead-product-opening";
+import { VideoThumbnail } from "@/components/ui/video-thumbnail";
 import { getCaseStudyBySlug } from "@/config/case-studies";
 
 type CaseStudyHeroSummaryItemProps = {
@@ -109,8 +110,15 @@ export function CaseStudyPageLayout({
     caseStudy.openingGallery.length >= 3
       ? caseStudy.openingGallery
       : null;
+  // The draft keeps its title in the article. The opening frame plays the
+  // same promo the homepage Axway card uses.
+  const fullBleedVideo = slug === "axway-preview" ? caseStudy.heroVideo : undefined;
   const singleVideoOpening =
-    !heroPlaceholder && !productGallery && !customOpening && Boolean(caseStudy.heroVideo);
+    !heroPlaceholder &&
+    !productGallery &&
+    !customOpening &&
+    !fullBleedVideo &&
+    Boolean(caseStudy.heroVideo);
   const visibleTitle = caseStudy.cardTitle ?? caseStudy.title;
 
   const summaryPatternStyle = caseStudy.summaryPattern
@@ -124,7 +132,19 @@ export function CaseStudyPageLayout({
 
   return (
     <section className="fold-panel case-study-fold">
-      {heroPlaceholder ? (
+      {fullBleedVideo ? (
+        <header className="trailhead-opening trailhead-opening--full" data-smart-navbar-hero>
+          <div className="trailhead-opening__frame">
+            <VideoThumbnail
+              className="trailhead-opening__video"
+              eager
+              label={`${visibleTitle} hero visual`}
+              poster={caseStudy.heroPoster}
+              src={fullBleedVideo}
+            />
+          </div>
+        </header>
+      ) : heroPlaceholder ? (
         <header className="trailhead-opening trailhead-opening--full" data-smart-navbar-hero>
           <div className="trailhead-opening__frame trailhead-opening__frame--placeholder">
             <CaseStudyPlaceholder label={heroPlaceholder} />
