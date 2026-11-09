@@ -146,3 +146,15 @@
     column-gap: clamp(3rem, 7cqi, 5rem);
   }
 }
+
+.details.detailsWide {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@container (min-width: 34rem) {
+  .details.detailsWide {
+    grid-template-columns: repeat(3, minmax(0, max-content));
+    justify-content: start;
+    column-gap: clamp(1.5rem, 4cqi, 3.25rem);
+  }
+}

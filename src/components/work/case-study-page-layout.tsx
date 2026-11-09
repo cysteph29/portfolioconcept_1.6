@@ -4,6 +4,7 @@ import Image from "next/image";
 import { type CSSProperties, type ReactNode, useEffect, useRef } from "react";
 
 import { CaseStudyOpeningGallery } from "@/components/work/case-study-opening-gallery";
+import { CaseStudyPlaceholder } from "@/components/work/case-study-placeholder";
 import { CaseStudyToc } from "@/components/work/case-study-toc";
 import { TrailheadProductOpening } from "@/components/work/trailhead-product-opening";
 import { getCaseStudyBySlug } from "@/config/case-studies";
@@ -99,12 +100,17 @@ export function CaseStudyPageLayout({
     return null;
   }
 
-  const productGallery = Boolean(caseStudy.productGallery);
+  const heroPlaceholder = caseStudy.heroPlaceholder?.trim() ?? "";
+  const productGallery = !heroPlaceholder && Boolean(caseStudy.productGallery);
   const customOpening =
-    !productGallery && caseStudy.openingGallery && caseStudy.openingGallery.length >= 3
+    !heroPlaceholder &&
+    !productGallery &&
+    caseStudy.openingGallery &&
+    caseStudy.openingGallery.length >= 3
       ? caseStudy.openingGallery
       : null;
-  const singleVideoOpening = !productGallery && !customOpening && Boolean(caseStudy.heroVideo);
+  const singleVideoOpening =
+    !heroPlaceholder && !productGallery && !customOpening && Boolean(caseStudy.heroVideo);
   const visibleTitle = caseStudy.cardTitle ?? caseStudy.title;
 
   const summaryPatternStyle = caseStudy.summaryPattern
@@ -118,7 +124,13 @@ export function CaseStudyPageLayout({
 
   return (
     <section className="fold-panel case-study-fold">
-      {productGallery ? (
+      {heroPlaceholder ? (
+        <header className="trailhead-opening trailhead-opening--full" data-smart-navbar-hero>
+          <div className="trailhead-opening__frame trailhead-opening__frame--placeholder">
+            <CaseStudyPlaceholder label={heroPlaceholder} />
+          </div>
+        </header>
+      ) : productGallery ? (
         <TrailheadProductOpening fullSize={slug === "salesforce-trailhead"} />
       ) : singleVideoOpening ? (
         <header className="case-study-opening" data-smart-navbar-hero>

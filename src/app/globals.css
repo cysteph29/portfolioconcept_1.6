@@ -2079,6 +2079,11 @@ a {
     max-width: var(--spacing-placeholder-max);
   }
 
+  .trailhead-opening__frame--placeholder {
+    background: transparent;
+    outline: none;
+  }
+
   .media-playback-host {
     position: relative;
   }

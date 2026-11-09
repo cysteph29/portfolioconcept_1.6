@@ -56,6 +56,12 @@ export type CaseStudyFrontmatter = {
   heroVideo?: string;
   heroPoster?: string;
   /**
+   * Full-width opening rectangle in place of a hero video.
+   * Uses the same frame as the Salesforce Trailhead opening.
+   * The article supplies the title underneath.
+   */
+  heroPlaceholder?: string;
+  /**
    * Trailhead preview only. Shows one motion hero in place of the shared
    * case-study opening. The preview article places the title and introduction after it.
    */

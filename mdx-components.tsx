@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { AxwayFindWorkaround } from "@/components/work/axway-find-workaround";
 import { CaseFigure } from "@/components/work/case-figure";
 import { CaseMetrics, CasePercentageCards } from "@/components/work/case-metrics";
+import { CaseStudyPlaceholder } from "@/components/work/case-study-placeholder";
 import { CaseVideo } from "@/components/work/case-video";
 import type { CaseStudySection } from "@/config/case-studies";
 
@@ -40,21 +41,7 @@ type ImagePlaceholderProps = {
 };
 
 function ImagePlaceholder({ label, ratio = "16/9" }: ImagePlaceholderProps) {
-  return (
-    <div
-      className="relative flex items-center justify-center bg-fold-fill"
-      style={{
-        aspectRatio: ratio,
-        borderWidth: "var(--border-width-hairline)",
-        borderStyle: "solid",
-        borderColor: "var(--color-text-muted)",
-      }}
-    >
-      <span className="max-w-[36rem] px-6 text-center text-body-2 text-text-muted">
-        {label}
-      </span>
-    </div>
-  );
+  return <CaseStudyPlaceholder label={label} ratio={ratio} />;
 }
 
 const components: MDXComponents = {
