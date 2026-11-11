@@ -94,8 +94,8 @@ function defineCaseStudy(frontmatter: CaseStudyFrontmatter): CaseStudy {
 
 /** Public case studies. Homepage cards, project listings, and sitemaps use this list only. */
 export const CASE_STUDIES: CaseStudy[] = [
-  defineCaseStudy(salesforceTrailhead),
   defineCaseStudy(axway),
+  defineCaseStudy(salesforceTrailhead),
   defineCaseStudy(theKen),
   defineCaseStudy(dummyCaseStudyThree),
 ];

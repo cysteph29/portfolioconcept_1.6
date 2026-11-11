@@ -5,8 +5,8 @@ const publicPaths = [
   "/",
   "/about",
   "/playground",
-  "/work/salesforce-trailhead",
   "/work/axway",
+  "/work/salesforce-trailhead",
   "/work/the-ken",
 ];
 
