@@ -2405,6 +2405,26 @@ a {
   color: var(--color-text-muted);
 }
 
+.case-metric__quote {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  margin: 0;
+  color: var(--color-text-primary);
+  text-wrap: pretty;
+}
+
+.case-metric__quote p {
+  margin: 0;
+}
+
+.case-metric__quote .case-metric__label {
+  max-width: none;
+  padding-top: 0.75rem;
+  text-wrap: balance;
+}
+
 .case-metrics__caption {
   margin-top: 0.5rem;
   color: var(--color-text-muted);

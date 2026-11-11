@@ -5,6 +5,7 @@ import type { ComponentType } from "react";
 import { CaseStudyPageLayout } from "@/components/work/case-study-page-layout";
 import Axway from "@/content/case-studies/axway.mdx";
 import AxwayPreview from "@/content/case-studies/axway-preview.mdx";
+import AxwayArchive from "@/content/case-studies/axway-archive.mdx";
 import TheKen from "@/content/case-studies/the-ken.mdx";
 import SalesforceTrailhead from "@/content/case-studies/salesforce-trailhead.mdx";
 import SalesforceTrailheadPreview from "@/content/case-studies/salesforce-trailhead-preview.mdx";
@@ -21,6 +22,7 @@ import {
 const CASE_STUDY_CONTENT_BY_SLUG: Record<string, ComponentType> = {
   "axway": Axway,
   "axway-preview": AxwayPreview,
+  "axway-archive": AxwayArchive,
   "the-ken": TheKen,
   "salesforce-trailhead": SalesforceTrailhead,
   "salesforce-trailhead-preview": SalesforceTrailheadPreview,
@@ -56,7 +58,8 @@ export async function generateMetadata({
     },
     axway: {
       title: "Axway E-Invoicing — UX Case Study · Cyril Stephen",
-      description: "How Cyril Stephen redesigned error finding and troubleshooting in Axway E-Invoicing to reduce failed-invoice resolution time by 67%.",
+      description:
+        "How Cyril Stephen redesigned how Axway Operations finds a failed invoice and understands its error. In testing, diagnosis took 67% less time.",
     },
     "the-ken": {
       title: "The Ken — Checkout Redesign · Cyril Stephen",
@@ -70,8 +73,8 @@ export async function generateMetadata({
     ...(isUnlistedCaseStudy(slug)
       ? { robots: { index: false, follow: false } }
       : {}),
-    ...(slug === "salesforce-trailhead-archive"
-      ? { alternates: { canonical: "/work/salesforce-trailhead-archive" } }
+    ...(slug === "salesforce-trailhead-archive" || slug === "axway-archive"
+      ? { alternates: { canonical: `/work/${slug}` } }
       : {}),
   };
 }

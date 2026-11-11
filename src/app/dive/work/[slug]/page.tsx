@@ -5,6 +5,7 @@ import type { ComponentType } from "react";
 import { CaseStudyPageLayout } from "@/components/work/case-study-page-layout";
 import Axway from "@/content/case-studies/axway.mdx";
 import AxwayPreview from "@/content/case-studies/axway-preview.mdx";
+import AxwayArchive from "@/content/case-studies/axway-archive.mdx";
 import TheKen from "@/content/case-studies/the-ken.mdx";
 import SalesforceTrailhead from "@/content/case-studies/salesforce-trailhead.mdx";
 import SalesforceTrailheadPreview from "@/content/case-studies/salesforce-trailhead-preview.mdx";
@@ -21,6 +22,7 @@ import {
 const CASE_STUDY_CONTENT_BY_SLUG: Record<string, ComponentType> = {
   axway: Axway,
   "axway-preview": AxwayPreview,
+  "axway-archive": AxwayArchive,
   "the-ken": TheKen,
   "salesforce-trailhead": SalesforceTrailhead,
   "salesforce-trailhead-preview": SalesforceTrailheadPreview,

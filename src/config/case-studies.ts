@@ -1,5 +1,6 @@
 import { frontmatter as axway } from "@/content/case-studies/axway.mdx";
 import { frontmatter as axwayPreview } from "@/content/case-studies/axway-preview.mdx";
+import { frontmatter as axwayArchive } from "@/content/case-studies/axway-archive.mdx";
 import { frontmatter as theKen } from "@/content/case-studies/the-ken.mdx";
 import { frontmatter as salesforceTrailhead } from "@/content/case-studies/salesforce-trailhead.mdx";
 import { frontmatter as salesforceTrailheadPreview } from "@/content/case-studies/salesforce-trailhead-preview.mdx";
@@ -105,6 +106,7 @@ export const CASE_STUDIES: CaseStudy[] = [
  */
 export const UNLISTED_CASE_STUDIES: CaseStudy[] = [
   defineCaseStudy(axwayPreview),
+  defineCaseStudy(axwayArchive),
   defineCaseStudy(salesforceTrailheadPreview),
   defineCaseStudy(salesforceTrailheadArchive),
   defineCaseStudy(paymanPreview),

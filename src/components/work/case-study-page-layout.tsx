@@ -110,9 +110,10 @@ export function CaseStudyPageLayout({
     caseStudy.openingGallery.length >= 3
       ? caseStudy.openingGallery
       : null;
-  // The draft keeps its title in the article. The opening frame plays the
-  // same promo the homepage Axway card uses.
-  const fullBleedVideo = slug === "axway-preview" ? caseStudy.heroVideo : undefined;
+  // The published Axway page and its preview keep the title in the article.
+  // The opening frame plays the same promo the homepage Axway card uses.
+  const fullBleedVideo =
+    slug === "axway" || slug === "axway-preview" ? caseStudy.heroVideo : undefined;
   const singleVideoOpening =
     !heroPlaceholder &&
     !productGallery &&

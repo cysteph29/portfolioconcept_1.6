@@ -143,6 +143,21 @@ import openingStyles from "@/components/work/trailhead-opening-context.module.cs
 
 <p className={openingStyles.support}>We compared task completion times for the original and redesigned workflows with Operations team members who had participated in earlier research. The full solution—including the redesigned list, details drawer, search, and filters—reached implementation.</p>
 
-<ImagePlaceholder label="Outcome visual — 67% reduction in diagnosis time" />
+<CaseMetrics
+  label="Invoice diagnosis testing results"
+  variant="deltas"
+  items={[
+    {
+      label: "Less time to diagnose an invoice",
+      value: 67,
+      valueLabel: "67%",
+    },
+    {
+      quote:
+        "“I really like this, this is way quicker than the current process we’re used to. Would be great if we can use this in the next version coming out next year.”",
+      label: "Amardeep Tyagi, Operations team member",
+    },
+  ]}
+/>
 
 </Section>
