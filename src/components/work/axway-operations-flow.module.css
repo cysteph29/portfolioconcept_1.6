@@ -1,0 +1,323 @@
+.journey {
+  --loop: 7.6s;
+  --label-size: clamp(1.75rem, 4.5cqi, 2.75rem);
+  --focus-pad-x: 1.75rem;
+  --focus-pad-y: 1.5rem;
+  /* "Diagnose" sets about 2.8em wide in NeueBit. */
+  --focus-half: calc(var(--label-size) * 1.4 + var(--focus-pad-x));
+
+  grid-template-columns: minmax(0, 1fr) 0 minmax(0, 1fr) 0 minmax(0, 1fr) 0 minmax(0, 1fr);
+}
+
+.journey .line1::before,
+.journey .line2::before,
+.journey .line3::before {
+  width: calc(100% / 4 - var(--icon-slot) - 2 * var(--line-gap));
+}
+
+.journey .line1::before {
+  left: calc(100% / 8 + var(--icon-slot) / 2 + var(--line-gap));
+}
+
+.journey .line2::before {
+  left: calc(300% / 8 + var(--icon-slot) / 2 + var(--line-gap));
+}
+
+.journey .line3::before {
+  left: calc(500% / 8 + var(--icon-slot) / 2 + var(--line-gap));
+}
+
+.journey .line1::after {
+  left: calc(300% / 8 - var(--icon-slot) / 2 - var(--line-gap) - 0.6rem);
+}
+
+.journey .line2::after {
+  left: calc(500% / 8 - var(--icon-slot) / 2 - var(--line-gap) - 0.6rem);
+}
+
+.journey .line3::after {
+  left: calc(700% / 8 - var(--icon-slot) / 2 - var(--line-gap) - 0.6rem);
+}
+
+.iconInvoice {
+  mask-image: url("/assets/pixel_invoice_failed.svg");
+  -webkit-mask-image: url("/assets/pixel_invoice_failed.svg");
+}
+
+.iconUsers {
+  mask-image: url("/assets/pixel_users.svg");
+  -webkit-mask-image: url("/assets/pixel_users.svg");
+}
+
+.iconMagnifier {
+  mask-image: url("/assets/pixel_magnifier.svg");
+  -webkit-mask-image: url("/assets/pixel_magnifier.svg");
+}
+
+.iconWrench {
+  mask-image: url("/assets/pixel_wrench.svg");
+  -webkit-mask-image: url("/assets/pixel_wrench.svg");
+}
+
+.focusStage {
+  position: relative;
+}
+
+.focus {
+  margin-top: -0.5rem;
+  font-family: var(--font-neuebit), sans-serif;
+  font-size: clamp(1.125rem, 2.6cqi, 1.5rem);
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  opacity: 0.6;
+}
+
+.focusBox {
+  position: absolute;
+  top: calc(-1 * var(--focus-pad-y));
+  bottom: calc(-1 * var(--focus-pad-y));
+  left: 50%;
+  width: calc(2 * var(--focus-half));
+  border: var(--border-width-hairline) solid currentColor;
+  translate: -50% 0;
+  pointer-events: none;
+}
+
+.isAnimated .focusBox {
+  animation: focusBox var(--loop) infinite both paused;
+}
+
+.isRunning .focusBox {
+  animation-play-state: running;
+}
+
+.isAnimated ol.journey {
+  animation-name: journeyFade;
+}
+
+.isAnimated .journey .stage1 {
+  animation-name: stage1;
+}
+
+.isAnimated .journey .stage2 {
+  animation-name: stage2;
+}
+
+.isAnimated .journey .stage3 {
+  animation-name: stage3;
+}
+
+.isAnimated .journey .stage4 {
+  animation-name: stage4;
+}
+
+.isAnimated .journey .line1::before {
+  animation-name: line1;
+}
+
+.isAnimated .journey .line2::before {
+  animation-name: line2;
+}
+
+.isAnimated .journey .line3::before {
+  animation-name: line3;
+}
+
+.isAnimated .journey .line1::after {
+  animation-name: arrow1;
+}
+
+.isAnimated .journey .line2::after {
+  animation-name: arrow2;
+}
+
+.isAnimated .journey .line3::after {
+  animation-name: arrow3;
+}
+
+/* Percentages of the 7.6s loop, keeping the shared explainer's absolute
+   timings: 0.528s entrances and draws, 0.264s arrowheads, 0.396s fade. */
+@keyframes journeyFade {
+  0%,
+  93.158% {
+    opacity: 1;
+  }
+
+  98.368%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes stage1 {
+  0%,
+  1.737% {
+    opacity: 0;
+    scale: 0.94;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  8.684%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes line1 {
+  0%,
+  10.421% {
+    opacity: 1;
+    scale: var(--line-scale-start);
+    animation-timing-function: cubic-bezier(0.65, 0, 0.2, 1);
+  }
+
+  17.368%,
+  100% {
+    opacity: 1;
+    scale: 1 1;
+  }
+}
+
+@keyframes arrow1 {
+  0%,
+  15.632% {
+    opacity: 0;
+    animation-timing-function: ease-out;
+  }
+
+  19.105%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes stage2 {
+  0%,
+  19.105% {
+    opacity: 0;
+    scale: 0.94;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  26.053%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes line2 {
+  0%,
+  27.789% {
+    opacity: 1;
+    scale: var(--line-scale-start);
+    animation-timing-function: cubic-bezier(0.65, 0, 0.2, 1);
+  }
+
+  34.737%,
+  100% {
+    opacity: 1;
+    scale: 1 1;
+  }
+}
+
+@keyframes arrow2 {
+  0%,
+  33% {
+    opacity: 0;
+    animation-timing-function: ease-out;
+  }
+
+  36.474%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes stage3 {
+  0%,
+  36.474% {
+    opacity: 0;
+    scale: 0.94;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  43.421%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes line3 {
+  0%,
+  45.158% {
+    opacity: 1;
+    scale: var(--line-scale-start);
+    animation-timing-function: cubic-bezier(0.65, 0, 0.2, 1);
+  }
+
+  52.105%,
+  100% {
+    opacity: 1;
+    scale: 1 1;
+  }
+}
+
+@keyframes arrow3 {
+  0%,
+  50.368% {
+    opacity: 0;
+    animation-timing-function: ease-out;
+  }
+
+  53.842%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes stage4 {
+  0%,
+  53.842% {
+    opacity: 0;
+    scale: 0.94;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  60.789%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes focusBox {
+  0%,
+  62.526% {
+    opacity: 0;
+    scale: 0.94;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  69.474%,
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@container (max-width: 34rem) {
+  .journey {
+    --label-size: 1.125rem;
+    --focus-pad-x: 0.75rem;
+    --focus-pad-y: 0.75rem;
+  }
+
+  .focus {
+    margin-top: -0.25rem;
+    font-size: 0.75rem;
+  }
+}
