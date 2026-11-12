@@ -1991,7 +1991,7 @@ a {
   .case-study-section {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-placeholder-stack-gap);
+    gap: 0.5rem;
     scroll-margin-top: calc(var(--nav-height) + var(--spacing-home-stack-gap));
     opacity: 0;
     transform: translateY(0.75rem);
@@ -2009,8 +2009,13 @@ a {
     margin-top: var(--spacing-placeholder-gap);
   }
 
+  /* Column gap is 20px. The extra 20px puts 40px on each side of the rule. */
+  .case-study-section + .case-study-section--divided {
+    margin-top: calc(var(--spacing-placeholder-gap) - var(--spacing-home-stack-gap));
+  }
+
   .case-study-section--divided {
-    padding-top: var(--spacing-home-stack-gap);
+    padding-top: var(--spacing-placeholder-gap);
     border-top: var(--border-width-hairline) solid
       color-mix(in srgb, var(--color-text-primary) 28%, transparent);
   }
@@ -2033,6 +2038,19 @@ a {
     min-width: 0;
   }
 
+  /* Heading, subheading, and the first sentence share 8px. A later heading steps up to 40px. */
+  .case-study-section__body > :is(h2, h3, h4) + :is(h3, h4, p, ul, ol),
+  .case-study-block > :is(h2, h3, h4) + :is(h3, h4, p, ul, ol),
+  .case-study-pair > :is(h2, h3, h4) + :is(h3, h4, p, ul, ol) {
+    margin-top: calc(0.5rem - var(--spacing-home-stack-gap));
+  }
+
+  .case-study-section__body > :not(h2, h3, h4) + :is(h2, h3, h4),
+  .case-study-block > :not(h2, h3, h4) + :is(h2, h3, h4),
+  .case-study-pair > :not(h2, h3, h4) + :is(h2, h3, h4) {
+    margin-top: calc(var(--spacing-placeholder-gap) - var(--spacing-home-stack-gap));
+  }
+
   .trailhead-opening {
     --trailhead-opening-space: clamp(0.75rem, 1.1vw, 1rem);
     padding-top: calc(var(--nav-height) + var(--trailhead-opening-space));
@@ -2040,8 +2058,9 @@ a {
       max(var(--spacing-home-edge-x), env(safe-area-inset-right, 0px));
   }
 
+  /* Opening video to the title. 48px on laptop and desktop; the phone rule below uses 24px. */
   .trailhead-opening + .case-study-layout {
-    padding-top: var(--spacing-home-safe-y);
+    padding-top: 3rem;
   }
 
   .trailhead-article-lede {
@@ -2293,6 +2312,33 @@ a {
 
     .case-study-layout__left {
       display: none;
+    }
+
+    /* Column gap stays 20px. 12px more makes 32px around a rule; 20px body gap minus 4px makes 16px before a visual. */
+    .case-study-section + .case-study-section--divided {
+      margin-top: 0.75rem;
+    }
+
+    .case-study-section--divided {
+      padding-top: 2rem;
+    }
+
+    .case-study-section__body > :is(p, h2, h3, h4, ul, ol) + :not(p, h2, h3, h4, ul, ol),
+    .case-study-block > :is(p, h2, h3, h4, ul, ol) + :not(p, h2, h3, h4, ul, ol),
+    .case-study-pair > :is(p, h2, h3, h4, ul, ol) + :not(p, h2, h3, h4, ul, ol) {
+      margin-top: -0.25rem;
+    }
+
+    .case-study-section__body > :not(h2, h3, h4) + :is(h2, h3, h4),
+    .case-study-block > :not(h2, h3, h4) + :is(h2, h3, h4),
+    .case-study-pair > :not(h2, h3, h4) + :is(h2, h3, h4) {
+      margin-top: 0.75rem;
+    }
+  }
+
+  @media (max-width: 800px) {
+    .case-study-fold > .trailhead-opening + .case-study-layout {
+      padding-top: 1.5rem;
     }
   }
 
