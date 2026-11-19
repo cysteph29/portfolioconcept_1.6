@@ -16,6 +16,12 @@ export type PlaygroundProject = {
 
 export const PLAYGROUND_PROJECTS: PlaygroundProject[] = [
   {
+    title: "What if: Toggle Operator",
+    video: "/work/playground/stickman.mp4",
+    typeLabel: "Play",
+    featured: true,
+  },
+  {
     title: "My Favorite Albums",
     video: "/work/playground/albumshowcase.mp4",
     poster: "/work/playground/albumshowcase-poster.webp",
