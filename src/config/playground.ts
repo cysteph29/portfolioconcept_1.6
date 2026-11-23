@@ -17,7 +17,7 @@ export type PlaygroundProject = {
 export const PLAYGROUND_PROJECTS: PlaygroundProject[] = [
   {
     title: "What if: Toggle Operator",
-    video: "/work/playground/stickman.mp4",
+    video: "/work/playground/stickman-v2.mp4",
     typeLabel: "Play",
     featured: true,
   },
